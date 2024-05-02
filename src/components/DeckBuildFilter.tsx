@@ -11,14 +11,13 @@ import { useRef } from "react";
 
 export function DeckBuilderFilter({
   action,
-  metadata,
+  minionTypes,
+  rarities,
 }: {
   action: (payload: FormData) => void;
-  metadata: {
-    classes: [];
-    minionTypes: [];
-    rarities: [];
-  };
+
+  minionTypes: [];
+  rarities: [];
 }) {
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -33,7 +32,7 @@ export function DeckBuilderFilter({
           <SelectValue placeholder="Classes" />
         </SelectTrigger>
         <SelectContent>
-          {metadata.classes.map((deckClass) => (
+          {minionTypes.map((deckClass) => (
             <SelectItem value={deckClass.slug} key={deckClass.id}>
               {deckClass.name}
             </SelectItem>

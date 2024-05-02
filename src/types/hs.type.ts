@@ -1,0 +1,27 @@
+export type Card = {
+  id: number;
+  collectible: number;
+  slug: string;
+  classId: number;
+  multiClassIds: number[];
+  minionTypeId: number;
+  multiTypeIds: number[];
+  cardTypeId: number;
+  cardSetId: number;
+  rarityId: number | null;
+  artistName: string;
+  health: number;
+  attack: number;
+  manaCost: number;
+  name: string;
+  text: string;
+  image: string;
+  imageGold: string;
+  flavorText: string;
+  cropImage: string | null;
+  parentId?: number;
+  childIds?: number[];
+  keywordIds: number[];
+  isZilliaxFunctionalModule: boolean;
+  isZilliaxCosmeticModule: boolean;
+};

@@ -1,6 +1,5 @@
 import wretch from "wretch";
 import QueryStringAddon from "wretch/addons/queryString";
-import { hs } from "blizzard.js";
 
 const backendUrl = "https://hsreplay.net/api";
 
@@ -37,14 +36,4 @@ export async function hsFetch() {
       "Content-Type": "application/json",
     })
     .addon(QueryStringAddon);
-}
-
-export async function createHsClient() {
-  return await hs.createInstance({
-    key: "19f0676648064185bb153378a805a0dc",
-    secret: "q8uTKo4XOOY4F3daN2WrH66shTicAAHj",
-    origin: "us", // optional
-    locale: "en_US", // optional
-    token: "", // optional
-  });
 }

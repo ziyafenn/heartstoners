@@ -1,36 +1,25 @@
 import { createHsClient, getToken } from "@/service/fetch";
-import { getSingleCard } from "@/service/hs.service";
 import { getPlayerCollection } from "@/service/hsreplay.service";
-import { DeckBuilder } from "./components/DeckBuild";
-import { DeckBuilderFilter } from "./components/DeckBuildFilter";
+import { DeckBuilder } from "../components/DeckBuilder";
+import { DeckBuilderFilter } from "../components/DeckBuildFilter";
 
 export default async function Home() {
-  const hsClient = await createHsClient();
+  // const data = await Promise.all([
+  //   classes,
+  //   minionTypes,
+  //   rarities,
+  //   setGroups,
+  //   sets,
+  // ]).then((data) => data.map((item) => item.data));
 
-  const cards = await hsClient.cardSearch({
-    gameMode: "constructed",
-    type: "minion",
-    pageSize: 30,
-    class: "demonhunter",
-  });
+  // const metadata = {
+  //   classes: data[0],
+  //   minionTypes: data[1],
+  //   rarities: data[2],
+  //   setGroups: data[3],
+  //   sets: data[4],
+  // };
 
-  const classes = await hsClient.metadata({
-    type: "classes",
-  });
-
-  const minionTypes = await hsClient.metadata({
-    type: "minionTypes",
-  });
-
-  const rarities = await hsClient.metadata({
-    type: "rarities",
-  });
-
-  const metadata = {
-    classes: classes.data,
-    minionTypes: minionTypes.data,
-    rarities: rarities.data,
-  };
   // const player = await getPlayerCollection("sfd");
 
   // const card = await getSingleCard("559");
@@ -38,7 +27,7 @@ export default async function Home() {
 
   return (
     <main className="flex">
-      <DeckBuilder cards={cards.data.cards} metadata={metadata} />
+      {/* <DeckBuilder cards={cards.data.cards} metadata={metadata} /> */}
     </main>
   );
 }
