@@ -8,7 +8,6 @@ import {
   DeckUserInputData,
 } from "@/types/deck.type";
 import { CardsPage } from "@/types/hs.type";
-import { objectToSnake } from "ts-case-convert/lib/caseConvert";
 
 export async function loadPageWithFilters(
   currentState: CardsPage,
@@ -25,7 +24,7 @@ export async function loadPageWithFilters(
 
   const data = await searchHsCards({
     ...deckBuildType,
-    set: deckBuildType.deckFormat,
+    set: deckBuildType.deck_format,
     page: currentState.page + 1,
   });
 
@@ -48,7 +47,7 @@ export async function createDeck(
   const { data, error } = await supabase
     .from("user_decks")
     .insert({
-      ...objectToSnake(deckData),
+      ...deckData,
       ...userInput,
       deck_code: "sdf",
       user_id: "86e43de9-ecd7-4bb0-9a42-d2a557da1d31",

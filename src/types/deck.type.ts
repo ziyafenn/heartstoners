@@ -1,13 +1,15 @@
-import { ObjectToCamel } from "ts-case-convert/lib/caseConvert";
 import { Enums, Tables } from "./superbase.type";
 
-export type DeckDto = Tables<"user_decks">;
-export type Deck = ObjectToCamel<DeckDto>;
-export type DeckType = Pick<Deck, "deckFormat" | "gameMode" | "deckClass">;
+export type UserDeck = Tables<"user_decks">;
+
+export type DeckType = Pick<
+  UserDeck,
+  "deck_format" | "game_mode" | "deck_class"
+>;
 export type DeckGeneratedData = DeckType &
-  Pick<Deck, "cardIds" | "dustCost" | "gameVersion" | "mainCardIds">;
+  Pick<UserDeck, "card_ids" | "dust_cost" | "game_version" | "main_card_ids">;
 export type DeckUserInputData = Pick<
-  Deck,
+  UserDeck,
   "name" | "description" | "archetype"
 >;
 export type Archetype = Enums<"archetypes">;
