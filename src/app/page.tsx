@@ -1,28 +1,29 @@
+import {
+  getPlayerCollection,
+  getSubArchetypePopularity,
+  getSubArchetypes,
+} from "@/service/hsreplay.service";
+import { getDecks } from "@/service/superbase.service";
+import Link from "next/link";
+
 export default async function Home() {
-  // const data = await Promise.all([
-  //   classes,
-  //   minionTypes,
-  //   rarities,
-  //   setGroups,
-  //   sets,
-  // ]).then((data) => data.map((item) => item.data));
-
-  // const metadata = {
-  //   classes: data[0],
-  //   minionTypes: data[1],
-  //   rarities: data[2],
-  //   setGroups: data[3],
-  //   sets: data[4],
-  // };
-
-  // const player = await getPlayerCollection("sfd");
-
-  // const card = await getSingleCard("559");
-  // console.log(card, "card");
-
+  const decks = await getDecks();
+  const playerCollection = await getPlayerCollection("sdf");
+  const subArchetypePopularity = await getSubArchetypePopularity();
+  const subArchetypes = await getSubArchetypes();
   return (
     <main className="flex">
-      {/* <DeckBuilder cards={cards.data.cards} metadata={metadata} /> */}
+      <ul>
+        player dust: {playerCollection.dust}
+        {decks?.map((deck) => (
+          <li key={deck.id}>
+            <Link href={`/decks/${deck.id}`}>
+              {deck.name}
+              {deck.dust_cost}
+            </Link>
+          </li>
+        ))}
+      </ul>
     </main>
   );
 }

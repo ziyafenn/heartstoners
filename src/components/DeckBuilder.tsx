@@ -14,8 +14,7 @@ import {
   Rarity,
   SetGroups,
 } from "@/types/hs.type";
-import { getDustCost } from "@/lib/utils";
-import { DeckBuildType, DeckGeneratedData } from "@/types/deck.type";
+import { DeckType } from "@/types/deck.type";
 import { CardClass } from "blizzard.js/dist/resources/hs";
 import { useParams, useSearchParams } from "next/navigation";
 import { useInView } from "react-intersection-observer";
@@ -23,7 +22,7 @@ import { useInView } from "react-intersection-observer";
 type SelectedCards = Map<number, { count: number } & Card>;
 
 export function DeckBuilder({
-  cards,
+  cards: initialCards,
   minionTypes,
   rarities,
 }: {
@@ -34,11 +33,8 @@ export function DeckBuilder({
   const [selectedCards, setSelectedCards] = useState<SelectedCards>(
     () => new Map(),
   );
-  const [state, formAction] = useFormState(loadPageWithFilters, cards);
+  const [cards, formAction] = useFormState(loadPageWithFilters, initialCards);
   const { ref, inView } = useInView();
-  const searchParams = useSearchParams();
-  const params = useParams<{ format: string }>();
-  const { format } = params;
 
   function onAddCard(card: Card) {
     const currentSelection = new Map(selectedCards);
@@ -51,7 +47,10 @@ export function DeckBuilder({
     setSelectedCards(currentSelection);
   }
 
-  const deckMetaData: DeckBuildType = useMemo(
+  const searchParams = useSearchParams();
+  const params = useParams<{ format: string }>();
+  const { format } = params;
+  const deckType: DeckType = useMemo(
     () => ({
       deckClass: searchParams.get("class") as CardClass,
       deckFormat: format as SetGroups["slug"],
@@ -60,28 +59,14 @@ export function DeckBuilder({
     [format, searchParams],
   );
 
-  const deckData: DeckGeneratedData = {
-    cardIds: Array.from(selectedCards.values())
-      .map((card) => Array(card.count).fill(card.id))
-      .flat(),
-    dustCost: Array.from(selectedCards.values()).reduce(
-      (total, card) => total + getDustCost(card.rarityId) * card.count,
-      0,
-    ),
-    archetype: "aggro",
-    gameVersion: "29.2.2",
-    mainCardIds: [],
-    ...deckMetaData,
-  };
-
   const loadNextPage = useCallback(async () => {
     const formData = new FormData();
-    for (const [key, value] of Object.entries(deckMetaData)) {
+    for (const [key, value] of Object.entries(deckType)) {
       formData.append(key, value!);
     }
 
     formAction(formData);
-  }, [deckMetaData, formAction]);
+  }, [deckType, formAction]);
 
   useEffect(() => {
     if (inView) loadNextPage();
@@ -96,8 +81,7 @@ export function DeckBuilder({
           minionTypes={minionTypes}
         />
         <div className="flex-1 grid grid-cols-auto-fill-hscard">
-          {state.cards.map((card) => {
-            if (card.parentId) return null;
+          {cards.cards.map((card) => {
             const currentCardCount = selectedCards.get(card.id)?.count;
             return (
               <div
@@ -134,7 +118,7 @@ export function DeckBuilder({
               </li>
             ))}
           </ul>
-          <DeckBuilderForm deckData={deckData}>
+          <DeckBuilderForm selectedCards={selectedCards} deckType={deckType}>
             <Button>Create Deck</Button>
           </DeckBuilderForm>
         </aside>

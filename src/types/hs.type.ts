@@ -80,3 +80,18 @@ export type CardsPage = {
   page: number;
   pageCount: number;
 };
+
+export type Deck = {
+  deckCode: string;
+  version: number;
+  format: "standard" | "wild";
+  hero: Card;
+  heroPower: Card;
+  cards: Card[];
+  class: {
+    slug: string;
+    id: number;
+    name: string;
+  };
+  cardCount: number;
+};

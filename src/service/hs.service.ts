@@ -3,6 +3,7 @@
 import {
   Card,
   CardsPage,
+  Deck,
   DeckClass,
   MinionTypes,
   Rarity,
@@ -64,6 +65,7 @@ export async function searchHsCards({
     pageSize: 15,
     page,
     minionType,
+    collectible: 1,
   });
 
   const {
@@ -126,6 +128,19 @@ export async function getHsSets() {
     type: "sets",
   });
   const { data }: { data: string[] } = res;
+
+  return data;
+}
+
+export async function getDeckByCardList(cardIds: number[]) {
+  const hsClient = await createHsClient();
+
+  const res = await hsClient.deck({
+    locale: "en_US",
+    ids: cardIds,
+  });
+
+  const { data }: { data: Deck } = res;
 
   return data;
 }

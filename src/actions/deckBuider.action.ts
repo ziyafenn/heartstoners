@@ -3,7 +3,7 @@
 import { searchHsCards } from "@/service/hs.service";
 import { supabase } from "@/service/superbase.service";
 import {
-  DeckBuildType,
+  DeckType,
   DeckGeneratedData,
   DeckUserInputData,
 } from "@/types/deck.type";
@@ -14,7 +14,7 @@ export async function loadPageWithFilters(
   currentState: CardsPage,
   formData: FormData,
 ): Promise<CardsPage> {
-  let deckBuildType = {} as DeckBuildType;
+  let deckBuildType = {} as DeckType;
 
   for (const [key, value] of formData.entries()) {
     deckBuildType = {
