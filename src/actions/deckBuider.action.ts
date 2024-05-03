@@ -2,18 +2,34 @@
 
 import { searchHsCards } from "@/service/hs.service";
 import { supabase } from "@/service/superbase.service";
-import { DeckGeneratedData, DeckUserInputData } from "@/types/deck.type";
-import { Card } from "@/types/hs.type";
+import {
+  DeckBuildType,
+  DeckGeneratedData,
+  DeckUserInputData,
+} from "@/types/deck.type";
+import { CardsPage } from "@/types/hs.type";
 import { objectToSnake } from "ts-case-convert/lib/caseConvert";
 
-export async function submitFilter(currentState: Card[], formData: FormData) {
-  const deckClass = formData.get("deckClass");
+export async function loadPageWithFilters(
+  currentState: CardsPage,
+  formData: FormData,
+): Promise<CardsPage> {
+  let deckBuildType = {} as DeckBuildType;
 
-  const cards = await searchHsCards({
-    deckClass,
+  for (const [key, value] of formData.entries()) {
+    deckBuildType = {
+      ...deckBuildType,
+      [key]: value,
+    };
+  }
+
+  const data = await searchHsCards({
+    ...deckBuildType,
+    set: deckBuildType.deckFormat,
+    page: currentState.page + 1,
   });
 
-  return cards.cards;
+  return { ...data, cards: [...currentState.cards, ...data.cards] };
 }
 
 export async function createDeck(

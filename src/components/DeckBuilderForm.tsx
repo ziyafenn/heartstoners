@@ -86,6 +86,13 @@ export default function DeckBuilderForm({ children, deckData }: Props) {
         <div className="grid grid-cols-2 gap-10">
           <div className="flex flex-col gap-4">
             <BarChart className="flex-1" />
+            {/* 
+              chart
+              archetype?
+              subarchetype
+              dust cost
+              
+            */}
           </div>
           <form action={createUserDeck} className="flex flex-col gap-4">
             <Input name="name" key="name" type="text" />

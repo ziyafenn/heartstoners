@@ -1,7 +1,7 @@
 import { getHsDeckClasses } from "@/service/hs.service";
 import Link from "next/link";
 
-export default async function DeckBuilderType() {
+export default async function DeckBuilderMode() {
   const deckClasses = await getHsDeckClasses();
 
   return (
@@ -17,8 +17,8 @@ export default async function DeckBuilderType() {
             <li key={deckClass.id}>
               <Link
                 href={{
-                  pathname: `/deckbuilder/${deckClass.slug}`,
-                  query: { format: "standard", mode: "constructed" },
+                  pathname: `/deckbuilder/standard`,
+                  query: { class: deckClass.slug, mode: "constructed" },
                 }}
               >
                 {deckClass.name}

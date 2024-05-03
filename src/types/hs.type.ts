@@ -1,4 +1,4 @@
-import { Database } from "./superbase.type";
+import { Enums } from "./superbase.type";
 
 export type Card = {
   id: number;
@@ -59,7 +59,7 @@ export type Rarity = {
 };
 
 export type DeckClass = {
-  slug: Database["public"]["Enums"]["card_class"];
+  slug: Enums<"card_class">;
   id: number;
   name: string;
   cardId: number;
@@ -72,4 +72,11 @@ export type MinionTypes = {
   id: number;
   name: string;
   gameModes: number[];
+};
+
+export type CardsPage = {
+  cards: Card[];
+  count: number;
+  page: number;
+  pageCount: number;
 };

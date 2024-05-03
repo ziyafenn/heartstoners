@@ -1,17 +1,12 @@
 import { ObjectToCamel } from "ts-case-convert/lib/caseConvert";
-import { Database } from "./superbase.type";
+import { Tables } from "./superbase.type";
 
-export type DeckDto = Database["public"]["Tables"]["user_decks"]["Row"];
+export type DeckDto = Tables<"user_decks">;
 export type Deck = ObjectToCamel<DeckDto>;
-export type DeckGeneratedData = Pick<
-  Deck,
-  | "archetype"
-  | "cardIds"
-  | "deckFormat"
-  | "dustCost"
-  | "gameMode"
-  | "deckClass"
-  | "gameVersion"
-  | "mainCardIds"
->;
+export type DeckBuildType = Pick<Deck, "deckFormat" | "gameMode" | "deckClass">;
+export type DeckGeneratedData = DeckBuildType &
+  Pick<
+    Deck,
+    "archetype" | "cardIds" | "dustCost" | "gameVersion" | "mainCardIds"
+  >;
 export type DeckUserInputData = Pick<Deck, "name" | "description">;

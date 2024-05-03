@@ -2,6 +2,7 @@
 
 import {
   Card,
+  CardsPage,
   DeckClass,
   MinionTypes,
   Rarity,
@@ -11,6 +12,7 @@ import { hs } from "blizzard.js";
 import {
   CardClass,
   CardGameMode,
+  CardMinionType,
   CardRarity,
   CardSortOption,
   CardSortOrder,
@@ -35,6 +37,8 @@ export async function searchHsCards({
   set,
   gameMode,
   sort = "manaCost:asc",
+  page = 1,
+  minionType,
 }: {
   gameMode: CardGameMode;
   set: SetGroups["slug"];
@@ -43,6 +47,8 @@ export async function searchHsCards({
   type?: CardType;
   manaCost?: number;
   sort?: `${CardSortOption}:${CardSortOrder}`;
+  page: number;
+  minionType?: CardMinionType;
 }) {
   const hsClient = await createHsClient();
 
@@ -55,12 +61,15 @@ export async function searchHsCards({
     locale: "en_US",
     set,
     sort,
+    pageSize: 15,
+    page,
+    minionType,
   });
 
   const {
     data,
   }: {
-    data: { cards: Card[]; cardCount: number; pageCount: number; page: number };
+    data: CardsPage;
   } = res;
 
   return data;
