@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@nivo/bar':
+        specifier: ^0.86.0
+        version: 0.86.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-dialog':
         specifier: ^1.0.5
         version: 1.0.5(@types/react-dom@18.3.0)(@types/react@18.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -75,9 +78,15 @@ importers:
       eslint-config-next:
         specifier: 14.2.3
         version: 14.2.3(eslint@8.57.0)(typescript@5.4.5)
+      eslint-config-prettier:
+        specifier: ^9.1.0
+        version: 9.1.0(eslint@8.57.0)
       postcss:
         specifier: ^8
         version: 8.4.38
+      prettier:
+        specifier: 3.2.5
+        version: 3.2.5
       tailwindcss:
         specifier: ^3.4.1
         version: 3.4.3
@@ -227,6 +236,49 @@ packages:
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
+
+  '@nivo/annotations@0.86.0':
+    resolution: {integrity: sha512-7D5h2FzjDhAMzN9siLXSGoy1+7ZcKFu6nSoqrc4q8e1somoIw91czsGq7lowG1g4BUoLC1ZCPNRpi7pzb13JCg==}
+    peerDependencies:
+      react: '>= 16.14.0 < 19.0.0'
+
+  '@nivo/axes@0.86.0':
+    resolution: {integrity: sha512-puIjpx9GysC4Aey15CPkXrUkLY2Tr7NqP8SCYK6W2MlCjaitkpreD392TCTog1X3LTi39snLsXPl5W9cBW+V2w==}
+    peerDependencies:
+      react: '>= 16.14.0 < 19.0.0'
+
+  '@nivo/bar@0.86.0':
+    resolution: {integrity: sha512-SqAwEcH627Qjnn/MrNjpMdKuG2v1DRIBm4jb2KGZUxobl226BVHsu/gqPGJNkk6w3c5MmCP65hq8uxEW/KyU7g==}
+    peerDependencies:
+      react: '>= 16.14.0 < 19.0.0'
+
+  '@nivo/colors@0.86.0':
+    resolution: {integrity: sha512-qsUlpFe4ipGEciQMnicvxL0PeOGspQFfzqJ+lpU5eUeP/C9zLUKGiRRefXRNZMHtY/V1arqFa1P9TD8IXwXF/w==}
+    peerDependencies:
+      react: '>= 16.14.0 < 19.0.0'
+
+  '@nivo/core@0.86.0':
+    resolution: {integrity: sha512-0laA4BYXbDO85wOnWmzM7iv78wCjTF9tt2kEkRIXfHS3sHWCvasL2p+BJSO9/BJNHSgaHoseTdLX78Kg+ofl0Q==}
+    peerDependencies:
+      react: '>= 16.14.0 < 19.0.0'
+
+  '@nivo/legends@0.86.0':
+    resolution: {integrity: sha512-J80tUFh3OZFz+bQ7BdiUtXbWzfQlMsKOlpsn5Ys9g8r/y8bhBagmMaHfq53SYJ7ottHyibgiOvtxfWR6OGA57g==}
+    peerDependencies:
+      react: '>= 16.14.0 < 19.0.0'
+
+  '@nivo/recompose@0.86.0':
+    resolution: {integrity: sha512-fS0FKcsAK6auMc1oFszSpPw+uaXSQcuc1bDOjcXtb2FwidnG3hzQkLdnK42ksi/bUZyScpHu8+c0Df+CmDNXrw==}
+    peerDependencies:
+      react: '>= 16.14.0 < 19.0.0'
+
+  '@nivo/scales@0.86.0':
+    resolution: {integrity: sha512-zw+/BVUo7PFivZVoSAgsocQZ4BtEzjNAijfZT03zVs1i+TJ1ViMtoHafAXkDtIE7+ie0IqeVVhjjTv3RfsFxrQ==}
+
+  '@nivo/tooltip@0.86.0':
+    resolution: {integrity: sha512-esaON+SltO+8jhyvhiInTrhswms9zCO9e5xIycHmhPbgijV+WdFp4WDtT9l6Lb6kSS00AYzHq7P0p6lyMg4v9g==}
+    peerDependencies:
+      react: '>= 16.14.0 < 19.0.0'
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -828,6 +880,30 @@ packages:
       '@types/react-dom':
         optional: true
 
+  '@react-spring/animated@9.7.3':
+    resolution: {integrity: sha512-5CWeNJt9pNgyvuSzQH+uy2pvTg8Y4/OisoscZIR8/ZNLIOI+CatFBhGZpDGTF/OzdNFsAoGk3wiUYTwoJ0YIvw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+
+  '@react-spring/core@9.7.3':
+    resolution: {integrity: sha512-IqFdPVf3ZOC1Cx7+M0cXf4odNLxDC+n7IN3MDcVCTIOSBfqEcBebSv+vlY5AhM0zw05PDbjKrNmBpzv/AqpjnQ==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+
+  '@react-spring/shared@9.7.3':
+    resolution: {integrity: sha512-NEopD+9S5xYyQ0pGtioacLhL2luflh6HACSSDUZOwLHoxA5eku1UPuqcJqjwSD6luKjjLfiLOspxo43FUHKKSA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+
+  '@react-spring/types@9.7.3':
+    resolution: {integrity: sha512-Kpx/fQ/ZFX31OtlqVEFfgaD1ACzul4NksrvIgYfIFq9JpDHFwQkMVZ10tbo0FU/grje4rcL4EIrjekl3kYwgWw==}
+
+  '@react-spring/web@9.7.3':
+    resolution: {integrity: sha512-BXt6BpS9aJL/QdVqEIX9YoUy8CE6TJrU0mNCqSoxdXlIeNcEBWOfIyE6B14ENNsyQKS3wOWkiJfco0tCr/9tUg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+
   '@rushstack/eslint-patch@1.10.2':
     resolution: {integrity: sha512-hw437iINopmQuxWPSUEvqE56NCPsiU8N4AYtfHmJFckclktzK9YQJieD3XkDCDH4OjL+C7zgPUh73R/nrcHrqw==}
 
@@ -859,6 +935,36 @@ packages:
   '@swc/helpers@0.5.5':
     resolution: {integrity: sha512-KGYxvIOXcceOAbEk4bi/dVLEK9z8sZ0uBB3Il5b1rhfClSpcX0yfRO0KmTkqR2cnQDymwLB+25ZyMzICg/cm/A==}
 
+  '@types/d3-color@3.1.3':
+    resolution: {integrity: sha512-iO90scth9WAbmgv7ogoq57O9YpKmFBbmoEoCHDB2xMBY0+/KVrqAaCDyCE16dUspeOvIxFFRI+0sEtqDqy2b4A==}
+
+  '@types/d3-format@1.4.5':
+    resolution: {integrity: sha512-mLxrC1MSWupOSncXN/HOlWUAAIffAEBaI4+PKy2uMPsKe4FNZlk7qrbTjmzJXITQQqBHivaks4Td18azgqnotA==}
+
+  '@types/d3-path@2.0.4':
+    resolution: {integrity: sha512-jjZVLBjEX4q6xneKMmv62UocaFJFOTQSb/1aTzs3m3ICTOFoVaqGBHpNLm/4dVi0/FTltfBKgmOK1ECj3/gGjA==}
+
+  '@types/d3-scale-chromatic@3.0.3':
+    resolution: {integrity: sha512-laXM4+1o5ImZv3RpFAsTRn3TEkzqkytiOY0Dz0sq5cnd1dtNlk6sHLon4OvqaiJb28T0S/TdsBI3Sjsy+keJrw==}
+
+  '@types/d3-scale@4.0.8':
+    resolution: {integrity: sha512-gkK1VVTr5iNiYJ7vWDI+yUFFlszhNMtVeneJ6lUTKPjprsvLLI9/tgEGiXJOnlINJA8FyA88gfnQsHbybVZrYQ==}
+
+  '@types/d3-shape@2.1.7':
+    resolution: {integrity: sha512-HedHlfGHdwzKqX9+PiQVXZrdmGlwo7naoefJP7kCNk4Y7qcpQt1tUaoRa6qn0kbTdlaIHGO7111qLtb/6J8uuw==}
+
+  '@types/d3-time-format@2.3.4':
+    resolution: {integrity: sha512-xdDXbpVO74EvadI3UDxjxTdR6QIxm1FKzEA/+F8tL4GWWUg/hgvBqf6chql64U5A9ZUGWo7pEu4eNlyLwbKdhg==}
+
+  '@types/d3-time-format@3.0.4':
+    resolution: {integrity: sha512-or9DiDnYI1h38J9hxKEsw513+KVuFbEVhl7qdxcaudoiqWWepapUen+2vAriFGexr6W5+P4l9+HJrB39GG+oRg==}
+
+  '@types/d3-time@1.1.4':
+    resolution: {integrity: sha512-JIvy2HjRInE+TXOmIGN5LCmeO0hkFZx5f9FZ7kiN+D+YTcc8pptsiLiuHsvwxwC7VVKmJ2ExHUgNlAiV7vQM9g==}
+
+  '@types/d3-time@3.0.3':
+    resolution: {integrity: sha512-2p6olUZ4w3s+07q3Tm2dbiMZy5pCDfYwtLXXHUnVzXgQlZ/OyPtUz6OL382BkOuGlLXqfT+wqv8Fw2v8/0geBw==}
+
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
@@ -876,6 +982,9 @@ packages:
 
   '@types/react-dom@18.3.0':
     resolution: {integrity: sha512-EhwApuTmMBmXuFOikhQLIBUn6uFg81SwLMOAUgodJF14SOBOCMdU04gDoYi0WOJJHD144TL32z4yDqCW3dnkQg==}
+
+  '@types/react-lifecycles-compat@3.0.4':
+    resolution: {integrity: sha512-1CM48Y9ztL5S4wjt7DK2izrkgPp/Ql0zCJu/vHzhgl7J+BD4UbSGjHN1M2TlePms472JvOazUtAO1/G3oFZqIQ==}
 
   '@types/react@18.3.1':
     resolution: {integrity: sha512-V0kuGBX3+prX+DQ/7r2qsv1NsdfnCLnTgnRJ1pYnxykBhGMz+qj+box5lq7XsO5mtZsBqpjwwTu/7wszPfMBcw==}
@@ -1180,6 +1289,59 @@ packages:
   csstype@3.1.3:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
 
+  d3-array@2.12.1:
+    resolution: {integrity: sha512-B0ErZK/66mHtEsR1TkPEEkwdy+WDesimkM5gpZr5Dsg54BiTA5RXtYW5qTLIAcekaS9xfZrzBLF/OAkB3Qn1YQ==}
+
+  d3-array@3.2.4:
+    resolution: {integrity: sha512-tdQAmyA18i4J7wprpYq8ClcxZy3SC31QMeByyCFyRt7BVHdREQZ5lpzoe5mFEYZUWe+oq8HBvk9JjpibyEV4Jg==}
+    engines: {node: '>=12'}
+
+  d3-color@3.1.0:
+    resolution: {integrity: sha512-zg/chbXyeBtMQ1LbD/WSoW2DpC3I0mpmPdW+ynRTj/x2DAWYrIY7qeZIHidozwV24m4iavr15lNwIwLxRmOxhA==}
+    engines: {node: '>=12'}
+
+  d3-format@1.4.5:
+    resolution: {integrity: sha512-J0piedu6Z8iB6TbIGfZgDzfXxUFN3qQRMofy2oPdXzQibYGqPB/9iMcxr/TGalU+2RsyDO+U4f33id8tbnSRMQ==}
+
+  d3-format@3.1.0:
+    resolution: {integrity: sha512-YyUI6AEuY/Wpt8KWLgZHsIU86atmikuoOmCfommt0LYHiQSPjvX2AcFc38PX0CBpr2RCyZhjex+NS/LPOv6YqA==}
+    engines: {node: '>=12'}
+
+  d3-interpolate@3.0.1:
+    resolution: {integrity: sha512-3bYs1rOD33uo8aqJfKP3JWPAibgw8Zm2+L9vBKEHJ2Rg+viTR7o5Mmv5mZcieN+FRYaAOWX5SJATX6k1PWz72g==}
+    engines: {node: '>=12'}
+
+  d3-path@1.0.9:
+    resolution: {integrity: sha512-VLaYcn81dtHVTjEHd8B+pbe9yHWpXKZUC87PzoFmsFrJqgFwDe/qxfp5MlfsfM1V5E/iVt0MmEbWQ7FVIXh/bg==}
+
+  d3-scale-chromatic@3.1.0:
+    resolution: {integrity: sha512-A3s5PWiZ9YCXFye1o246KoscMWqf8BsD9eRiJ3He7C9OBaxKhAd5TFCdEx/7VbKtxxTsu//1mMJFrEt572cEyQ==}
+    engines: {node: '>=12'}
+
+  d3-scale@4.0.2:
+    resolution: {integrity: sha512-GZW464g1SH7ag3Y7hXjf8RoUuAFIqklOAq3MRl4OaWabTFJY9PN/E1YklhXLh+OQ3fM9yS2nOkCoS+WLZ6kvxQ==}
+    engines: {node: '>=12'}
+
+  d3-shape@1.3.7:
+    resolution: {integrity: sha512-EUkvKjqPFUAZyOlhY5gzCxCeI0Aep04LwIRpsZ/mLFelJiUfnK56jo5JMDSE7yyP2kLSb6LtF+S5chMk7uqPqw==}
+
+  d3-time-format@3.0.0:
+    resolution: {integrity: sha512-UXJh6EKsHBTjopVqZBhFysQcoXSv/5yLONZvkQ5Kk3qbwiUYkdX17Xa1PT6U1ZWXGGfB1ey5L8dKMlFq2DO0Ag==}
+
+  d3-time-format@4.1.0:
+    resolution: {integrity: sha512-dJxPBlzC7NugB2PDLwo9Q8JiTR3M3e4/XANkreKSUxF8vvXKqm1Yfq4Q5dl8budlunRVlUUaDUgFt7eA8D6NLg==}
+    engines: {node: '>=12'}
+
+  d3-time@1.1.0:
+    resolution: {integrity: sha512-Xh0isrZ5rPYYdqhAVk8VLnMEidhz5aP7htAADH6MfzgmmicPkTo8LhkLxci61/lCB7n7UmE3bN0leRt+qvkLxA==}
+
+  d3-time@2.1.1:
+    resolution: {integrity: sha512-/eIQe/eR4kCQwq7yxi7z4c6qEXf2IYGcjoWB5OOQy4Tq9Uv39/947qlDcN2TLkiTzQWzvnsuYPB9TrWaNfipKQ==}
+
+  d3-time@3.1.0:
+    resolution: {integrity: sha512-VqKjzBLejbSMT4IgbmVgDjpkYrNWUYJnbCGo874u7MMKIWsILRX+OpX/gTk8MqjpT1A/c6HY2dCA77ZN0lkQ2Q==}
+    engines: {node: '>=12'}
+
   damerau-levenshtein@1.0.8:
     resolution: {integrity: sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==}
 
@@ -1308,6 +1470,12 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+
+  eslint-config-prettier@9.1.0:
+    resolution: {integrity: sha512-NSWl5BFQWEPi1j4TjVNItzYV7dZXZ+wP6I6ZhrBGpChQhZRUaElihE9uRRkcbRnNb76UMKDF3r+WTmNcGPKsqw==}
+    hasBin: true
+    peerDependencies:
+      eslint: '>=7.0.0'
 
   eslint-import-resolver-node@0.3.9:
     resolution: {integrity: sha512-WFj2isz22JahUv+B788TlO3N6zL3nNJGU8CcZbPZvVEkBPaJdCV4vy5wyghty5ROFbCRnm132v8BScu5/1BQ8g==}
@@ -1579,6 +1747,13 @@ packages:
     resolution: {integrity: sha512-NGnrKwXzSms2qUUih/ILZ5JBqNTSa1+ZmP6flaIp6KmSElgE9qdndzS3cqjrDovwFdmwsGsLdeFgB6suw+1e9g==}
     engines: {node: '>= 0.4'}
 
+  internmap@1.0.1:
+    resolution: {integrity: sha512-lDB5YccMydFBtasVtxnZ3MRBHuaoE8GKsppq+EchKL2U4nK/DmEpPHNH8MZe5HkMtpSiTSOZwfN0tzYjO/lJEw==}
+
+  internmap@2.0.3:
+    resolution: {integrity: sha512-5Hh7Y1wQbvY5ooGgPbDaL5iYLAPzMTUrjMulskHLH6wnv/A+1q5rgEaiuqEjB+oxGXIVZs1FF+R/KPN3ZSQYYg==}
+    engines: {node: '>=12'}
+
   invariant@2.2.4:
     resolution: {integrity: sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==}
 
@@ -1762,6 +1937,9 @@ packages:
 
   lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
+
+  lodash@4.17.21:
+    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
 
   loose-envify@1.4.0:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
@@ -2002,6 +2180,11 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
 
+  prettier@3.2.5:
+    resolution: {integrity: sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A==}
+    engines: {node: '>=14'}
+    hasBin: true
+
   prop-types@15.8.1:
     resolution: {integrity: sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==}
 
@@ -2022,6 +2205,9 @@ packages:
 
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
+
+  react-lifecycles-compat@3.0.4:
+    resolution: {integrity: sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==}
 
   react-remove-scroll-bar@2.3.4:
     resolution: {integrity: sha512-63C4YQBUt0m6ALadE9XV56hV8BgJWDmmTPY758iIJjfQKt2nYwoUrPk0LXRXcB/yIj82T1/Ixfdpdk68LwIB0A==}
@@ -2534,6 +2720,125 @@ snapshots:
 
   '@next/swc-win32-x64-msvc@14.2.3':
     optional: true
+
+  '@nivo/annotations@0.86.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@nivo/colors': 0.86.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@nivo/core': 0.86.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-spring/web': 9.7.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@types/prop-types': 15.7.12
+      lodash: 4.17.21
+      prop-types: 15.8.1
+      react: 18.3.1
+    transitivePeerDependencies:
+      - react-dom
+
+  '@nivo/axes@0.86.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@nivo/core': 0.86.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@nivo/scales': 0.86.0
+      '@react-spring/web': 9.7.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@types/d3-format': 1.4.5
+      '@types/d3-time-format': 2.3.4
+      '@types/prop-types': 15.7.12
+      d3-format: 1.4.5
+      d3-time-format: 3.0.0
+      prop-types: 15.8.1
+      react: 18.3.1
+    transitivePeerDependencies:
+      - react-dom
+
+  '@nivo/bar@0.86.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@nivo/annotations': 0.86.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@nivo/axes': 0.86.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@nivo/colors': 0.86.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@nivo/core': 0.86.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@nivo/legends': 0.86.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@nivo/scales': 0.86.0
+      '@nivo/tooltip': 0.86.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-spring/web': 9.7.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@types/d3-scale': 4.0.8
+      '@types/d3-shape': 2.1.7
+      d3-scale: 4.0.2
+      d3-shape: 1.3.7
+      lodash: 4.17.21
+      react: 18.3.1
+    transitivePeerDependencies:
+      - react-dom
+
+  '@nivo/colors@0.86.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@nivo/core': 0.86.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@types/d3-color': 3.1.3
+      '@types/d3-scale': 4.0.8
+      '@types/d3-scale-chromatic': 3.0.3
+      '@types/prop-types': 15.7.12
+      d3-color: 3.1.0
+      d3-scale: 4.0.2
+      d3-scale-chromatic: 3.1.0
+      lodash: 4.17.21
+      prop-types: 15.8.1
+      react: 18.3.1
+    transitivePeerDependencies:
+      - react-dom
+
+  '@nivo/core@0.86.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@nivo/recompose': 0.86.0(react@18.3.1)
+      '@nivo/tooltip': 0.86.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-spring/web': 9.7.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@types/d3-shape': 2.1.7
+      d3-color: 3.1.0
+      d3-format: 1.4.5
+      d3-interpolate: 3.0.1
+      d3-scale: 4.0.2
+      d3-scale-chromatic: 3.1.0
+      d3-shape: 1.3.7
+      d3-time-format: 3.0.0
+      lodash: 4.17.21
+      prop-types: 15.8.1
+      react: 18.3.1
+    transitivePeerDependencies:
+      - react-dom
+
+  '@nivo/legends@0.86.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@nivo/colors': 0.86.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@nivo/core': 0.86.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@types/d3-scale': 4.0.8
+      '@types/prop-types': 15.7.12
+      d3-scale: 4.0.2
+      prop-types: 15.8.1
+      react: 18.3.1
+    transitivePeerDependencies:
+      - react-dom
+
+  '@nivo/recompose@0.86.0(react@18.3.1)':
+    dependencies:
+      '@types/prop-types': 15.7.12
+      '@types/react-lifecycles-compat': 3.0.4
+      prop-types: 15.8.1
+      react: 18.3.1
+      react-lifecycles-compat: 3.0.4
+
+  '@nivo/scales@0.86.0':
+    dependencies:
+      '@types/d3-scale': 4.0.8
+      '@types/d3-time': 1.1.4
+      '@types/d3-time-format': 3.0.4
+      d3-scale: 4.0.2
+      d3-time: 1.1.0
+      d3-time-format: 3.0.0
+      lodash: 4.17.21
+
+  '@nivo/tooltip@0.86.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@nivo/core': 0.86.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@react-spring/web': 9.7.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
+    transitivePeerDependencies:
+      - react-dom
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
@@ -3247,6 +3552,35 @@ snapshots:
       '@types/react': 18.3.1
       '@types/react-dom': 18.3.0
 
+  '@react-spring/animated@9.7.3(react@18.3.1)':
+    dependencies:
+      '@react-spring/shared': 9.7.3(react@18.3.1)
+      '@react-spring/types': 9.7.3
+      react: 18.3.1
+
+  '@react-spring/core@9.7.3(react@18.3.1)':
+    dependencies:
+      '@react-spring/animated': 9.7.3(react@18.3.1)
+      '@react-spring/shared': 9.7.3(react@18.3.1)
+      '@react-spring/types': 9.7.3
+      react: 18.3.1
+
+  '@react-spring/shared@9.7.3(react@18.3.1)':
+    dependencies:
+      '@react-spring/types': 9.7.3
+      react: 18.3.1
+
+  '@react-spring/types@9.7.3': {}
+
+  '@react-spring/web@9.7.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@react-spring/animated': 9.7.3(react@18.3.1)
+      '@react-spring/core': 9.7.3(react@18.3.1)
+      '@react-spring/shared': 9.7.3(react@18.3.1)
+      '@react-spring/types': 9.7.3
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
   '@rushstack/eslint-patch@1.10.2': {}
 
   '@supabase/auth-js@2.64.1':
@@ -3298,6 +3632,30 @@ snapshots:
       '@swc/counter': 0.1.3
       tslib: 2.6.2
 
+  '@types/d3-color@3.1.3': {}
+
+  '@types/d3-format@1.4.5': {}
+
+  '@types/d3-path@2.0.4': {}
+
+  '@types/d3-scale-chromatic@3.0.3': {}
+
+  '@types/d3-scale@4.0.8':
+    dependencies:
+      '@types/d3-time': 3.0.3
+
+  '@types/d3-shape@2.1.7':
+    dependencies:
+      '@types/d3-path': 2.0.4
+
+  '@types/d3-time-format@2.3.4': {}
+
+  '@types/d3-time-format@3.0.4': {}
+
+  '@types/d3-time@1.1.4': {}
+
+  '@types/d3-time@3.0.3': {}
+
   '@types/json-schema@7.0.15': {}
 
   '@types/json5@0.0.29': {}
@@ -3311,6 +3669,10 @@ snapshots:
   '@types/prop-types@15.7.12': {}
 
   '@types/react-dom@18.3.0':
+    dependencies:
+      '@types/react': 18.3.1
+
+  '@types/react-lifecycles-compat@3.0.4':
     dependencies:
       '@types/react': 18.3.1
 
@@ -3685,6 +4047,61 @@ snapshots:
 
   csstype@3.1.3: {}
 
+  d3-array@2.12.1:
+    dependencies:
+      internmap: 1.0.1
+
+  d3-array@3.2.4:
+    dependencies:
+      internmap: 2.0.3
+
+  d3-color@3.1.0: {}
+
+  d3-format@1.4.5: {}
+
+  d3-format@3.1.0: {}
+
+  d3-interpolate@3.0.1:
+    dependencies:
+      d3-color: 3.1.0
+
+  d3-path@1.0.9: {}
+
+  d3-scale-chromatic@3.1.0:
+    dependencies:
+      d3-color: 3.1.0
+      d3-interpolate: 3.0.1
+
+  d3-scale@4.0.2:
+    dependencies:
+      d3-array: 3.2.4
+      d3-format: 3.1.0
+      d3-interpolate: 3.0.1
+      d3-time: 3.1.0
+      d3-time-format: 4.1.0
+
+  d3-shape@1.3.7:
+    dependencies:
+      d3-path: 1.0.9
+
+  d3-time-format@3.0.0:
+    dependencies:
+      d3-time: 2.1.1
+
+  d3-time-format@4.1.0:
+    dependencies:
+      d3-time: 3.1.0
+
+  d3-time@1.1.0: {}
+
+  d3-time@2.1.1:
+    dependencies:
+      d3-array: 2.12.1
+
+  d3-time@3.1.0:
+    dependencies:
+      d3-array: 3.2.4
+
   damerau-levenshtein@1.0.8: {}
 
   data-view-buffer@1.0.1:
@@ -3871,6 +4288,10 @@ snapshots:
     transitivePeerDependencies:
       - eslint-import-resolver-webpack
       - supports-color
+
+  eslint-config-prettier@9.1.0(eslint@8.57.0):
+    dependencies:
+      eslint: 8.57.0
 
   eslint-import-resolver-node@0.3.9:
     dependencies:
@@ -4251,6 +4672,10 @@ snapshots:
       hasown: 2.0.2
       side-channel: 1.0.6
 
+  internmap@1.0.1: {}
+
+  internmap@2.0.3: {}
+
   invariant@2.2.4:
     dependencies:
       loose-envify: 1.4.0
@@ -4422,6 +4847,8 @@ snapshots:
       p-locate: 5.0.0
 
   lodash.merge@4.6.2: {}
+
+  lodash@4.17.21: {}
 
   loose-envify@1.4.0:
     dependencies:
@@ -4648,6 +5075,8 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
+  prettier@3.2.5: {}
+
   prop-types@15.8.1:
     dependencies:
       loose-envify: 1.4.0
@@ -4667,6 +5096,8 @@ snapshots:
       scheduler: 0.23.2
 
   react-is@16.13.1: {}
+
+  react-lifecycles-compat@3.0.4: {}
 
   react-remove-scroll-bar@2.3.4(@types/react@18.3.1)(react@18.3.1):
     dependencies:

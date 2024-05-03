@@ -1,8 +1,3 @@
-import { createHsClient, getToken } from "@/service/fetch";
-import { getPlayerCollection } from "@/service/hsreplay.service";
-import { DeckBuilder } from "../components/DeckBuilder";
-import { DeckBuilderFilter } from "../components/DeckBuildFilter";
-
 export default async function Home() {
   // const data = await Promise.all([
   //   classes,

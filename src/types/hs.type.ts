@@ -1,3 +1,5 @@
+import { Database } from "./superbase.type";
+
 export type Card = {
   id: number;
   collectible: number;
@@ -24,4 +26,50 @@ export type Card = {
   keywordIds: number[];
   isZilliaxFunctionalModule: boolean;
   isZilliaxCosmeticModule: boolean;
+};
+
+export type Sets = {
+  id: number;
+  name: string;
+  slug: string;
+  hyped: boolean;
+  type: string;
+  collectibleCount: number;
+  collectibleRevealedCount: number;
+  nonCollectibleCount: number;
+  nonCollectibleRevealedCount: number;
+};
+
+export type SetGroups = {
+  slug: "standard" | "wild";
+  year: number;
+  svg: string;
+  cardSets: string[];
+  name: string;
+  standard: boolean;
+  icon: string;
+};
+
+export type Rarity = {
+  slug: string;
+  id: number;
+  craftingCost: number[];
+  dustValue: number[];
+  name: string;
+};
+
+export type DeckClass = {
+  slug: Database["public"]["Enums"]["card_class"];
+  id: number;
+  name: string;
+  cardId: number;
+  heroPowerCardId: number;
+  alternateHeroCardIds: number[];
+};
+
+export type MinionTypes = {
+  slug: string;
+  id: number;
+  name: string;
+  gameModes: number[];
 };

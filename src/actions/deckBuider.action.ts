@@ -18,7 +18,7 @@ export async function submitFilter(currentState: Card[], formData: FormData) {
 
 export async function createDeck(
   deckData: DeckGeneratedData,
-  formData: FormData
+  formData: FormData,
 ) {
   let userInput = {} as DeckUserInputData;
 
@@ -35,7 +35,7 @@ export async function createDeck(
       ...objectToSnake(deckData),
       ...userInput,
       deck_code: "sdf",
-      user_id: "abf01736-0654-4481-9832-2bc98c138465",
+      user_id: "86e43de9-ecd7-4bb0-9a42-d2a557da1d31",
     })
     .select();
 

@@ -7,14 +7,12 @@ import { useFormState } from "react-dom";
 import { submitFilter } from "@/actions/deckBuider.action";
 import { Button } from "./ui/button";
 import DeckBuilderForm from "./DeckBuilderForm";
-import { Card } from "@/types/hs.type";
+import { Card, MinionTypes, Rarity } from "@/types/hs.type";
 import { getDustCost } from "@/lib/utils";
 import { DeckGeneratedData } from "@/types/deck.type";
 import { CardClass } from "blizzard.js/dist/resources/hs";
 
-type SelectedCards = {
-  [cardId: string]: { count: number } & Card;
-};
+type SelectedCards = Map<number, { count: number } & Card>;
 
 export function DeckBuilder({
   cards,
@@ -24,31 +22,33 @@ export function DeckBuilder({
 }: {
   deckClass: CardClass;
   cards: Card[];
-  minionTypes: [];
-  rarities: [];
+  minionTypes: MinionTypes[];
+  rarities: Rarity[];
 }) {
-  const [selectedCards, setSelectedCards] = useState<SelectedCards>({});
+  const [selectedCards, setSelectedCards] = useState<SelectedCards>(
+    () => new Map(),
+  );
   const [state, formAction] = useFormState(submitFilter, cards);
 
   function onAddCard(card: Card) {
-    let addedCard = { ...selectedCards[card.id] };
-    if (addedCard.count === 2) return null;
+    const mapCopy = new Map(selectedCards);
+    const addedCard = mapCopy.get(card.id);
 
-    addedCard = {
-      ...card,
-      count: (addedCard.count || 0) + 1,
-    };
+    if (addedCard?.count === 2) return null;
 
-    setSelectedCards((state) => ({ ...state, [card.id]: addedCard }));
+    if (!addedCard) mapCopy.set(card.id, { count: 1, ...card });
+    else addedCard.count = (addedCard.count || 0) + 1;
+
+    setSelectedCards(mapCopy);
   }
 
   const deckData: DeckGeneratedData = {
-    cardIds: Object.values(selectedCards)
+    cardIds: Array.from(selectedCards.values())
       .map((card) => Array(card.count).fill(card.id))
       .flat(),
-    dustCost: Object.values(selectedCards).reduce(
+    dustCost: Array.from(selectedCards.values()).reduce(
       (total, card) => total + getDustCost(card.rarityId) * card.count,
-      0
+      0,
     ),
     archetype: "aggro",
     deckClass: deckClass,
@@ -69,7 +69,7 @@ export function DeckBuilder({
         <div className="flex-1 grid grid-cols-auto-fill-hscard">
           {state.map((card) => {
             if (card.parentId) return null;
-            const currentCardCount = selectedCards[card.id]?.count;
+            const currentCardCount = selectedCards.get(card.id)?.count;
             return (
               <div
                 className={currentCardCount ? "bg-red-600" : "bg-transparent"}
@@ -91,10 +91,15 @@ export function DeckBuilder({
       </div>
       <aside className="w-80">
         <ul>
-          {Object.values(selectedCards).map((card) => (
+          {Array.from(selectedCards.values()).map((card) => (
             <li key={card.id}>
               <div>{card.count}</div>
-              <Image src={card.cropImage} width={243} height={64} />
+              <Image
+                src={card.cropImage!}
+                width={243}
+                height={64}
+                alt={card.name}
+              />
             </li>
           ))}
         </ul>

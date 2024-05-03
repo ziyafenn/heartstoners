@@ -4,85 +4,85 @@ export type Json =
   | boolean
   | null
   | { [key: string]: Json | undefined }
-  | Json[]
+  | Json[];
 
 export type Database = {
   public: {
     Tables: {
       user_decks: {
         Row: {
-          archetype: Database["public"]["Enums"]["archetypes"]
-          card_ids: number[]
-          created_at: string
-          deck_class: Database["public"]["Enums"]["card_class"]
-          deck_code: string
-          deck_format: Database["public"]["Enums"]["deck_format"]
-          description: string | null
-          dust_cost: number
-          game_mode: Database["public"]["Enums"]["game_mode"]
-          game_version: string
-          id: string
-          main_card_ids: number[]
-          name: string
-          sub_archetypes: string | null
-          updated_at: string
-          user_id: string | null
-        }
+          archetype: Database["public"]["Enums"]["archetypes"];
+          card_ids: number[];
+          created_at: string;
+          deck_class: Database["public"]["Enums"]["card_class"];
+          deck_code: string;
+          deck_format: Database["public"]["Enums"]["deck_format"];
+          description: string | null;
+          dust_cost: number;
+          game_mode: Database["public"]["Enums"]["game_mode"];
+          game_version: string;
+          id: string;
+          main_card_ids: number[];
+          name: string;
+          sub_archetypes: string | null;
+          updated_at: string;
+          user_id: string | null;
+        };
         Insert: {
-          archetype: Database["public"]["Enums"]["archetypes"]
-          card_ids: number[]
-          created_at?: string
-          deck_class: Database["public"]["Enums"]["card_class"]
-          deck_code: string
-          deck_format: Database["public"]["Enums"]["deck_format"]
-          description?: string | null
-          dust_cost: number
-          game_mode: Database["public"]["Enums"]["game_mode"]
-          game_version: string
-          id?: string
-          main_card_ids: number[]
-          name: string
-          sub_archetypes?: string | null
-          updated_at?: string
-          user_id?: string | null
-        }
+          archetype: Database["public"]["Enums"]["archetypes"];
+          card_ids: number[];
+          created_at?: string;
+          deck_class: Database["public"]["Enums"]["card_class"];
+          deck_code: string;
+          deck_format: Database["public"]["Enums"]["deck_format"];
+          description?: string | null;
+          dust_cost: number;
+          game_mode: Database["public"]["Enums"]["game_mode"];
+          game_version: string;
+          id?: string;
+          main_card_ids: number[];
+          name: string;
+          sub_archetypes?: string | null;
+          updated_at?: string;
+          user_id?: string | null;
+        };
         Update: {
-          archetype?: Database["public"]["Enums"]["archetypes"]
-          card_ids?: number[]
-          created_at?: string
-          deck_class?: Database["public"]["Enums"]["card_class"]
-          deck_code?: string
-          deck_format?: Database["public"]["Enums"]["deck_format"]
-          description?: string | null
-          dust_cost?: number
-          game_mode?: Database["public"]["Enums"]["game_mode"]
-          game_version?: string
-          id?: string
-          main_card_ids?: number[]
-          name?: string
-          sub_archetypes?: string | null
-          updated_at?: string
-          user_id?: string | null
-        }
+          archetype?: Database["public"]["Enums"]["archetypes"];
+          card_ids?: number[];
+          created_at?: string;
+          deck_class?: Database["public"]["Enums"]["card_class"];
+          deck_code?: string;
+          deck_format?: Database["public"]["Enums"]["deck_format"];
+          description?: string | null;
+          dust_cost?: number;
+          game_mode?: Database["public"]["Enums"]["game_mode"];
+          game_version?: string;
+          id?: string;
+          main_card_ids?: number[];
+          name?: string;
+          sub_archetypes?: string | null;
+          updated_at?: string;
+          user_id?: string | null;
+        };
         Relationships: [
           {
-            foreignKeyName: "user_decks_id_fkey"
-            columns: ["id"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            foreignKeyName: "user_decks_id_fkey";
+            columns: ["id"];
+            isOneToOne: true;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
           },
-        ]
-      }
-    }
+        ];
+      };
+    };
     Views: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Functions: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Enums: {
-      archetypes: "aggro" | "midrange" | "control"
+      archetypes: "aggro" | "midrange" | "control";
       card_class:
         | "deathknight"
         | "paladin"
@@ -95,17 +95,17 @@ export type Database = {
         | "warlock"
         | "hunter"
         | "warrior"
-        | "neutral"
-      deck_format: "standard" | "wild" | "twist"
-      game_mode: "constructed" | "battlegrounds" | "mercenaries"
-    }
+        | "neutral";
+      deck_format: "standard" | "wild" | "twist";
+      game_mode: "constructed" | "battlegrounds" | "mercenaries";
+    };
     CompositeTypes: {
-      [_ in never]: never
-    }
-  }
-}
+      [_ in never]: never;
+    };
+  };
+};
 
-type PublicSchema = Database[Extract<keyof Database, "public">]
+type PublicSchema = Database[Extract<keyof Database, "public">];
 
 export type Tables<
   PublicTableNameOrOptions extends
@@ -118,7 +118,7 @@ export type Tables<
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
       Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R
+      Row: infer R;
     }
     ? R
     : never
@@ -126,11 +126,11 @@ export type Tables<
         PublicSchema["Views"])
     ? (PublicSchema["Tables"] &
         PublicSchema["Views"])[PublicTableNameOrOptions] extends {
-        Row: infer R
+        Row: infer R;
       }
       ? R
       : never
-    : never
+    : never;
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
@@ -141,17 +141,17 @@ export type TablesInsert<
     : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I
+      Insert: infer I;
     }
     ? I
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
     ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Insert: infer I
+        Insert: infer I;
       }
       ? I
       : never
-    : never
+    : never;
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
@@ -162,17 +162,17 @@ export type TablesUpdate<
     : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U
+      Update: infer U;
     }
     ? U
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
     ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Update: infer U
+        Update: infer U;
       }
       ? U
       : never
-    : never
+    : never;
 
 export type Enums<
   PublicEnumNameOrOptions extends
@@ -185,4 +185,4 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
-    : never
+    : never;

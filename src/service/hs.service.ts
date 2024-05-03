@@ -1,8 +1,21 @@
 "use server";
 
-import { Card } from "@/types/hs.type";
+import {
+  Card,
+  DeckClass,
+  MinionTypes,
+  Rarity,
+  SetGroups,
+} from "@/types/hs.type";
 import { hs } from "blizzard.js";
-import { CardClass, CardRarity, CardType } from "blizzard.js/dist/resources/hs";
+import {
+  CardClass,
+  CardGameMode,
+  CardRarity,
+  CardSortOption,
+  CardSortOrder,
+  CardType,
+} from "blizzard.js/dist/resources/hs";
 
 async function createHsClient() {
   return await hs.createInstance({
@@ -19,22 +32,29 @@ export async function searchHsCards({
   rarity,
   type,
   manaCost,
+  set,
+  gameMode,
+  sort = "manaCost:asc",
 }: {
+  gameMode: CardGameMode;
+  set: SetGroups["slug"];
   deckClass: CardClass;
   rarity?: CardRarity;
   type?: CardType;
   manaCost?: number;
+  sort?: `${CardSortOption}:${CardSortOrder}`;
 }) {
   const hsClient = await createHsClient();
 
   const res = await hsClient.cardSearch({
-    gameMode: "constructed",
-    type: "minion",
+    gameMode,
+    type,
     rarity,
     class: deckClass,
     manaCost,
     locale: "en_US",
-    set: "standard",
+    set,
+    sort,
   });
 
   const {
@@ -46,13 +66,13 @@ export async function searchHsCards({
   return data;
 }
 
-export async function getHsClasses() {
+export async function getHsDeckClasses() {
   const hsClient = await createHsClient();
   const res = await hsClient.metadata({
     type: "classes",
   });
 
-  const { data }: { data: CardClass } = res;
+  const { data }: { data: DeckClass[] } = res;
 
   return data;
 }
@@ -63,7 +83,7 @@ export async function getHsMinionTypes() {
   const res = await hsClient.metadata({
     type: "minionTypes",
   });
-  const { data }: { data: CardType } = res;
+  const { data }: { data: MinionTypes[] } = res;
 
   return data;
 }
@@ -74,7 +94,7 @@ export async function getHsRarities() {
   const res = await hsClient.metadata({
     type: "rarities",
   });
-  const { data }: { data: CardRarity } = res;
+  const { data }: { data: Rarity[] } = res;
 
   return data;
 }
@@ -85,7 +105,7 @@ export async function getHsSetGroups() {
     type: "setGroups",
   });
 
-  const { data }: { data: string[] } = res;
+  const { data }: { data: SetGroups[] } = res;
 
   return data;
 }
@@ -93,14 +113,10 @@ export async function getHsSetGroups() {
 export async function getHsSets() {
   const hsClient = await createHsClient();
 
-  hsClient.metadata({
+  const res = await hsClient.metadata({
     type: "sets",
   });
+  const { data }: { data: string[] } = res;
+
+  return data;
 }
-
-// export async function getSingleCard(cardId: string) {
-//   const api = await hsFetch();
-
-//   const res = api.url(`/cards/${cardId}?locale=en_US`).get().json();
-//   return res.data;
-// }

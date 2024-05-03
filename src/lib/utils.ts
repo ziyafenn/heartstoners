@@ -1,4 +1,3 @@
-import { CardRarity } from "blizzard.js/dist/resources/hs";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 

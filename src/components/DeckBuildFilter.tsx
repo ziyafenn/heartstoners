@@ -7,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { MinionTypes, Rarity } from "@/types/hs.type";
 import { useRef } from "react";
 
 export function DeckBuilderFilter({
@@ -15,9 +16,8 @@ export function DeckBuilderFilter({
   rarities,
 }: {
   action: (payload: FormData) => void;
-
-  minionTypes: [];
-  rarities: [];
+  minionTypes: MinionTypes[];
+  rarities: Rarity[];
 }) {
   const formRef = useRef<HTMLFormElement>(null);
 
