@@ -1,41 +1,44 @@
 "use server";
 
 import { searchHsCards } from "@/service/hs.service";
-import { supabase } from "@/service/superbase.service";
-import {
-  DeckType,
-  DeckGeneratedData,
-  DeckUserInputData,
-} from "@/types/deck.type";
-import { CardsPage } from "@/types/hs.type";
+import { supabase } from "@/service/supabase";
+import { DeckInitParams, DeckUserInputParams } from "@/types/deck.type";
+import { CardSeachParams, CardsPage } from "@/types/hs.type";
 
 export async function loadPageWithFilters(
-  currentState: CardsPage,
+  currentState: CardsPage & { params: CardSeachParams },
   formData: FormData,
-): Promise<CardsPage> {
-  let deckBuildType = {} as DeckType;
+): Promise<CardsPage & { params: CardSeachParams }> {
+  const deckSearchParams = {
+    ...currentState.params,
+    rarity: formData.get("rarity"),
+    minionType: formData.get("minionType"),
+  } as CardSeachParams;
+  const isFilter: boolean = formData.has("filter");
 
-  for (const [key, value] of formData.entries()) {
-    deckBuildType = {
-      ...deckBuildType,
-      [key]: value,
-    };
-  }
+  const page = isFilter ? 1 : currentState.page + 1;
 
-  const data = await searchHsCards({
-    ...deckBuildType,
-    set: deckBuildType.deck_format,
-    page: currentState.page + 1,
+  const { cards, ...data } = await searchHsCards({
+    ...deckSearchParams,
+    page,
   });
 
-  return { ...data, cards: [...currentState.cards, ...data.cards] };
+  const res: CardsPage & { params: CardSeachParams } = isFilter
+    ? { ...data, cards, params: deckSearchParams }
+    : {
+        ...data,
+        params: deckSearchParams,
+        cards: [...currentState.cards, ...cards],
+      };
+
+  return res;
 }
 
 export async function createDeck(
-  deckData: DeckGeneratedData,
+  deckParams: DeckInitParams,
   formData: FormData,
 ) {
-  let userInput = {} as DeckUserInputData;
+  let userInput = {} as DeckUserInputParams;
 
   for (const [key, value] of formData.entries()) {
     userInput = {
@@ -47,9 +50,8 @@ export async function createDeck(
   const { data, error } = await supabase
     .from("user_decks")
     .insert({
-      ...deckData,
+      ...deckParams,
       ...userInput,
-      deck_code: "sdf",
       user_id: "86e43de9-ecd7-4bb0-9a42-d2a557da1d31",
     })
     .select();

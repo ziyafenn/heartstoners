@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { DeckBuilderFilter } from "./DeckBuildFilter";
 import { useFormState } from "react-dom";
 import { loadPageWithFilters } from "@/actions/deckBuider.action";
@@ -10,11 +10,10 @@ import DeckBuilderForm from "./DeckBuilderForm";
 import {
   Card,
   CardsPage,
+  CardSeachParams,
   MinionTypes,
   Rarity,
-  SetGroups,
 } from "@/types/hs.type";
-import { DeckType } from "@/types/deck.type";
 import { CardClass } from "blizzard.js/dist/resources/hs";
 import { useParams, useSearchParams } from "next/navigation";
 import { useInView } from "react-intersection-observer";
@@ -22,18 +21,31 @@ import { useInView } from "react-intersection-observer";
 type SelectedCards = Map<number, { count: number } & Card>;
 
 export function DeckBuilder({
-  cards: initialCards,
+  initialCards,
   minionTypes,
   rarities,
 }: {
-  cards: CardsPage;
+  initialCards: CardsPage;
   minionTypes: MinionTypes[];
   rarities: Rarity[];
 }) {
+  const searchParams = useSearchParams();
+  const params = useParams<{ format: "standard" | "wild" }>();
+  const { format } = params;
+
+  const initState = {
+    ...initialCards,
+    params: {
+      gameMode: searchParams.get("mode") as "constructed",
+      set: format,
+      class: searchParams.get("class") as CardClass,
+    },
+  };
+
   const [selectedCards, setSelectedCards] = useState<SelectedCards>(
     () => new Map(),
   );
-  const [cards, formAction] = useFormState(loadPageWithFilters, initialCards);
+  const [cards, formAction] = useFormState(loadPageWithFilters, initState);
   const { ref, inView } = useInView();
 
   function onAddCard(card: Card) {
@@ -47,26 +59,16 @@ export function DeckBuilder({
     setSelectedCards(currentSelection);
   }
 
-  const searchParams = useSearchParams();
-  const params = useParams<{ format: string }>();
-  const { format } = params;
-  const deckType: DeckType = useMemo(
-    () => ({
-      deckClass: searchParams.get("class") as CardClass,
-      deckFormat: format as SetGroups["slug"],
-      gameMode: searchParams.get("mode") as "constructed",
-    }),
-    [format, searchParams],
-  );
-
   const loadNextPage = useCallback(async () => {
+    console.log("next page params", cards.params);
+
     const formData = new FormData();
-    for (const [key, value] of Object.entries(deckType)) {
-      formData.append(key, value!);
+    for (const [key, value] of Object.entries(cards.params)) {
+      formData.append(key, value as string);
     }
 
     formAction(formData);
-  }, [deckType, formAction]);
+  }, [cards.params, formAction]);
 
   useEffect(() => {
     if (inView) loadNextPage();
@@ -118,7 +120,10 @@ export function DeckBuilder({
               </li>
             ))}
           </ul>
-          <DeckBuilderForm selectedCards={selectedCards} deckType={deckType}>
+          <DeckBuilderForm
+            selectedCards={selectedCards}
+            deckSearchParams={cards.params}
+          >
             <Button>Create Deck</Button>
           </DeckBuilderForm>
         </aside>

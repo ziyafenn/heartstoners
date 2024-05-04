@@ -2,6 +2,7 @@
 
 import {
   Card,
+  CardSeachParams,
   CardsPage,
   Deck,
   DeckClass,
@@ -29,9 +30,8 @@ async function createHsClient() {
     token: "", // optional
   });
 }
-
 export async function searchHsCards({
-  deckClass,
+  class: deckClass,
   rarity,
   type,
   manaCost,
@@ -40,17 +40,7 @@ export async function searchHsCards({
   sort = "manaCost:asc",
   page = 1,
   minionType,
-}: {
-  gameMode: CardGameMode;
-  set: SetGroups["slug"];
-  deckClass: CardClass;
-  rarity?: CardRarity;
-  type?: CardType;
-  manaCost?: number;
-  sort?: `${CardSortOption}:${CardSortOrder}`;
-  page: number;
-  minionType?: CardMinionType;
-}) {
+}: CardSeachParams) {
   const hsClient = await createHsClient();
 
   const res = await hsClient.cardSearch({

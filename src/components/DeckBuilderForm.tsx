@@ -8,11 +8,10 @@ import {
 } from "@/components/ui/sheet";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
-import { DeckType, DeckGeneratedData, Archetype } from "@/types/deck.type";
 import { createDeck } from "@/actions/deckBuider.action";
 import { Button } from "./ui/button";
 import { ResponsiveBar } from "@nivo/bar";
-import { Card } from "@/types/hs.type";
+import { Card, CardSeachParams } from "@/types/hs.type";
 import { getDustCost } from "@/lib/utils";
 import {
   Select,
@@ -21,12 +20,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { getMetasByClass } from "@/service/supabase";
+import { Enums, Tables } from "@/types/superbase.type";
+import { DeckInitParams } from "@/types/deck.type";
 
 type SelectedCards = Map<number, { count: number } & Card>;
 
 type Props = {
   children: React.ReactNode;
-  deckType: DeckType;
+  deckSearchParams: CardSeachParams;
   selectedCards: SelectedCards;
 };
 
@@ -58,9 +60,10 @@ function BarChart({
 export default function DeckBuilderForm({
   children,
   selectedCards,
-  deckType,
+  deckSearchParams,
 }: Props) {
-  const manaCostCountsSum = Array.from(selectedCards.values()).reduce(
+  const selectedCardsValues = Array.from(selectedCards.values());
+  const manaCostCountsSum = selectedCardsValues.reduce(
     (acc, card) => {
       acc[card.manaCost] = (acc[card.manaCost] || 0) + 1 * card.count;
       return acc;
@@ -73,7 +76,7 @@ export default function DeckBuilderForm({
   let aggroCount = 0;
   let midrangeCount = 0;
   let controlCount = 0;
-  const dustCost = Array.from(selectedCards.values()).reduce(
+  const dustCost = selectedCardsValues.reduce(
     (total, card) => total + getDustCost(card.rarityId) * card.count,
     0,
   );
@@ -92,27 +95,50 @@ export default function DeckBuilderForm({
     }
   }
 
-  function getArchetype(): Archetype {
+  function getArchetype(): Enums<"archetypes"> {
     if (aggroCount > midrangeCount && aggroCount > controlCount) return "aggro";
     if (midrangeCount > aggroCount && midrangeCount > controlCount)
       return "midrange";
     else return "control";
   }
 
-  const deckData: DeckGeneratedData = {
-    cardIds: Array.from(selectedCards.values())
+  const params: DeckInitParams = {
+    card_ids: selectedCardsValues
       .map((card) => Array(card.count).fill(card.id))
       .flat(),
-    dustCost,
-    gameVersion: "29.2.2",
-    mainCardIds: [],
-    ...deckType,
+    dust_cost: dustCost,
+    game_version: "29.2.2",
+    main_card_ids: [],
+    deck_class: deckSearchParams.class!,
+    deck_code: "123",
+    deck_format: deckSearchParams.set as "standard",
+    game_mode: deckSearchParams.gameMode as "constructed",
+    sub_archetypes: null,
   };
 
-  const createUserDeck = createDeck.bind(null, deckData);
+  const createUserDeck = createDeck.bind(null, params);
+
+  async function getSubArchetype() {
+    const metas = await getMetasByClass(params.deck_class);
+
+    const bestMatch = metas!.reduce(
+      (best, set) => {
+        const matches = set!.core_cards!.filter((card) =>
+          selectedCardsValues.map((v) => v.id).includes(card),
+        ).length;
+        return matches > best.matches ? { matches, set } : best;
+      },
+      { matches: 0, set: {} as Tables<"meta_sub_archetypes"> },
+    );
+
+    console.log(bestMatch.set); // This will log the set with the most matches
+  }
+
   return (
     <Sheet>
-      <SheetTrigger asChild>{children}</SheetTrigger>
+      <SheetTrigger asChild onClick={getSubArchetype}>
+        {children}
+      </SheetTrigger>
       <SheetContent side="left">
         <SheetHeader>
           <SheetTitle>Are you absolutely sure?</SheetTitle>

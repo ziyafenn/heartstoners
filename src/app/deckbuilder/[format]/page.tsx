@@ -17,7 +17,7 @@ export default async function ClassDeckBuilder({
   const { format } = params;
   const { deckClass } = searchParams;
   const cards = searchHsCards({
-    deckClass: deckClass,
+    class: deckClass,
     gameMode: "constructed",
     set: format,
     page: 1,
@@ -31,7 +31,7 @@ export default async function ClassDeckBuilder({
   return (
     <div>
       <DeckBuilder
-        cards={hsData[0]}
+        initialCards={hsData[0]}
         rarities={hsData[1]}
         minionTypes={hsData[2]}
       />

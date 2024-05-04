@@ -1,4 +1,6 @@
+import { ResourceOptions } from "blizzard.js/dist/resources";
 import { Enums } from "./superbase.type";
+import { CardSearchOptions } from "blizzard.js/dist/resources/hs";
 
 export type Card = {
   id: number;
@@ -95,3 +97,5 @@ export type Deck = {
   };
   cardCount: number;
 };
+
+export type CardSeachParams = ResourceOptions<CardSearchOptions>;

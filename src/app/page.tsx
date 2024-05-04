@@ -3,7 +3,7 @@ import {
   getSubArchetypePopularity,
   getSubArchetypes,
 } from "@/service/hsreplay.service";
-import { getDecks } from "@/service/superbase.service";
+import { getDecks } from "@/service/supabase";
 import Link from "next/link";
 
 export default async function Home() {

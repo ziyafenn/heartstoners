@@ -21,15 +21,16 @@ export function DeckBuilderFilter({
 }) {
   const formRef = useRef<HTMLFormElement>(null);
 
-  function onValueChange(value: string) {
-    formRef.current?.requestSubmit();
+  function onValueChange() {
+    const form = formRef.current!;
+    form.requestSubmit();
   }
 
   return (
     <form action={action} ref={formRef}>
-      <Select name="class" onValueChange={onValueChange}>
+      <Select name="minionType" onValueChange={onValueChange}>
         <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Classes" />
+          <SelectValue placeholder="Minion Types" />
         </SelectTrigger>
         <SelectContent>
           {minionTypes.map((deckClass) => (
@@ -39,6 +40,19 @@ export function DeckBuilderFilter({
           ))}
         </SelectContent>
       </Select>
+      <Select name="rarity" onValueChange={onValueChange}>
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder="Rarity" />
+        </SelectTrigger>
+        <SelectContent>
+          {rarities.map((rarity) => (
+            <SelectItem value={rarity.slug} key={rarity.id}>
+              {rarity.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      <input hidden type="hidden" name="filter" />
     </form>
   );
 }

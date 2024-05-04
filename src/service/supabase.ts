@@ -1,3 +1,4 @@
+import { DeckClass } from "@/types/hs.type";
 import { Database } from "@/types/superbase.type";
 import { createClient } from "@supabase/supabase-js";
 
@@ -16,11 +17,20 @@ export async function getDecks() {
 }
 
 export async function getSingleDeck(deckId: string) {
-  const { data: deck, error } = await supabase
+  const { data, error } = await supabase
     .from("user_decks")
     .select("*")
     .eq("id", deckId)
     .single();
 
-  return deck;
+  return data;
+}
+
+export async function getMetasByClass(className: DeckClass["name"]) {
+  const { data, error } = await supabase
+    .from("meta_sub_archetypes")
+    .select("*")
+    .eq("player_class_name", className);
+
+  return data;
 }

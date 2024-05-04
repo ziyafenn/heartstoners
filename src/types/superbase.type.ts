@@ -34,6 +34,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      meta_sub_archetypes: {
+        Row: {
+          core_cards: number[] | null
+          created_at: string
+          deck_id: number
+          id: number
+          name: string
+          pct_of_class: number | null
+          pct_of_total: number | null
+          player_class_name: Database["public"]["Enums"]["card_class"]
+          total_games: number | null
+          win_rate: number | null
+        }
+        Insert: {
+          core_cards?: number[] | null
+          created_at?: string
+          deck_id: number
+          id?: number
+          name: string
+          pct_of_class?: number | null
+          pct_of_total?: number | null
+          player_class_name: Database["public"]["Enums"]["card_class"]
+          total_games?: number | null
+          win_rate?: number | null
+        }
+        Update: {
+          core_cards?: number[] | null
+          created_at?: string
+          deck_id?: number
+          id?: number
+          name?: string
+          pct_of_class?: number | null
+          pct_of_total?: number | null
+          player_class_name?: Database["public"]["Enums"]["card_class"]
+          total_games?: number | null
+          win_rate?: number | null
+        }
+        Relationships: []
+      }
       user_decks: {
         Row: {
           archetype: Database["public"]["Enums"]["archetypes"]

@@ -51,3 +51,25 @@ export type SubArchetypePopularity = {
     metadata: Record<CardClass, object>;
   };
 };
+
+export type SubArchetypeWinRate = {
+  as_of: string;
+  render_as: "table";
+  series: {
+    data: Record<
+      CardClass,
+      {
+        archetype_id: number;
+        avg_game_length_seconds: number;
+        avg_num_player_turns: number;
+        deck_id: string;
+        deck_list: number[];
+        deck_sideboard: number[];
+        digest: string;
+        total_games: number;
+        win_rate: number;
+      }[]
+    >;
+    metadata: Record<CardClass, object>;
+  };
+};

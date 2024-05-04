@@ -1,5 +1,5 @@
 import { getDeckByCardList } from "@/service/hs.service";
-import { getSingleDeck } from "@/service/superbase.service";
+import { getSingleDeck } from "@/service/supabase";
 import Image from "next/image";
 
 export default async function Deck({ params }: { params: { deckId: string } }) {

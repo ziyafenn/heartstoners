@@ -51,3 +51,20 @@ export async function getSubArchetypes() {
 
   return res;
 }
+
+export async function getSubArchetypeByWinRate() {
+  const api = hsreplayFetch();
+
+  const res: SubArchetype[] = await api
+    .url(`/analytics/query/list_decks_by_win_rate_v2/`)
+    .query({
+      GameType: "RANKED_STANDARD",
+      LeagueRankRange: "BRONZE_THROUGH_GOLD",
+      Region: "ALL",
+      TimeRange: "CURRENT_PATCH",
+    })
+    .get()
+    .json();
+
+  return res;
+}
