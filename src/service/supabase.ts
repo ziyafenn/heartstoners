@@ -34,3 +34,14 @@ export async function getMetasByClass(className: DeckClass["name"]) {
 
   return data;
 }
+
+export async function getCurrentGameVersion() {
+  const { data, error } = await supabase
+    .from("game_versions")
+    .select("version_name")
+    .order("id", { ascending: false })
+    .limit(1)
+    .single();
+
+  return data!.version_name;
+}

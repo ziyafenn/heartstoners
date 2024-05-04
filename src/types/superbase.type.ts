@@ -34,6 +34,24 @@ export type Database = {
   }
   public: {
     Tables: {
+      game_versions: {
+        Row: {
+          created_at: string
+          id: number
+          version_name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          version_name: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          version_name?: string
+        }
+        Relationships: []
+      }
       meta_sub_archetypes: {
         Row: {
           core_cards: number[] | null
@@ -79,7 +97,6 @@ export type Database = {
           card_ids: number[]
           created_at: string
           deck_class: Database["public"]["Enums"]["card_class"]
-          deck_code: string
           deck_format: Database["public"]["Enums"]["deck_format"]
           description: string | null
           dust_cost: number
@@ -88,7 +105,7 @@ export type Database = {
           id: string
           main_card_ids: number[]
           name: string
-          sub_archetypes: string | null
+          sub_archetype: number | null
           updated_at: string
           user_id: string | null
         }
@@ -97,7 +114,6 @@ export type Database = {
           card_ids: number[]
           created_at?: string
           deck_class: Database["public"]["Enums"]["card_class"]
-          deck_code: string
           deck_format: Database["public"]["Enums"]["deck_format"]
           description?: string | null
           dust_cost: number
@@ -106,7 +122,7 @@ export type Database = {
           id?: string
           main_card_ids: number[]
           name: string
-          sub_archetypes?: string | null
+          sub_archetype?: number | null
           updated_at?: string
           user_id?: string | null
         }
@@ -115,7 +131,6 @@ export type Database = {
           card_ids?: number[]
           created_at?: string
           deck_class?: Database["public"]["Enums"]["card_class"]
-          deck_code?: string
           deck_format?: Database["public"]["Enums"]["deck_format"]
           description?: string | null
           dust_cost?: number
@@ -124,11 +139,18 @@ export type Database = {
           id?: string
           main_card_ids?: number[]
           name?: string
-          sub_archetypes?: string | null
+          sub_archetype?: number | null
           updated_at?: string
           user_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "public_user_decks_sub_archetype_fkey"
+            columns: ["sub_archetype"]
+            isOneToOne: false
+            referencedRelation: "meta_sub_archetypes"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "user_decks_user_id_fkey"
             columns: ["user_id"]

@@ -23,6 +23,9 @@ import {
 import { getMetasByClass } from "@/service/supabase";
 import { Enums, Tables } from "@/types/superbase.type";
 import { DeckInitParams } from "@/types/deck.type";
+import { useSearchParams } from "next/navigation";
+import { CardClass } from "blizzard.js/dist/resources/hs";
+import { useState } from "react";
 
 type SelectedCards = Map<number, { count: number } & Card>;
 
@@ -62,6 +65,11 @@ export default function DeckBuilderForm({
   selectedCards,
   deckSearchParams,
 }: Props) {
+  const searchParams = useSearchParams();
+  const deckClass = searchParams.get("class") as string;
+  const [subArchetype, setSubArchetype] =
+    useState<Tables<"meta_sub_archetypes">>();
+
   const selectedCardsValues = Array.from(selectedCards.values());
   const manaCostCountsSum = selectedCardsValues.reduce(
     (acc, card) => {
@@ -102,37 +110,39 @@ export default function DeckBuilderForm({
     else return "control";
   }
 
+  async function getSubArchetype() {
+    const metas = await getMetasByClass(deckClass);
+
+    const bestMatch = metas!.reduce(
+      (best, meta) => {
+        const metaMatches = meta!.core_cards!.filter((coreCard) =>
+          selectedCardsValues
+            .map((selectedCard) => selectedCard.id)
+            .includes(coreCard),
+        ).length;
+        return metaMatches > best.matchedCardCount
+          ? { matchedCardCount: metaMatches, meta }
+          : best;
+      },
+      { matchedCardCount: 0, meta: {} as Tables<"meta_sub_archetypes"> },
+    );
+
+    if (bestMatch.matchedCardCount > 2) setSubArchetype(bestMatch.meta);
+  }
+
   const params: DeckInitParams = {
     card_ids: selectedCardsValues
       .map((card) => Array(card.count).fill(card.id))
       .flat(),
     dust_cost: dustCost,
-    game_version: "29.2.2",
     main_card_ids: [],
-    deck_class: deckSearchParams.class!,
-    deck_code: "123",
+    deck_class: deckClass as CardClass,
     deck_format: deckSearchParams.set as "standard",
     game_mode: deckSearchParams.gameMode as "constructed",
-    sub_archetypes: null,
+    sub_archetype: subArchetype?.id ?? null,
   };
 
   const createUserDeck = createDeck.bind(null, params);
-
-  async function getSubArchetype() {
-    const metas = await getMetasByClass(params.deck_class);
-
-    const bestMatch = metas!.reduce(
-      (best, set) => {
-        const matches = set!.core_cards!.filter((card) =>
-          selectedCardsValues.map((v) => v.id).includes(card),
-        ).length;
-        return matches > best.matches ? { matches, set } : best;
-      },
-      { matches: 0, set: {} as Tables<"meta_sub_archetypes"> },
-    );
-
-    console.log(bestMatch.set); // This will log the set with the most matches
-  }
 
   return (
     <Sheet>

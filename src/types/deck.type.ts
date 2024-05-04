@@ -7,5 +7,10 @@ export type DeckUserInputParams = Pick<
 
 export type DeckInitParams = Omit<
   Tables<"user_decks">,
-  keyof DeckUserInputParams | "id" | "created_at" | "updated_at" | "user_id"
+  | keyof DeckUserInputParams
+  | "id"
+  | "created_at"
+  | "updated_at"
+  | "user_id"
+  | "game_version"
 >;
