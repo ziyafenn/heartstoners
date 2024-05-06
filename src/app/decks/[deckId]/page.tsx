@@ -1,11 +1,13 @@
 import { getDeckByCardList } from "@/service/hs.service";
-import { getSingleDeck } from "@/service/supabase";
+import { getSingleDeck } from "@/service/supabase.service";
 import Image from "next/image";
 
 export default async function Deck({ params }: { params: { deckId: string } }) {
   const { deckId } = params;
   const userDeck = await getSingleDeck(deckId);
   const deckData = await getDeckByCardList(userDeck!.card_ids);
+
+  console.log(userDeck);
 
   return (
     <div>

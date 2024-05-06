@@ -26,6 +26,8 @@ export type Card = {
   parentId?: number;
   childIds?: number[];
   keywordIds: number[];
+  maxSideboardCards?: number;
+  bannedFromSideboard?: number;
   isZilliaxFunctionalModule: boolean;
   isZilliaxCosmeticModule: boolean;
 };
@@ -96,6 +98,11 @@ export type Deck = {
     name: string;
   };
   cardCount: number;
+  invalidCardIds: string[];
+  sideboardCards?: {
+    cardsInSideboard: Card[];
+    sideboardCard: Card;
+  }[];
 };
 
 export type CardSeachParams = ResourceOptions<CardSearchOptions>;

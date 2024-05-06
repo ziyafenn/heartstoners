@@ -38,16 +38,19 @@ export type Database = {
         Row: {
           created_at: string
           id: number
+          url: string | null
           version_name: string
         }
         Insert: {
           created_at?: string
           id?: number
+          url?: string | null
           version_name: string
         }
         Update: {
           created_at?: string
           id?: number
+          url?: string | null
           version_name?: string
         }
         Relationships: []
@@ -56,7 +59,7 @@ export type Database = {
         Row: {
           core_cards: number[] | null
           created_at: string
-          deck_id: number
+          deck_class_id: number
           id: number
           name: string
           pct_of_class: number | null
@@ -67,8 +70,8 @@ export type Database = {
         }
         Insert: {
           core_cards?: number[] | null
-          created_at?: string
-          deck_id: number
+          created_at: string
+          deck_class_id: number
           id?: number
           name: string
           pct_of_class?: number | null
@@ -80,7 +83,7 @@ export type Database = {
         Update: {
           core_cards?: number[] | null
           created_at?: string
-          deck_id?: number
+          deck_class_id?: number
           id?: number
           name?: string
           pct_of_class?: number | null
@@ -99,11 +102,10 @@ export type Database = {
           deck_class: Database["public"]["Enums"]["card_class"]
           deck_format: Database["public"]["Enums"]["deck_format"]
           description: string | null
-          dust_cost: number
+          dust_cost: number[] | null
           game_mode: Database["public"]["Enums"]["game_mode"]
           game_version: string
-          id: string
-          main_card_ids: number[]
+          id: number
           name: string
           sub_archetype: number | null
           updated_at: string
@@ -116,11 +118,10 @@ export type Database = {
           deck_class: Database["public"]["Enums"]["card_class"]
           deck_format: Database["public"]["Enums"]["deck_format"]
           description?: string | null
-          dust_cost: number
+          dust_cost?: number[] | null
           game_mode: Database["public"]["Enums"]["game_mode"]
           game_version: string
-          id?: string
-          main_card_ids: number[]
+          id?: number
           name: string
           sub_archetype?: number | null
           updated_at?: string
@@ -133,17 +134,23 @@ export type Database = {
           deck_class?: Database["public"]["Enums"]["card_class"]
           deck_format?: Database["public"]["Enums"]["deck_format"]
           description?: string | null
-          dust_cost?: number
+          dust_cost?: number[] | null
           game_mode?: Database["public"]["Enums"]["game_mode"]
           game_version?: string
-          id?: string
-          main_card_ids?: number[]
+          id?: number
           name?: string
           sub_archetype?: number | null
           updated_at?: string
           user_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "public_user_decks_game_version_fkey"
+            columns: ["game_version"]
+            isOneToOne: false
+            referencedRelation: "game_versions"
+            referencedColumns: ["version_name"]
+          },
           {
             foreignKeyName: "public_user_decks_sub_archetype_fkey"
             columns: ["sub_archetype"]
@@ -160,12 +167,55 @@ export type Database = {
           },
         ]
       }
+      users: {
+        Row: {
+          available_dust: number | null
+          card_collection: Json | null
+          collection_updated_at: string | null
+          hsreplay_id: number | null
+          id: string
+        }
+        Insert: {
+          available_dust?: number | null
+          card_collection?: Json | null
+          collection_updated_at?: string | null
+          hsreplay_id?: number | null
+          id: string
+        }
+        Update: {
+          available_dust?: number | null
+          card_collection?: Json | null
+          collection_updated_at?: string | null
+          hsreplay_id?: number | null
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_users_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_craftable_decks: {
+        Args: {
+          p_card_collection: Json
+          p_available_dust: number
+          p_deck_class?: Database["public"]["Enums"]["card_class"]
+        }
+        Returns: {
+          user_deck_id: string
+          missing_cards: number[]
+          required_dust_cost: number
+        }[]
+      }
     }
     Enums: {
       archetypes: "aggro" | "midrange" | "control"

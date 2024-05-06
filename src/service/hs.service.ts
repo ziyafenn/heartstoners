@@ -1,7 +1,6 @@
 "use server";
 
 import {
-  Card,
   CardSeachParams,
   CardsPage,
   Deck,
@@ -11,15 +10,6 @@ import {
   SetGroups,
 } from "@/types/hs.type";
 import { hs } from "blizzard.js";
-import {
-  CardClass,
-  CardGameMode,
-  CardMinionType,
-  CardRarity,
-  CardSortOption,
-  CardSortOrder,
-  CardType,
-} from "blizzard.js/dist/resources/hs";
 
 async function createHsClient() {
   return await hs.createInstance({
@@ -128,6 +118,19 @@ export async function getDeckByCardList(cardIds: number[]) {
   const res = await hsClient.deck({
     locale: "en_US",
     ids: cardIds,
+  });
+
+  const { data }: { data: Deck } = res;
+
+  return data;
+}
+
+export async function getDeckByCode(code: string) {
+  const hsClient = await createHsClient();
+
+  const res = await hsClient.deck({
+    locale: "en_US",
+    code,
   });
 
   const { data }: { data: Deck } = res;

@@ -1,4 +1,5 @@
 import { SubArchetype, UserCollection } from "@/types/hsreplay.type";
+import { region } from "blizzard.js/dist/resources/wow";
 import wretch from "wretch";
 import QueryStringAddon from "wretch/addons/queryString";
 
@@ -23,11 +24,11 @@ export async function getPlayerCollection(userId: string) {
   return res;
 }
 
-export async function getSubArchetypePopularity() {
+export async function getSubArchetypeByWinRate() {
   const api = hsreplayFetch();
 
   const res: SubArchetype[] = await api
-    .url(`/analytics/query/archetype_popularity_distribution_stats_v2/`)
+    .url(`/analytics/query/list_decks_by_win_rate_v2/`)
     .query({
       GameType: "RANKED_STANDARD",
       LeagueRankRange: "BRONZE_THROUGH_GOLD",
@@ -40,28 +41,15 @@ export async function getSubArchetypePopularity() {
   return res;
 }
 
-export async function getSubArchetypes() {
+export async function getUserCollection() {
   const api = hsreplayFetch();
 
-  const res: SubArchetype[] = await api
-    .url(`/api/v1/archetypes`)
-    .query({ hl: "en" })
-    .get()
-    .json();
-
-  return res;
-}
-
-export async function getSubArchetypeByWinRate() {
-  const api = hsreplayFetch();
-
-  const res: SubArchetype[] = await api
-    .url(`/analytics/query/list_decks_by_win_rate_v2/`)
+  const res: UserCollection = await api
+    .url("/api/v1/collection/")
     .query({
-      GameType: "RANKED_STANDARD",
-      LeagueRankRange: "BRONZE_THROUGH_GOLD",
-      Region: "ALL",
-      TimeRange: "CURRENT_PATCH",
+      region: 2,
+      account_lo: 1063814088,
+      type: "CONSTRUCTED",
     })
     .get()
     .json();

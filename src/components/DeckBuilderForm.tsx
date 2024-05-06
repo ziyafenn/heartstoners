@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getMetasByClass } from "@/service/supabase";
+import { getMetasByClass } from "@/service/supabase.service";
 import { Enums, Tables } from "@/types/superbase.type";
 import { DeckInitParams } from "@/types/deck.type";
 import { useSearchParams } from "next/navigation";
@@ -84,10 +84,16 @@ export default function DeckBuilderForm({
   let aggroCount = 0;
   let midrangeCount = 0;
   let controlCount = 0;
-  const dustCost = selectedCardsValues.reduce(
-    (total, card) => total + getDustCost(card.rarityId) * card.count,
-    0,
-  );
+  const dustCost: number[] = [];
+  const cardIds: number[] = [];
+
+  selectedCardsValues.forEach((card) => {
+    const dustCostArray = Array(card.count).fill(getDustCost(card.rarityId));
+    const cardIdsArray = Array(card.count).fill(card.id);
+
+    dustCost.push(...dustCostArray);
+    cardIds.push(...cardIdsArray);
+  });
 
   for (const [name, count] of Object.entries(manaCostCountsSum)) {
     const key = name === "7" ? "7+" : name;
@@ -131,11 +137,8 @@ export default function DeckBuilderForm({
   }
 
   const params: DeckInitParams = {
-    card_ids: selectedCardsValues
-      .map((card) => Array(card.count).fill(card.id))
-      .flat(),
+    card_ids: cardIds,
     dust_cost: dustCost,
-    main_card_ids: [],
     deck_class: deckClass as CardClass,
     deck_format: deckSearchParams.set as "standard",
     game_mode: deckSearchParams.gameMode as "constructed",

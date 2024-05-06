@@ -1,22 +1,18 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useState } from "react";
 import { DeckBuilderFilter } from "./DeckBuildFilter";
 import { useFormState } from "react-dom";
 import { loadPageWithFilters } from "@/actions/deckBuider.action";
 import { Button } from "./ui/button";
 import DeckBuilderForm from "./DeckBuilderForm";
-import {
-  Card,
-  CardsPage,
-  CardSeachParams,
-  MinionTypes,
-  Rarity,
-} from "@/types/hs.type";
+import { Card, CardsPage, MinionTypes, Rarity } from "@/types/hs.type";
 import { CardClass } from "blizzard.js/dist/resources/hs";
 import { useParams, useSearchParams } from "next/navigation";
 import { useInView } from "react-intersection-observer";
+import { Input } from "./ui/input";
+import { getDeckByCode } from "@/service/hs.service";
 
 type SelectedCards = Map<number, { count: number } & Card>;
 
@@ -47,6 +43,10 @@ export function DeckBuilder({
   );
   const [cards, formAction] = useFormState(loadPageWithFilters, initState);
   const { ref, inView } = useInView();
+  const selectedCardsCount = Array.from(selectedCards.values()).reduce(
+    (sum, card) => sum + card.count,
+    0,
+  );
 
   function onAddCard(card: Card) {
     const currentSelection = new Map(selectedCards);
@@ -70,6 +70,24 @@ export function DeckBuilder({
     formAction(formData);
   }, [cards.params, formAction]);
 
+  async function getDeckFromCode(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const deckCode = formData.get("deckCode") as string;
+    const deck = await getDeckByCode(deckCode);
+
+    const deckCards = deck.cards.reduce((acc, card) => {
+      const cardCount = acc.get(card.id)?.count || 0;
+      acc.set(card.id, {
+        ...card,
+        count: cardCount + 1,
+      });
+      return acc;
+    }, new Map<number, { count: number } & Card>());
+
+    setSelectedCards(deckCards);
+  }
+
   useEffect(() => {
     if (inView) loadNextPage();
   }, [inView]);
@@ -91,14 +109,19 @@ export function DeckBuilder({
                 key={card.id}
               >
                 <div>{currentCardCount}</div>
-                <Image
-                  alt={card.name}
-                  src={card.image}
-                  height={530}
-                  width={384}
-                  key={card.id}
+                <button
                   onClick={() => onAddCard(card)}
-                />
+                  disabled={selectedCardsCount === 30}
+                  type="button"
+                >
+                  <Image
+                    alt={card.name}
+                    src={card.image}
+                    height={530}
+                    width={384}
+                    key={card.id}
+                  />
+                </button>
               </div>
             );
           })}
@@ -107,24 +130,31 @@ export function DeckBuilder({
       </div>
       <div>
         <aside className="w-80 sticky top-0">
-          <ul className="max-h-[90vh] overflow-auto">
-            {Array.from(selectedCards.values()).map((card) => (
-              <li key={card.id}>
-                <div>{card.count}</div>
-                <Image
-                  src={card.cropImage!}
-                  width={243}
-                  height={64}
-                  alt={card.name}
-                />
-              </li>
-            ))}
-          </ul>
+          {!selectedCardsCount ? (
+            <form onSubmit={getDeckFromCode}>
+              <Input name="deckCode" />
+              <Button>Paste</Button>
+            </form>
+          ) : (
+            <ul className="max-h-[90vh] overflow-auto">
+              {Array.from(selectedCards.values()).map((card) => (
+                <li key={card.id}>
+                  <div>{card.count}</div>
+                  <Image
+                    src={card.cropImage!}
+                    width={243}
+                    height={64}
+                    alt={card.name}
+                  />
+                </li>
+              ))}
+            </ul>
+          )}
           <DeckBuilderForm
             selectedCards={selectedCards}
             deckSearchParams={cards.params}
           >
-            <Button>Create Deck</Button>
+            <Button disabled={selectedCardsCount < 30}>Create Deck</Button>
           </DeckBuilderForm>
         </aside>
       </div>
