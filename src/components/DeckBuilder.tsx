@@ -15,6 +15,7 @@ import { Input } from "./ui/input";
 import { getDeckByCode } from "@/service/hs.service";
 
 type SelectedCards = Map<number, { count: number } & Card>;
+type SideboardCards = Array<Card & { parentId: number }>;
 
 export function DeckBuilder({
   initialCards,
@@ -41,6 +42,10 @@ export function DeckBuilder({
   const [selectedCards, setSelectedCards] = useState<SelectedCards>(
     () => new Map(),
   );
+  const [sideboardCards, setSideboardCards] = useState<SideboardCards>([]);
+  const [sideboardParentCard, setSideboardParentCard] = useState<number | null>(
+    null,
+  );
   const [cards, formAction] = useFormState(loadPageWithFilters, initState);
   const { ref, inView } = useInView();
   const selectedCardsCount = Array.from(selectedCards.values()).reduce(
@@ -48,12 +53,20 @@ export function DeckBuilder({
     0,
   );
 
-  function onAddCard(card: Card) {
+  function addSideboardCard(card: Card) {
+    if (!sideboardParentCard) return null;
+
+    const currentSideboardCards = [...sideboardCards];
+    currentSideboardCards.push({ ...card, parentId: sideboardParentCard });
+
+    setSideboardCards(currentSideboardCards);
+  }
+
+  function addCard(card: Card) {
     const currentSelection = new Map(selectedCards);
     const addedCard = currentSelection.get(card.id);
 
     if (!addedCard) currentSelection.set(card.id, { count: 1, ...card });
-    else if (addedCard.count === 2) return null;
     else addedCard.count = addedCard.count + 1;
 
     setSelectedCards(currentSelection);
@@ -102,24 +115,48 @@ export function DeckBuilder({
         />
         <div className="flex-1 grid grid-cols-auto-fill-hscard">
           {cards.cards.map((card) => {
-            const currentCardCount = selectedCards.get(card.id)?.count;
+            const { bannedFromSideboard, id, name, image, rarityId } = card;
+            const sideboardCardCount = sideboardCards.filter(
+              (card) => card.id === id,
+            ).length;
+            const cardCount = selectedCards.get(id)?.count;
+            const currentCardCount = sideboardParentCard
+              ? sideboardCardCount
+              : cardCount;
+            const onAddCard = sideboardParentCard ? addSideboardCard : addCard;
+            const legendaryLimit = rarityId === 5 && currentCardCount === 1;
+            const nonLegendaryLimit = rarityId !== 5 && currentCardCount === 2;
+            const sidebarCardsCount = sideboardCards.filter(
+              (card) => card.parentId === sideboardParentCard,
+            ).length;
+            const isTotalCardCountReached = sideboardParentCard
+              ? sidebarCardsCount === 3
+              : selectedCardsCount === 30;
+            const isUnavailableForSideboard =
+              !!sideboardParentCard && !!bannedFromSideboard;
+
             return (
               <div
                 className={currentCardCount ? "bg-red-600" : "bg-transparent"}
-                key={card.id}
+                key={id}
               >
                 <div>{currentCardCount}</div>
                 <button
                   onClick={() => onAddCard(card)}
-                  disabled={selectedCardsCount === 30}
+                  disabled={
+                    isTotalCardCountReached ||
+                    legendaryLimit ||
+                    nonLegendaryLimit ||
+                    isUnavailableForSideboard
+                  }
                   type="button"
                 >
                   <Image
-                    alt={card.name}
-                    src={card.image}
+                    alt={name}
+                    src={image}
                     height={530}
                     width={384}
-                    key={card.id}
+                    key={id}
                   />
                 </button>
               </div>
@@ -130,25 +167,41 @@ export function DeckBuilder({
       </div>
       <div>
         <aside className="w-80 sticky top-0">
-          {!selectedCardsCount ? (
+          {!selectedCardsCount && (
             <form onSubmit={getDeckFromCode}>
               <Input name="deckCode" />
               <Button>Paste</Button>
             </form>
-          ) : (
+          )}
+          {selectedCardsCount && !sideboardParentCard && (
             <ul className="max-h-[90vh] overflow-auto">
-              {Array.from(selectedCards.values()).map((card) => (
-                <li key={card.id}>
-                  <div>{card.count}</div>
-                  <Image
-                    src={card.cropImage!}
-                    width={243}
-                    height={64}
-                    alt={card.name}
-                  />
-                </li>
-              ))}
+              {Array.from(selectedCards.values()).map((card) => {
+                return (
+                  <li key={card.id}>
+                    <div>{card.count}</div>
+                    {card.maxSideboardCards && (
+                      <Button onClick={() => setSideboardParentCard(card.id)}>
+                        Open
+                      </Button>
+                    )}
+                    <Image
+                      src={card.cropImage!}
+                      width={243}
+                      height={64}
+                      alt={card.name}
+                    />
+                  </li>
+                );
+              })}
             </ul>
+          )}
+          {sideboardParentCard && (
+            <div>
+              sideboard parent active!
+              <Button onClick={() => setSideboardParentCard(null)}>
+                Close
+              </Button>
+            </div>
           )}
           <DeckBuilderForm
             selectedCards={selectedCards}
