@@ -45,10 +45,6 @@ export async function createDeck(
 ) {
   let userInput = {} as DeckUserInputParams;
   const gameVersion = await getCurrentGameVersion();
-  await supabase.auth.signInWithPassword({
-    email: "ziya@ziya.com",
-    password: "123456",
-  });
 
   for (const [key, value] of formData.entries()) {
     userInput = {
@@ -68,9 +64,4 @@ export async function createDeck(
 
   if (error) console.log(error, "errror");
   else console.log(data, "done");
-}
-
-export async function updateUserCollection() {
-  const userCollection = await getUserCollection();
-  await updateUserCardCollection(userCollection);
 }

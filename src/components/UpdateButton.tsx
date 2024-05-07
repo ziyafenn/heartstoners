@@ -2,7 +2,7 @@
 
 import { getCraftableDecks } from "@/service/supabase.service";
 import { Button } from "./ui/button";
-import { updateUserCollection } from "@/actions/deckBuider.action";
+import { searchForCraftableDecks } from "@/actions/deckSearch.action";
 
 export default function UpdateCollectionButton({
   action,
@@ -13,8 +13,7 @@ export default function UpdateCollectionButton({
 }) {
   return (
     <div>
-      <Button onClick={() => getCraftableDecks()}>get decks</Button>
-      <Button onClick={() => updateUserCollection()}>update collection</Button>
+      <Button onClick={() => searchForCraftableDecks()}>get decks</Button>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { DeckClass } from "@/types/hs.type";
 import { UserCollection } from "@/types/hsreplay.type";
 import { supabase } from "./fetch";
 import { getUserCollection } from "./hsreplay.service";
+import { Tables } from "@/types/superbase.type";
 
 export async function getDecks() {
   const { data: user_decks, error } = await supabase
@@ -51,31 +52,69 @@ export async function getCurrentGameVersion() {
   return data!.version_name;
 }
 
-export async function updateUserCardCollection(collectionData: UserCollection) {
-  await supabase.auth.signInWithPassword({
-    email: "ziya@ziya.com",
-    password: "123456",
+export async function getCraftableDecks(
+  userCollection: UserCollection["collection"],
+) {
+  const { data, error } = await supabase.rpc("get_craftable_decks", {
+    p_available_dust: 100,
+    p_card_collection: userCollection,
   });
-  const userId = (await supabase.auth.getUser()).data.user!.id;
-  console.log(userId, "user id");
-
-  const { collection, dust, lastModified } = collectionData;
-  await supabase
-    .from("users")
-    .update({
-      card_collection: collection,
-      available_dust: dust,
-      collection_updated_at: lastModified,
-    })
-    .eq("id", userId);
+  return data;
 }
 
-export async function getCraftableDecks() {
-  const userCollection = await getUserCollection();
-  const { data, error } = await supabase.rpc("get_craftable_decks", {
-    p_card_collection: userCollection.collection,
-    p_available_dust: 3000,
-    p_deck_class: "druid",
-  });
-  console.log(data);
+export async function getRequestedDecks({
+  archetype,
+  // card_ids,
+  deck_class,
+  deck_format,
+  // dust_cost,
+  game_mode,
+  sub_archetype,
+  user_id,
+  name,
+  craftable_decks,
+}: Tables<"user_decks"> & {
+  craftable_decks?:
+    | {
+        user_deck_id: number;
+        missing_cards: number[];
+        required_dust_cost: number;
+      }[]
+    | null;
+}) {
+  let query = supabase.from("user_decks").select("*");
+
+  if (craftable_decks) {
+    const deckIds = craftable_decks.map((deck) => deck.user_deck_id);
+    query = query.in("id", deckIds);
+  }
+  if (archetype) {
+    query = query.eq("archetype", archetype);
+  }
+  // if (card_ids)   { query = query.eq('card_ids', card_ids) }
+  if (deck_class) {
+    query = query.eq("deck_class", deck_class);
+  }
+  if (deck_format) {
+    query = query.eq("deck_format", deck_format);
+  }
+  // if (dust_cost) {
+  //   query = query.("dust_cost", dust_cost);
+  // }
+  if (game_mode) {
+    query = query.eq("game_mode", game_mode);
+  }
+  if (sub_archetype) {
+    query = query.eq("sub_archetype", sub_archetype);
+  }
+  if (user_id) {
+    query = query.eq("user_id", user_id);
+  }
+  if (name) {
+    query = query.textSearch("name", name);
+  }
+
+  const { data, error } = await query;
+
+  return data;
 }

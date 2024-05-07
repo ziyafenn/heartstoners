@@ -34,6 +34,35 @@ export type Database = {
   }
   public: {
     Tables: {
+      deck_interactions: {
+        Row: {
+          author_id: string
+          deck_id: number
+          type: Database["public"]["Enums"]["deck_interaction"]
+          updated_at: string
+        }
+        Insert: {
+          author_id?: string
+          deck_id?: number
+          type: Database["public"]["Enums"]["deck_interaction"]
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string
+          deck_id?: number
+          type?: Database["public"]["Enums"]["deck_interaction"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_deck_interactions_user_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       game_versions: {
         Row: {
           created_at: string
@@ -93,6 +122,41 @@ export type Database = {
           win_rate?: number | null
         }
         Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          hsreplay_id: string | null
+          id: string
+          updated_at: string | null
+          username: string | null
+          website: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          hsreplay_id?: string | null
+          id: string
+          updated_at?: string | null
+          username?: string | null
+          website?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          hsreplay_id?: string | null
+          id?: string
+          updated_at?: string | null
+          username?: string | null
+          website?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_decks: {
         Row: {
@@ -167,38 +231,6 @@ export type Database = {
           },
         ]
       }
-      users: {
-        Row: {
-          available_dust: number | null
-          card_collection: Json | null
-          collection_updated_at: string | null
-          hsreplay_id: number | null
-          id: string
-        }
-        Insert: {
-          available_dust?: number | null
-          card_collection?: Json | null
-          collection_updated_at?: string | null
-          hsreplay_id?: number | null
-          id: string
-        }
-        Update: {
-          available_dust?: number | null
-          card_collection?: Json | null
-          collection_updated_at?: string | null
-          hsreplay_id?: number | null
-          id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "public_users_id_fkey"
-            columns: ["id"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
     }
     Views: {
       [_ in never]: never
@@ -208,10 +240,9 @@ export type Database = {
         Args: {
           p_card_collection: Json
           p_available_dust: number
-          p_deck_class?: Database["public"]["Enums"]["card_class"]
         }
         Returns: {
-          user_deck_id: string
+          user_deck_id: number
           missing_cards: number[]
           required_dust_cost: number
         }[]
@@ -233,6 +264,7 @@ export type Database = {
         | "warrior"
         | "neutral"
       deck_format: "standard" | "wild" | "twist"
+      deck_interaction: "like" | "view" | "copy"
       game_mode: "constructed" | "battlegrounds" | "mercenaries" | "arena"
     }
     CompositeTypes: {
