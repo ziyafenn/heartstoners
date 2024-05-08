@@ -7,15 +7,18 @@ import { useFormState } from "react-dom";
 import { loadPageWithFilters } from "@/actions/deckBuider.action";
 import { Button } from "./ui/button";
 import DeckBuilderForm from "./DeckBuilderForm";
-import { Card, CardsPage, MinionTypes, Rarity } from "@/types/hs.type";
+import {
+  Card,
+  CardsPage,
+  MinionTypes,
+  Rarity,
+  SideboardCards,
+} from "@/types/hs.type";
 import { CardClass } from "blizzard.js/dist/resources/hs";
 import { useParams, useSearchParams } from "next/navigation";
 import { useInView } from "react-intersection-observer";
 import { Input } from "./ui/input";
 import { getDeckByCode } from "@/service/hs.service";
-
-type SelectedCards = Card[];
-type SideboardCards = Array<Card & { parentId: number }>;
 
 export function DeckBuilder({
   initialCards,
@@ -39,22 +42,33 @@ export function DeckBuilder({
     },
   };
 
-  const [selectedCards, setSelectedCards] = useState<SelectedCards>([]);
-  const [cardsInSideboard, setCardsInSideboard] = useState<SideboardCards>([]);
-  const [sideboardParentCard, setSideboardParentCard] = useState<number | null>(
+  const [selectedCards, setSelectedCards] = useState<Card[]>([]);
+  const [sideboardCards, setSideboardCards] = useState<SideboardCards[]>([]);
+  const [sideboardParentCard, setSideboardParentCard] = useState<Card | null>(
     null,
   );
   const [cards, formAction] = useFormState(loadPageWithFilters, initState);
   const { ref, inView } = useInView();
   const selectedCardsCount = selectedCards.length;
 
-  function addSideboardCard(card: Card) {
+  function addSideboardCard(sideboardCard: Card) {
     if (!sideboardParentCard) return null;
+    const currentSideboardCards = [...sideboardCards];
+    const activeSideboard = currentSideboardCards.find(
+      (sideboard) => sideboard.sideboardCard.id === sideboardParentCard.id,
+    );
 
-    const currentSideboardCards = [...cardsInSideboard];
-    currentSideboardCards.push({ ...card, parentId: sideboardParentCard });
+    if (activeSideboard) {
+      activeSideboard.cardsInSideboard.push(sideboardCard);
+    } else {
+      const newSideboard: SideboardCards = {
+        sideboardCard: sideboardParentCard,
+        cardsInSideboard: [sideboardCard],
+      };
+      currentSideboardCards.push(newSideboard);
+    }
 
-    setCardsInSideboard(currentSideboardCards);
+    setSideboardCards(currentSideboardCards);
   }
 
   function addCard(card: Card) {
@@ -80,19 +94,26 @@ export function DeckBuilder({
     const formData = new FormData(e.currentTarget);
     const deckCode = formData.get("deckCode") as string;
     const deck = await getDeckByCode(deckCode);
-
+    if (deck.sideboardCards) setSideboardCards(deck.sideboardCards);
     setSelectedCards(deck.cards);
   }
 
-  function showSelectedCard() {
+  function showSelectedCard(cardsToShow: Card[]) {
     const seen = new Set();
-    const uniqueCards = selectedCards.filter((el) => {
+    const uniqueCards = cardsToShow?.filter((el) => {
       const duplicate = seen.has(el.id);
       seen.add(el.id);
       return !duplicate;
     });
     return uniqueCards;
   }
+
+  const currentSideboard = sideboardCards.find(
+    (sideboard) => sideboard.sideboardCard.id === sideboardParentCard?.id,
+  );
+  const currentCardsInSideboard =
+    currentSideboard && currentSideboard.cardsInSideboard;
+
   useEffect(() => {
     if (inView) loadNextPage();
   }, [inView]);
@@ -108,9 +129,10 @@ export function DeckBuilder({
         <div className="flex-1 grid grid-cols-auto-fill-hscard">
           {cards.cards.map((card) => {
             const { bannedFromSideboard, id, name, image, rarityId } = card;
-            const sideboardCardCount = cardsInSideboard.filter(
-              (card) => card.id === id,
-            ).length;
+            const sideboardCardCount =
+              currentSideboard?.cardsInSideboard.filter(
+                (sideboardCard) => sideboardCard.id === id,
+              ).length ?? 0;
             const cardCount = selectedCards.filter(
               (card) => card.id === id,
             ).length;
@@ -120,9 +142,8 @@ export function DeckBuilder({
             const onAddCard = sideboardParentCard ? addSideboardCard : addCard;
             const legendaryLimit = rarityId === 5 && currentCardCount === 1;
             const nonLegendaryLimit = rarityId !== 5 && currentCardCount === 2;
-            const sidebarCardsCount = cardsInSideboard.filter(
-              (card) => card.parentId === sideboardParentCard,
-            ).length;
+            const sidebarCardsCount =
+              currentSideboard?.cardsInSideboard.length ?? 0;
             const isTotalCardCountReached = sideboardParentCard
               ? sidebarCardsCount === 3
               : selectedCardsCount === 30;
@@ -169,7 +190,7 @@ export function DeckBuilder({
           )}
           {selectedCardsCount && !sideboardParentCard && (
             <ul className="max-h-[90vh] overflow-auto">
-              {showSelectedCard().map((card) => {
+              {showSelectedCard(selectedCards).map((card) => {
                 const count = selectedCards.filter(
                   (selectedCard) => selectedCard.id === card.id,
                 ).length;
@@ -177,7 +198,7 @@ export function DeckBuilder({
                   <li key={card.id}>
                     <div>{count}</div>
                     {card.maxSideboardCards && (
-                      <Button onClick={() => setSideboardParentCard(card.id)}>
+                      <Button onClick={() => setSideboardParentCard(card)}>
                         Open
                       </Button>
                     )}
@@ -198,11 +219,25 @@ export function DeckBuilder({
               <Button onClick={() => setSideboardParentCard(null)}>
                 Close
               </Button>
+              {currentCardsInSideboard && (
+                <ul>
+                  {showSelectedCard(currentCardsInSideboard).map((card) => (
+                    <Image
+                      key={card.id}
+                      src={card.cropImage!}
+                      width={243}
+                      height={64}
+                      alt={card.name}
+                    />
+                  ))}
+                </ul>
+              )}
             </div>
           )}
           <DeckBuilderForm
             selectedCards={selectedCards}
             deckSearchParams={cards.params}
+            sideboardCards={sideboardCards}
           >
             <Button disabled={selectedCardsCount < 30}>Create Deck</Button>
           </DeckBuilderForm>

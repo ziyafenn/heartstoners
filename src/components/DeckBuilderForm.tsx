@@ -11,7 +11,7 @@ import { Textarea } from "./ui/textarea";
 import { createDeck } from "@/actions/deckBuider.action";
 import { Button } from "./ui/button";
 import { ResponsiveBar } from "@nivo/bar";
-import { Card, CardSeachParams } from "@/types/hs.type";
+import { Card, CardSeachParams, SideboardCards } from "@/types/hs.type";
 import { getDustCost } from "@/lib/utils";
 import {
   Select,
@@ -33,6 +33,7 @@ type Props = {
   children: React.ReactNode;
   deckSearchParams: CardSeachParams;
   selectedCards: SelectedCards;
+  sideboardCards: SideboardCards[];
 };
 
 function BarChart({
@@ -64,6 +65,7 @@ export default function DeckBuilderForm({
   children,
   selectedCards,
   deckSearchParams,
+  sideboardCards,
 }: Props) {
   const searchParams = useSearchParams();
   const deckClass = searchParams.get("class") as string;
@@ -132,6 +134,14 @@ export default function DeckBuilderForm({
     if (bestMatch.matchedCardCount > 2) setSubArchetype(bestMatch.meta);
   }
 
+  const etc_sideboard =
+    sideboardCards
+      .find((sideboard) => sideboard.sideboardCard.id === 90749)
+      ?.cardsInSideboard.map((card) => card.id) ?? null;
+  const zilliax_sideboard =
+    sideboardCards
+      .find((sideboard) => sideboard.sideboardCard.id === 102983)
+      ?.cardsInSideboard.map((card) => card.id) ?? null;
   const params: DeckInitParams = {
     card_ids: cardIds,
     dust_cost: dustCost,
@@ -139,8 +149,8 @@ export default function DeckBuilderForm({
     deck_format: deckSearchParams.set as "standard",
     game_mode: deckSearchParams.gameMode as "constructed",
     sub_archetype: subArchetype?.id ?? null,
-    etc_sideboard: null,
-    zilliax_sideboard: null,
+    etc_sideboard,
+    zilliax_sideboard,
   };
 
   const createUserDeck = createDeck.bind(null, params);

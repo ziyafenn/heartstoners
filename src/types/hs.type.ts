@@ -85,6 +85,11 @@ export type CardsPage = {
   pageCount: number;
 };
 
+export type SideboardCards = {
+  cardsInSideboard: Card[];
+  sideboardCard: Card;
+};
+
 export type Deck = {
   deckCode: string;
   version: number;
@@ -99,10 +104,7 @@ export type Deck = {
   };
   cardCount: number;
   invalidCardIds: string[];
-  sideboardCards?: {
-    cardsInSideboard: Card[];
-    sideboardCard: Card;
-  }[];
+  sideboardCards?: SideboardCards[];
 };
 
 export type CardSeachParams = ResourceOptions<CardSearchOptions>;
