@@ -137,3 +137,40 @@ export async function getDeckByCode(code: string) {
 
   return data;
 }
+
+export async function getZilliaxSideboardCards() {
+  const hsClient = await createHsClient();
+
+  const params: Partial<CardSeachParams> = {
+    collectible: 0,
+    page: 1,
+    pageSize: 20,
+    gameMode: "constructed",
+    set: "standard",
+    locale: "en_US",
+  };
+
+  const cosmeticCardSearch = hsClient.cardSearch({
+    ...params,
+    textFilter: "zilliax",
+  });
+
+  const functionalCardSearch = hsClient.cardSearch({
+    ...params,
+    textFilter: "module",
+  });
+
+  const res = await Promise.all([cosmeticCardSearch, functionalCardSearch]);
+  const [{ data: cosmeticCardRes }, { data: functionalCardRes }]: {
+    data: CardsPage;
+  }[] = res;
+
+  const cosmeticCards = cosmeticCardRes.cards.filter(
+    (card) => card.isZilliaxCosmeticModule,
+  );
+  const functionalCards = functionalCardRes.cards.filter(
+    (card) => card.isZilliaxFunctionalModule,
+  );
+
+  return { cosmeticCards, functionalCards };
+}

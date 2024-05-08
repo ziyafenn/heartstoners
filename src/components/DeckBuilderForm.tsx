@@ -26,6 +26,7 @@ import { DeckInitParams } from "@/types/deck.type";
 import { useSearchParams } from "next/navigation";
 import { CardClass } from "blizzard.js/dist/resources/hs";
 import { useState } from "react";
+import { ETC_ID, ZILLIAX_ID } from "@/lib/constants";
 
 type SelectedCards = Card[];
 
@@ -136,11 +137,11 @@ export default function DeckBuilderForm({
 
   const etc_sideboard =
     sideboardCards
-      .find((sideboard) => sideboard.sideboardCard.id === 90749)
+      .find((sideboard) => sideboard.sideboardCard.id === ETC_ID)
       ?.cardsInSideboard.map((card) => card.id) ?? null;
   const zilliax_sideboard =
     sideboardCards
-      .find((sideboard) => sideboard.sideboardCard.id === 102983)
+      .find((sideboard) => sideboard.sideboardCard.id === ZILLIAX_ID)
       ?.cardsInSideboard.map((card) => card.id) ?? null;
   const params: DeckInitParams = {
     card_ids: cardIds,

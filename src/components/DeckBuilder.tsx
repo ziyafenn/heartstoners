@@ -18,7 +18,8 @@ import { CardClass } from "blizzard.js/dist/resources/hs";
 import { useParams, useSearchParams } from "next/navigation";
 import { useInView } from "react-intersection-observer";
 import { Input } from "./ui/input";
-import { getDeckByCode } from "@/service/hs.service";
+import { getDeckByCode, getZilliaxSideboardCards } from "@/service/hs.service";
+import { ZILLIAX_ID } from "@/lib/constants";
 
 export function DeckBuilder({
   initialCards,
@@ -48,6 +49,7 @@ export function DeckBuilder({
     null,
   );
   const [cards, formAction] = useFormState(loadPageWithFilters, initState);
+  const [zilliaxCards, setZilliaxCards] = useState<Card[]>([]);
   const { ref, inView } = useInView();
   const selectedCardsCount = selectedCards.length;
 
@@ -79,8 +81,6 @@ export function DeckBuilder({
   }
 
   const loadNextPage = useCallback(async () => {
-    console.log("next page params", cards.params);
-
     const formData = new FormData();
     for (const [key, value] of Object.entries(cards.params)) {
       formData.append(key, value as string);
@@ -108,6 +108,16 @@ export function DeckBuilder({
     return uniqueCards;
   }
 
+  async function onOpenSideboard(card: Card) {
+    if (card.id === ZILLIAX_ID && !zilliaxCards.length) {
+      const { cosmeticCards, functionalCards } =
+        await getZilliaxSideboardCards();
+
+      setZilliaxCards([...cosmeticCards, ...functionalCards]);
+    }
+    setSideboardParentCard(card);
+  }
+
   const currentSideboard = sideboardCards.find(
     (sideboard) => sideboard.sideboardCard.id === sideboardParentCard?.id,
   );
@@ -120,66 +130,77 @@ export function DeckBuilder({
 
   return (
     <div className="flex flex-1">
-      <div className="flex flex-col flex-1">
-        <DeckBuilderFilter
-          action={formAction}
-          rarities={rarities}
-          minionTypes={minionTypes}
-        />
+      {sideboardParentCard?.id === ZILLIAX_ID ? (
         <div className="flex-1 grid grid-cols-auto-fill-hscard">
-          {cards.cards.map((card) => {
-            const { bannedFromSideboard, id, name, image, rarityId } = card;
-            const sideboardCardCount =
-              currentSideboard?.cardsInSideboard.filter(
-                (sideboardCard) => sideboardCard.id === id,
-              ).length ?? 0;
-            const cardCount = selectedCards.filter(
-              (card) => card.id === id,
-            ).length;
-            const currentCardCount = sideboardParentCard
-              ? sideboardCardCount
-              : cardCount;
-            const onAddCard = sideboardParentCard ? addSideboardCard : addCard;
-            const legendaryLimit = rarityId === 5 && currentCardCount === 1;
-            const nonLegendaryLimit = rarityId !== 5 && currentCardCount === 2;
-            const sidebarCardsCount =
-              currentSideboard?.cardsInSideboard.length ?? 0;
-            const isTotalCardCountReached = sideboardParentCard
-              ? sidebarCardsCount === 3
-              : selectedCardsCount === 30;
-            const isUnavailableForSideboard =
-              !!sideboardParentCard && !!bannedFromSideboard;
-
-            return (
-              <div
-                className={currentCardCount ? "bg-red-600" : "bg-transparent"}
-                key={id}
-              >
-                <div>{currentCardCount}</div>
-                <button
-                  onClick={() => onAddCard(card)}
-                  disabled={
-                    isTotalCardCountReached ||
-                    legendaryLimit ||
-                    nonLegendaryLimit ||
-                    isUnavailableForSideboard
-                  }
-                  type="button"
-                >
-                  <Image
-                    alt={name}
-                    src={image}
-                    height={530}
-                    width={384}
-                    key={id}
-                  />
-                </button>
-              </div>
-            );
-          })}
+          {zilliaxCards.map((card) => (
+            <div key={card.id}>{card.name}</div>
+          ))}
         </div>
-        <div ref={ref}>loading</div>
-      </div>
+      ) : (
+        <div className="flex flex-col flex-1">
+          <DeckBuilderFilter
+            action={formAction}
+            rarities={rarities}
+            minionTypes={minionTypes}
+          />
+          <div className="flex-1 grid grid-cols-auto-fill-hscard">
+            {cards.cards.map((card) => {
+              const { bannedFromSideboard, id, name, image, rarityId } = card;
+              const sideboardCardCount =
+                currentSideboard?.cardsInSideboard.filter(
+                  (sideboardCard) => sideboardCard.id === id,
+                ).length ?? 0;
+              const cardCount = selectedCards.filter(
+                (card) => card.id === id,
+              ).length;
+              const currentCardCount = sideboardParentCard
+                ? sideboardCardCount
+                : cardCount;
+              const onAddCard = sideboardParentCard
+                ? addSideboardCard
+                : addCard;
+              const legendaryLimit = rarityId === 5 && currentCardCount === 1;
+              const nonLegendaryLimit =
+                rarityId !== 5 && currentCardCount === 2;
+              const sidebarCardsCount =
+                currentSideboard?.cardsInSideboard.length ?? 0;
+              const isTotalCardCountReached = sideboardParentCard
+                ? sidebarCardsCount === 3
+                : selectedCardsCount === 30;
+              const isUnavailableForSideboard =
+                !!sideboardParentCard && !!bannedFromSideboard;
+
+              return (
+                <div
+                  className={currentCardCount ? "bg-red-600" : "bg-transparent"}
+                  key={id}
+                >
+                  <div>{currentCardCount}</div>
+                  <button
+                    onClick={() => onAddCard(card)}
+                    disabled={
+                      isTotalCardCountReached ||
+                      legendaryLimit ||
+                      nonLegendaryLimit ||
+                      isUnavailableForSideboard
+                    }
+                    type="button"
+                  >
+                    <Image
+                      alt={name}
+                      src={image}
+                      height={530}
+                      width={384}
+                      key={id}
+                    />
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+          <div ref={ref}>loading</div>
+        </div>
+      )}
       <div>
         <aside className="w-80 sticky top-0">
           {!selectedCardsCount && (
@@ -198,7 +219,7 @@ export function DeckBuilder({
                   <li key={card.id}>
                     <div>{count}</div>
                     {card.maxSideboardCards && (
-                      <Button onClick={() => setSideboardParentCard(card)}>
+                      <Button onClick={() => onOpenSideboard(card)}>
                         Open
                       </Button>
                     )}
@@ -215,7 +236,6 @@ export function DeckBuilder({
           )}
           {sideboardParentCard && (
             <div>
-              sideboard parent active!
               <Button onClick={() => setSideboardParentCard(null)}>
                 Close
               </Button>
