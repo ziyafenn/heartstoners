@@ -14,7 +14,7 @@ import { useInView } from "react-intersection-observer";
 import { Input } from "./ui/input";
 import { getDeckByCode } from "@/service/hs.service";
 
-type SelectedCards = Map<number, { count: number } & Card>;
+type SelectedCards = Card[];
 type SideboardCards = Array<Card & { parentId: number }>;
 
 export function DeckBuilder({
@@ -39,35 +39,27 @@ export function DeckBuilder({
     },
   };
 
-  const [selectedCards, setSelectedCards] = useState<SelectedCards>(
-    () => new Map(),
-  );
-  const [sideboardCards, setSideboardCards] = useState<SideboardCards>([]);
+  const [selectedCards, setSelectedCards] = useState<SelectedCards>([]);
+  const [cardsInSideboard, setCardsInSideboard] = useState<SideboardCards>([]);
   const [sideboardParentCard, setSideboardParentCard] = useState<number | null>(
     null,
   );
   const [cards, formAction] = useFormState(loadPageWithFilters, initState);
   const { ref, inView } = useInView();
-  const selectedCardsCount = Array.from(selectedCards.values()).reduce(
-    (sum, card) => sum + card.count,
-    0,
-  );
+  const selectedCardsCount = selectedCards.length;
 
   function addSideboardCard(card: Card) {
     if (!sideboardParentCard) return null;
 
-    const currentSideboardCards = [...sideboardCards];
+    const currentSideboardCards = [...cardsInSideboard];
     currentSideboardCards.push({ ...card, parentId: sideboardParentCard });
 
-    setSideboardCards(currentSideboardCards);
+    setCardsInSideboard(currentSideboardCards);
   }
 
   function addCard(card: Card) {
-    const currentSelection = new Map(selectedCards);
-    const addedCard = currentSelection.get(card.id);
-
-    if (!addedCard) currentSelection.set(card.id, { count: 1, ...card });
-    else addedCard.count = addedCard.count + 1;
+    const currentSelection = [...selectedCards];
+    currentSelection.push(card);
 
     setSelectedCards(currentSelection);
   }
@@ -89,18 +81,18 @@ export function DeckBuilder({
     const deckCode = formData.get("deckCode") as string;
     const deck = await getDeckByCode(deckCode);
 
-    const deckCards = deck.cards.reduce((acc, card) => {
-      const cardCount = acc.get(card.id)?.count || 0;
-      acc.set(card.id, {
-        ...card,
-        count: cardCount + 1,
-      });
-      return acc;
-    }, new Map<number, { count: number } & Card>());
-
-    setSelectedCards(deckCards);
+    setSelectedCards(deck.cards);
   }
 
+  function showSelectedCard() {
+    const seen = new Set();
+    const uniqueCards = selectedCards.filter((el) => {
+      const duplicate = seen.has(el.id);
+      seen.add(el.id);
+      return !duplicate;
+    });
+    return uniqueCards;
+  }
   useEffect(() => {
     if (inView) loadNextPage();
   }, [inView]);
@@ -116,17 +108,19 @@ export function DeckBuilder({
         <div className="flex-1 grid grid-cols-auto-fill-hscard">
           {cards.cards.map((card) => {
             const { bannedFromSideboard, id, name, image, rarityId } = card;
-            const sideboardCardCount = sideboardCards.filter(
+            const sideboardCardCount = cardsInSideboard.filter(
               (card) => card.id === id,
             ).length;
-            const cardCount = selectedCards.get(id)?.count;
+            const cardCount = selectedCards.filter(
+              (card) => card.id === id,
+            ).length;
             const currentCardCount = sideboardParentCard
               ? sideboardCardCount
               : cardCount;
             const onAddCard = sideboardParentCard ? addSideboardCard : addCard;
             const legendaryLimit = rarityId === 5 && currentCardCount === 1;
             const nonLegendaryLimit = rarityId !== 5 && currentCardCount === 2;
-            const sidebarCardsCount = sideboardCards.filter(
+            const sidebarCardsCount = cardsInSideboard.filter(
               (card) => card.parentId === sideboardParentCard,
             ).length;
             const isTotalCardCountReached = sideboardParentCard
@@ -175,10 +169,13 @@ export function DeckBuilder({
           )}
           {selectedCardsCount && !sideboardParentCard && (
             <ul className="max-h-[90vh] overflow-auto">
-              {Array.from(selectedCards.values()).map((card) => {
+              {showSelectedCard().map((card) => {
+                const count = selectedCards.filter(
+                  (selectedCard) => selectedCard.id === card.id,
+                ).length;
                 return (
                   <li key={card.id}>
-                    <div>{card.count}</div>
+                    <div>{count}</div>
                     {card.maxSideboardCards && (
                       <Button onClick={() => setSideboardParentCard(card.id)}>
                         Open

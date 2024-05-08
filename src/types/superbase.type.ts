@@ -167,6 +167,7 @@ export type Database = {
           deck_format: Database["public"]["Enums"]["deck_format"]
           description: string | null
           dust_cost: number[] | null
+          etc_sideboard: number[] | null
           game_mode: Database["public"]["Enums"]["game_mode"]
           game_version: string
           id: number
@@ -174,6 +175,7 @@ export type Database = {
           sub_archetype: number | null
           updated_at: string
           user_id: string | null
+          zilliax_sideboard: number[] | null
         }
         Insert: {
           archetype: Database["public"]["Enums"]["archetypes"]
@@ -183,6 +185,7 @@ export type Database = {
           deck_format: Database["public"]["Enums"]["deck_format"]
           description?: string | null
           dust_cost?: number[] | null
+          etc_sideboard?: number[] | null
           game_mode: Database["public"]["Enums"]["game_mode"]
           game_version: string
           id?: number
@@ -190,6 +193,7 @@ export type Database = {
           sub_archetype?: number | null
           updated_at?: string
           user_id?: string | null
+          zilliax_sideboard?: number[] | null
         }
         Update: {
           archetype?: Database["public"]["Enums"]["archetypes"]
@@ -199,6 +203,7 @@ export type Database = {
           deck_format?: Database["public"]["Enums"]["deck_format"]
           description?: string | null
           dust_cost?: number[] | null
+          etc_sideboard?: number[] | null
           game_mode?: Database["public"]["Enums"]["game_mode"]
           game_version?: string
           id?: number
@@ -206,6 +211,7 @@ export type Database = {
           sub_archetype?: number | null
           updated_at?: string
           user_id?: string | null
+          zilliax_sideboard?: number[] | null
         }
         Relationships: [
           {

@@ -27,7 +27,7 @@ import { useSearchParams } from "next/navigation";
 import { CardClass } from "blizzard.js/dist/resources/hs";
 import { useState } from "react";
 
-type SelectedCards = Map<number, { count: number } & Card>;
+type SelectedCards = Card[];
 
 type Props = {
   children: React.ReactNode;
@@ -70,10 +70,9 @@ export default function DeckBuilderForm({
   const [subArchetype, setSubArchetype] =
     useState<Tables<"meta_sub_archetypes">>();
 
-  const selectedCardsValues = Array.from(selectedCards.values());
-  const manaCostCountsSum = selectedCardsValues.reduce(
+  const manaCostCountsSum = selectedCards.reduce(
     (acc, card) => {
-      acc[card.manaCost] = (acc[card.manaCost] || 0) + 1 * card.count;
+      acc[card.manaCost] = (acc[card.manaCost] || 0) + 1;
       return acc;
     },
     { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0 } as {
@@ -87,12 +86,9 @@ export default function DeckBuilderForm({
   const dustCost: number[] = [];
   const cardIds: number[] = [];
 
-  selectedCardsValues.forEach((card) => {
-    const dustCostArray = Array(card.count).fill(getDustCost(card.rarityId));
-    const cardIdsArray = Array(card.count).fill(card.id);
-
-    dustCost.push(...dustCostArray);
-    cardIds.push(...cardIdsArray);
+  selectedCards.forEach((card) => {
+    dustCost.push(getDustCost(card.rarityId));
+    cardIds.push(card.id);
   });
 
   for (const [name, count] of Object.entries(manaCostCountsSum)) {
@@ -122,7 +118,7 @@ export default function DeckBuilderForm({
     const bestMatch = metas!.reduce(
       (best, meta) => {
         const metaMatches = meta!.core_cards!.filter((coreCard) =>
-          selectedCardsValues
+          selectedCards
             .map((selectedCard) => selectedCard.id)
             .includes(coreCard),
         ).length;
@@ -143,6 +139,8 @@ export default function DeckBuilderForm({
     deck_format: deckSearchParams.set as "standard",
     game_mode: deckSearchParams.gameMode as "constructed",
     sub_archetype: subArchetype?.id ?? null,
+    etc_sideboard: null,
+    zilliax_sideboard: null,
   };
 
   const createUserDeck = createDeck.bind(null, params);
