@@ -1,4 +1,4 @@
-import { DeckBuilder } from "@/components/DeckBuilder";
+import { DeckBuilder } from "@/components/deckbuilder/DeckBuilder";
 import {
   searchHsCards,
   getHsMinionTypes,

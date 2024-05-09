@@ -6,10 +6,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
 import { createDeck } from "@/actions/deckBuider.action";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { ResponsiveBar } from "@nivo/bar";
 import { Card, CardSeachParams, SideboardCards } from "@/types/hs.type";
 import { getDustCost } from "@/lib/utils";
@@ -94,6 +94,11 @@ export default function DeckBuilderForm({
     cardIds.push(card.id);
   });
 
+  const sideboardCardIds = sideboardCards.flatMap((sideboard) =>
+    sideboard.cardsInSideboard.map((card) => card.id),
+  );
+  cardIds.push(...sideboardCardIds);
+
   for (const [name, count] of Object.entries(manaCostCountsSum)) {
     const key = name === "7" ? "7+" : name;
     manaCostCounts.push({ name: key, count: Number(count) });
@@ -135,14 +140,6 @@ export default function DeckBuilderForm({
     if (bestMatch.matchedCardCount > 2) setSubArchetype(bestMatch.meta);
   }
 
-  const etc_sideboard =
-    sideboardCards
-      .find((sideboard) => sideboard.sideboardCard.id === ETC_ID)
-      ?.cardsInSideboard.map((card) => card.id) ?? null;
-  const zilliax_sideboard =
-    sideboardCards
-      .find((sideboard) => sideboard.sideboardCard.id === ZILLIAX_ID)
-      ?.cardsInSideboard.map((card) => card.id) ?? null;
   const params: DeckInitParams = {
     card_ids: cardIds,
     dust_cost: dustCost,
@@ -150,8 +147,6 @@ export default function DeckBuilderForm({
     deck_format: deckSearchParams.set as "standard",
     game_mode: deckSearchParams.gameMode as "constructed",
     sub_archetype: subArchetype?.id ?? null,
-    etc_sideboard,
-    zilliax_sideboard,
   };
 
   const createUserDeck = createDeck.bind(null, params);
