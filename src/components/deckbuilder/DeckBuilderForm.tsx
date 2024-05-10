@@ -94,10 +94,10 @@ export default function DeckBuilderForm({
     cardIds.push(card.id);
   });
 
-  const sideboardCardIds = sideboardCards.flatMap((sideboard) =>
-    sideboard.cardsInSideboard.map((card) => card.id),
-  );
-  cardIds.push(...sideboardCardIds);
+  const sideboard_cards = sideboardCards.flatMap((sideboard) => {
+    const primaryId = sideboard.sideboardCard.id;
+    return sideboard.cardsInSideboard.map((card) => `${card.id}:${primaryId}`);
+  });
 
   for (const [name, count] of Object.entries(manaCostCountsSum)) {
     const key = name === "7" ? "7+" : name;
@@ -147,6 +147,7 @@ export default function DeckBuilderForm({
     deck_format: deckSearchParams.set as "standard",
     game_mode: deckSearchParams.gameMode as "constructed",
     sub_archetype: subArchetype?.id ?? null,
+    sideboard_cards,
   };
 
   const createUserDeck = createDeck.bind(null, params);

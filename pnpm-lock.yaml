@@ -39,8 +39,8 @@ importers:
         specifier: ^2.42.7
         version: 2.42.7
       blizzard.js:
-        specifier: ^4.5.0
-        version: 4.5.0
+        specifier: github:ziyafenn/blizzard.js
+        version: https://codeload.github.com/ziyafenn/blizzard.js/tar.gz/3e48def105077a1c92f9a67dd133c82ee6af3573
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -1234,8 +1234,9 @@ packages:
     resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
     engines: {node: '>=8'}
 
-  blizzard.js@4.5.0:
-    resolution: {integrity: sha512-Z9NgWoWNKyqyWBAoFvuCsl19hVUqQHVUDq0zcu1uCRF+RZRRYH5cv0IsteeePnD8pSlNPmzxZayDpP3BJ+Y2XA==}
+  blizzard.js@https://codeload.github.com/ziyafenn/blizzard.js/tar.gz/3e48def105077a1c92f9a67dd133c82ee6af3573:
+    resolution: {tarball: https://codeload.github.com/ziyafenn/blizzard.js/tar.gz/3e48def105077a1c92f9a67dd133c82ee6af3573}
+    version: 4.6.0
     engines: {node: '>=10'}
 
   brace-expansion@1.1.11:
@@ -4024,7 +4025,7 @@ snapshots:
 
   binary-extensions@2.3.0: {}
 
-  blizzard.js@4.5.0:
+  blizzard.js@https://codeload.github.com/ziyafenn/blizzard.js/tar.gz/3e48def105077a1c92f9a67dd133c82ee6af3573:
     dependencies:
       axios: 1.6.8
     transitivePeerDependencies:

@@ -68,7 +68,7 @@ export function CurrentDeck({
                 {showSelectedCard(currentCardsInSideboard).map((card) => (
                   <Image
                     key={card.id}
-                    src={card.cropImage!}
+                    src={card.cropImage ?? card.image}
                     width={243}
                     height={64}
                     alt={card.name}

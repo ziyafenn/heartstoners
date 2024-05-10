@@ -114,12 +114,19 @@ export async function getHsSets() {
   return data;
 }
 
-export async function getDeckByCardList(cardIds: number[]) {
+export async function getDeckByCardList({
+  cardIds,
+  sideboardCards,
+}: {
+  cardIds: number[];
+  sideboardCards?: string[];
+}) {
   const hsClient = await createHsClient();
 
   const res = await hsClient.deck({
     locale: "en_US",
     ids: cardIds,
+    sideboardCards,
   });
 
   const { data }: { data: Deck } = res;

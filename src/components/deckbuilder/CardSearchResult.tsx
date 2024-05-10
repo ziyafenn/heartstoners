@@ -14,7 +14,6 @@ export function CardSearchResult({ cards, children, cardViewerProps }: Props) {
       <div className="flex-1 grid grid-cols-auto-fill-hscard">
         {cards.map((card) => {
           const { name, id, image } = card;
-
           const {
             currentCardCount,
             isTotalCardCountReached,

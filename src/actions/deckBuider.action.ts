@@ -2,11 +2,7 @@
 
 import { supabase } from "@/service/fetch";
 import { searchHsCards } from "@/service/hs.service";
-import { getUserCollection } from "@/service/hsreplay.service";
-import {
-  getCurrentGameVersion,
-  updateUserCardCollection,
-} from "@/service/supabase.service";
+import { getCurrentGameVersion } from "@/service/supabase.service";
 import { DeckInitParams, DeckUserInputParams } from "@/types/deck.type";
 import { CardSeachParams, CardsPage } from "@/types/hs.type";
 

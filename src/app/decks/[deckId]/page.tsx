@@ -5,7 +5,10 @@ import Image from "next/image";
 export default async function Deck({ params }: { params: { deckId: string } }) {
   const { deckId } = params;
   const userDeck = await getSingleDeck(deckId);
-  const deckData = await getDeckByCardList(userDeck!.card_ids);
+  const deckData = await getDeckByCardList({
+    cardIds: userDeck!.card_ids,
+    sideboardCards: userDeck?.sideboard_cards ?? undefined,
+  });
 
   console.log(userDeck);
 
