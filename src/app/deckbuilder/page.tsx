@@ -1,11 +1,12 @@
-import { getHsDeckClasses } from "@/service/hs.service";
 import Link from "next/link";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
 import { CardGameMode } from "blizzard.js/dist/resources/hs";
+import { getHsMetadata } from "@/service/hs.service";
+import { DeckClass } from "@/types/hs.type";
 
 export default async function DeckBuilderMode() {
-  const deckClasses = await getHsDeckClasses();
+  const deckClasses = await getHsMetadata<DeckClass>("classes");
   const gameMode = "constructed" as CardGameMode;
 
   return (

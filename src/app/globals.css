@@ -73,4 +73,12 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  .font-outline-2 {
+    text-shadow:
+      -2px -2px 0 #000,
+      2px -2px 0 #000,
+      -2px 2px 0 #000,
+      2px 2px 0 #000;
+  }
 }

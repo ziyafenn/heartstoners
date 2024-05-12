@@ -29,6 +29,7 @@ export function CardSearchResult({ cards, children, cardViewerProps }: Props) {
                 type="button"
               >
                 <Image
+                  className="drop-shadow-[0_35px_35px_rgba(0,0,0,0.25)]"
                   alt={name}
                   src={image}
                   height={530}

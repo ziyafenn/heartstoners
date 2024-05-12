@@ -4,7 +4,13 @@ import { DeckBuilderFilter } from "./DeckBuildFilter";
 
 import { Button } from "../ui/button";
 import DeckBuilderForm from "./DeckBuilderForm";
-import { CardsPage, MinionTypes, Rarity } from "@/types/hs.type";
+import {
+  CardType,
+  CardsPage,
+  Keyword,
+  MinionTypes,
+  Rarity,
+} from "@/types/hs.type";
 import { CardClass, CardGameMode } from "blizzard.js/dist/resources/hs";
 import { useParams, useSearchParams } from "next/navigation";
 import { CurrentDeck } from "./CurrentDeck";
@@ -18,10 +24,14 @@ export function DeckBuilder({
   initialCards,
   minionTypes,
   rarities,
+  keywords,
+  cardTypes,
 }: {
   initialCards: CardsPage;
   minionTypes: MinionTypes[];
   rarities: Rarity[];
+  keywords: Keyword[];
+  cardTypes: CardType[];
 }) {
   const searchParams = useSearchParams();
   const params = useParams<{ gameMode: CardGameMode }>();
@@ -72,6 +82,8 @@ export function DeckBuilder({
           action={actions.onSearch}
           rarities={rarities}
           minionTypes={minionTypes}
+          keywords={keywords}
+          cardTypes={cardTypes}
         />
         <CardSearchResult
           cards={cardsDisplayedOnSearchPage}

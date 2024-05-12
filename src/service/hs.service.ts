@@ -1,16 +1,8 @@
 "use server";
 
-import {
-  Card,
-  CardSeachParams,
-  CardsPage,
-  Deck,
-  DeckClass,
-  MinionTypes,
-  Rarity,
-  SetGroups,
-} from "@/types/hs.type";
+import { Card, CardSeachParams, CardsPage, Deck } from "@/types/hs.type";
 import { hs } from "blizzard.js";
+import { CardMetaDataType } from "blizzard.js/dist/resources/hs";
 import { promises as fs } from "fs";
 
 async function createHsClient() {
@@ -33,6 +25,8 @@ export async function searchHsCards({
   page = 1,
   minionType,
   multiClass,
+  textFilter,
+  keyword,
 }: CardSeachParams) {
   const hsClient = await createHsClient();
 
@@ -50,6 +44,8 @@ export async function searchHsCards({
     minionType,
     collectible: 1,
     multiClass,
+    textFilter,
+    keyword,
   });
 
   const {
@@ -61,57 +57,13 @@ export async function searchHsCards({
   return data;
 }
 
-export async function getHsDeckClasses() {
-  const hsClient = await createHsClient();
-  const res = await hsClient.metadata({
-    type: "classes",
-  });
-
-  const { data }: { data: DeckClass[] } = res;
-
-  return data;
-}
-
-export async function getHsMinionTypes() {
+export async function getHsMetadata<T>(type: CardMetaDataType): Promise<T[]> {
   const hsClient = await createHsClient();
 
   const res = await hsClient.metadata({
-    type: "minionTypes",
+    type,
   });
-  const { data }: { data: MinionTypes[] } = res;
-
-  return data;
-}
-
-export async function getHsRarities() {
-  const hsClient = await createHsClient();
-
-  const res = await hsClient.metadata({
-    type: "rarities",
-  });
-  const { data }: { data: Rarity[] } = res;
-
-  return data;
-}
-export async function getHsSetGroups() {
-  const hsClient = await createHsClient();
-
-  const res = await hsClient.metadata({
-    type: "setGroups",
-  });
-
-  const { data }: { data: SetGroups[] } = res;
-
-  return data;
-}
-
-export async function getHsSets() {
-  const hsClient = await createHsClient();
-
-  const res = await hsClient.metadata({
-    type: "sets",
-  });
-  const { data }: { data: string[] } = res;
+  const { data }: { data: T[] } = res;
 
   return data;
 }

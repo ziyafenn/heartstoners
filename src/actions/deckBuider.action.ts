@@ -12,9 +12,13 @@ export async function loadPageWithFilters(
 ): Promise<CardsPage & { params: CardSeachParams }> {
   const deckSearchParams = {
     ...currentState.params,
-    class: formData.get("class") ?? currentState.params.class,
+    class: formData.get("class"),
     rarity: formData.get("rarity"),
     minionType: formData.get("minionType"),
+    textFilter: formData.get("textFilter"),
+    keyword: formData.get("keyword"),
+    type: formData.get("cardType"),
+    manaCost: formData.get("manaCost") as unknown,
   } as CardSeachParams;
   const isFilter: boolean = formData.has("filter");
   const page = isFilter ? 1 : currentState.page + 1;
@@ -24,6 +28,7 @@ export async function loadPageWithFilters(
     page,
   });
 
+  // if it's filter, reset search state
   const res: CardsPage & { params: CardSeachParams } = isFilter
     ? { ...data, cards, params: deckSearchParams }
     : {

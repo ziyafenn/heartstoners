@@ -107,4 +107,34 @@ export type Deck = {
   sideboardCards?: SideboardCards[];
 };
 
+export type Keyword = {
+  id: number;
+  slug: string;
+  name: string;
+  refText: string;
+  text: string;
+  gameModes: number[];
+};
+
+export type CardType = {
+  slug:
+    | "hero"
+    | "minion"
+    | "spell"
+    | "weapon"
+    | "hero power"
+    | "location"
+    | "baconquestreward";
+  id: number;
+  name:
+    | "Hero"
+    | "Minion"
+    | "Spell"
+    | "Weapon"
+    | "HeroPower"
+    | "Location"
+    | "Reward";
+  gameModes: number[];
+};
+
 export type CardSeachParams = ResourceOptions<CardSearchOptions>;

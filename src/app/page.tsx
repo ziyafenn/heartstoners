@@ -1,23 +1,12 @@
-import UpdateCollectionButton from "@/components/UpdateButton";
-import { updateUserCollection } from "@/actions/deckBuider.action";
+import { getDecks } from "@/service/supabase.service";
 
-import { getPlayerCollection } from "@/service/hsreplay.service";
-import {
-  getCraftableDecks,
-  getDecks,
-  getMetaSubArchetypes,
-} from "@/service/supabase.service";
-import Link from "next/link";
-import { supabase } from "@/service/fetch";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
+
 import { DeckCard } from "@/components/DeckCard";
 import { SidebarCardItem } from "@/components/SidebarCardItem";
 
 export default async function Home() {
   const decks = await getDecks();
-  // const playerCollection = await getPlayerCollection("sdf");
-  // const subArchetypes = await getMetaSubArchetypes();
 
   return (
     <div className="grid grid-cols-[1fr_320px] p-8 gap-8 rounded-md">

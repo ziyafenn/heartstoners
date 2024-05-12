@@ -1,11 +1,13 @@
 import { DeckBuilder } from "@/components/deckbuilder/DeckBuilder";
+import { searchHsCards, getHsMetadata } from "@/service/hs.service";
 import {
-  searchHsCards,
-  getHsMinionTypes,
-  getHsRarities,
-} from "@/service/hs.service";
-import { SetGroups } from "@/types/hs.type";
-import { CardClass, CardGameMode } from "blizzard.js/dist/resources/hs";
+  CardType,
+  Keyword,
+  MinionTypes,
+  Rarity,
+  SetGroups,
+} from "@/types/hs.type";
+import { CardClass, CardGameMode, card } from "blizzard.js/dist/resources/hs";
 
 export default async function ClassDeckBuilder({
   params,
@@ -25,18 +27,26 @@ export default async function ClassDeckBuilder({
     multiClass: deckClass,
   });
 
-  const rarities = getHsRarities();
-  const minionTypes = getHsMinionTypes();
+  const rarities = getHsMetadata<Rarity>("rarities");
+  const minionTypes = getHsMetadata<MinionTypes>("minionTypes");
+  const keywords = getHsMetadata<Keyword>("keywords");
+  const cardType = getHsMetadata<CardType>("types");
 
-  const hsData = await Promise.all([cards, rarities, minionTypes]);
+  const hsData = await Promise.all([
+    cards,
+    rarities,
+    minionTypes,
+    keywords,
+    cardType,
+  ]);
 
   return (
-    <div>
-      <DeckBuilder
-        initialCards={hsData[0]}
-        rarities={hsData[1]}
-        minionTypes={hsData[2]}
-      />
-    </div>
+    <DeckBuilder
+      initialCards={hsData[0]}
+      rarities={hsData[1]}
+      minionTypes={hsData[2]}
+      keywords={hsData[3]}
+      cardTypes={hsData[4]}
+    />
   );
 }
