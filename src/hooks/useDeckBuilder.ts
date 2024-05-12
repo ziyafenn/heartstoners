@@ -1,8 +1,13 @@
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { loadPageWithFilters } from "@/actions/deckBuider.action";
-import { Card, CardsPage, SideboardCards } from "@/types/hs.type";
-import { CardClass } from "blizzard.js/dist/resources/hs";
+import {
+  Card,
+  CardSeachParams,
+  CardsPage,
+  SideboardCards,
+} from "@/types/hs.type";
+
 import { getDeckByCode, getZilliaxSideboardCards } from "@/service/hs.service";
 import { ZILLIAX_ID } from "@/lib/constants";
 
@@ -12,11 +17,7 @@ export function useDeckBuilder({
 }: {
   inView: boolean;
   initState: CardsPage & {
-    params: {
-      gameMode: "constructed";
-      set: "standard" | "wild";
-      class: CardClass;
-    };
+    params: Pick<CardSeachParams, "gameMode" | "set" | "class" | "multiClass">;
   };
 }) {
   const [cardsPage, onSearch] = useFormState(loadPageWithFilters, initState);

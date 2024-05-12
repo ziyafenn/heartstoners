@@ -11,16 +11,18 @@ export default async function ClassDeckBuilder({
   params,
   searchParams,
 }: {
-  params: { format: SetGroups["slug"] };
-  searchParams: { deckClass: CardClass; mode: CardGameMode };
+  params: { gameMode: CardGameMode };
+  searchParams: { deckClass: CardClass; format: SetGroups["slug"] };
 }) {
-  const { format } = params;
-  const { deckClass } = searchParams;
+  const { gameMode } = params;
+  const { deckClass, format } = searchParams;
+
   const cards = searchHsCards({
-    class: deckClass,
-    gameMode: "constructed",
+    class: [deckClass, "neutral"],
+    gameMode,
     set: format,
     page: 1,
+    multiClass: deckClass,
   });
 
   const rarities = getHsRarities();

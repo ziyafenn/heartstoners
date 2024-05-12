@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Patua_One } from "next/font/google";
 import "./globals.css";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Patua_One({ subsets: ["latin"], weight: ["400"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +18,36 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={`${inter.className} dark h-screen`}>
+        <header>
+          <nav className="flex justify-between p-4 items-center">
+            <div>
+              <Link href="/">Logo</Link>
+            </div>
+            <ul className="flex gap-4 items-center">
+              <li>
+                <Link href="/decks">Decks</Link>
+              </li>
+              <li>Profile</li>
+              <li>
+                <Button asChild>
+                  <Link href="/deckbuilder">Create a deck</Link>
+                </Button>
+              </li>
+            </ul>
+          </nav>
+        </header>
+        {children}
+        <footer className="border-t p-4">
+          <div className="text-xs">
+            All assets are trademark of ©2014 Blizzard Entertainment, Inc.
+            <br /> All rights reserved. Heroes of Warcraft is a trademark, and
+            Hearthstone is a registered trademark of Blizzard Entertainment,
+            Inc. in the U.S. and/or other countries.
+          </div>
+          <div></div>
+        </footer>
+      </body>
     </html>
   );
 }

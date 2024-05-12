@@ -72,7 +72,7 @@ export default function DeckBuilderForm({
   const deckClass = searchParams.get("class") as string;
   const [subArchetype, setSubArchetype] =
     useState<Tables<"meta_sub_archetypes">>();
-
+  //
   const manaCostCountsSum = selectedCards.reduce(
     (acc, card) => {
       acc[card.manaCost] = (acc[card.manaCost] || 0) + 1;

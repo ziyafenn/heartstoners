@@ -45,7 +45,7 @@ export type Sets = {
 };
 
 export type SetGroups = {
-  slug: "standard" | "wild";
+  slug: Enums<"deck_format">;
   year: number;
   svg: string;
   cardSets: string[];
@@ -93,7 +93,7 @@ export type SideboardCards = {
 export type Deck = {
   deckCode: string;
   version: number;
-  format: "standard" | "wild";
+  format: Enums<"deck_format">;
   hero: Card;
   heroPower: Card;
   cards: Card[];

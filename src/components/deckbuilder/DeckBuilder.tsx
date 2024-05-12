@@ -5,13 +5,13 @@ import { DeckBuilderFilter } from "./DeckBuildFilter";
 import { Button } from "../ui/button";
 import DeckBuilderForm from "./DeckBuilderForm";
 import { CardsPage, MinionTypes, Rarity } from "@/types/hs.type";
-import { CardClass } from "blizzard.js/dist/resources/hs";
+import { CardClass, CardGameMode } from "blizzard.js/dist/resources/hs";
 import { useParams, useSearchParams } from "next/navigation";
 import { CurrentDeck } from "./CurrentDeck";
 import { CardSearchResult } from "./CardSearchResult";
 import { useInView } from "react-intersection-observer";
 import { useDeckBuilder } from "@/hooks/useDeckBuilder";
-import { cardViewerProps } from "@/hooks/cardViewerProps";
+import { cardViewerProps } from "@/lib/cardViewerProps";
 import { ZILLIAX_ID } from "@/lib/constants";
 
 export function DeckBuilder({
@@ -24,14 +24,16 @@ export function DeckBuilder({
   rarities: Rarity[];
 }) {
   const searchParams = useSearchParams();
-  const params = useParams<{ format: "standard" | "wild" }>();
-  const { format } = params;
+  const params = useParams<{ gameMode: CardGameMode }>();
+  const { gameMode } = params;
+  const deckClass = searchParams.get("deckClass") as CardClass;
   const initState = {
     ...initialCards,
     params: {
-      gameMode: searchParams.get("mode") as "constructed",
-      set: format,
-      class: searchParams.get("class") as CardClass,
+      gameMode,
+      set: searchParams.get("format") ?? "standard",
+      class: [deckClass, "neutral"] as CardClass[],
+      multiClass: deckClass,
     },
   };
   const { ref, inView } = useInView();
@@ -97,7 +99,7 @@ export function DeckBuilder({
           deckSearchParams={cardsPage.params}
           sideboardCards={sideboardCards}
         >
-          <Button disabled={selectedCards.length < 30}>Create Deck</Button>
+          <Button>Create Deck</Button>
         </DeckBuilderForm>
       </CurrentDeck>
     </div>

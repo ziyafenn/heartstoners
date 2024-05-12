@@ -37,29 +37,45 @@ export type Database = {
       deck_interactions: {
         Row: {
           author_id: string
+          copies: number | null
           deck_id: number
-          type: Database["public"]["Enums"]["deck_interaction"]
+          game_version: string
+          likes: number | null
           updated_at: string
+          views: number | null
         }
         Insert: {
-          author_id?: string
+          author_id: string
+          copies?: number | null
           deck_id?: number
-          type: Database["public"]["Enums"]["deck_interaction"]
+          game_version: string
+          likes?: number | null
           updated_at?: string
+          views?: number | null
         }
         Update: {
           author_id?: string
+          copies?: number | null
           deck_id?: number
-          type?: Database["public"]["Enums"]["deck_interaction"]
+          game_version?: string
+          likes?: number | null
           updated_at?: string
+          views?: number | null
         }
         Relationships: [
           {
-            foreignKeyName: "public_deck_interactions_user_id_fkey"
+            foreignKeyName: "public_deck_interactions_author_id_fkey"
             columns: ["author_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_deck_interactions_game_version_fkey"
+            columns: ["game_version"]
+            isOneToOne: false
+            referencedRelation: "game_versions"
+            referencedColumns: ["version_name"]
           },
         ]
       }
@@ -184,7 +200,7 @@ export type Database = {
           deck_format: Database["public"]["Enums"]["deck_format"]
           description?: string | null
           dust_cost?: number[] | null
-          game_mode: Database["public"]["Enums"]["game_mode"]
+          game_mode?: Database["public"]["Enums"]["game_mode"]
           game_version: string
           id?: number
           name: string
@@ -267,8 +283,7 @@ export type Database = {
         | "warrior"
         | "neutral"
       deck_format: "standard" | "wild" | "twist"
-      deck_interaction: "like" | "view" | "copy"
-      game_mode: "constructed" | "battlegrounds" | "mercenaries" | "arena"
+      game_mode: "constructed" | "battlegrounds" | "mercenaries"
     }
     CompositeTypes: {
       [_ in never]: never

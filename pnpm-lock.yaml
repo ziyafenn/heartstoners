@@ -23,6 +23,12 @@ importers:
       '@radix-ui/react-tabs':
         specifier: ^1.0.4
         version: 1.0.4(@types/react-dom@18.3.0)(@types/react@18.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-toggle':
+        specifier: ^1.0.3
+        version: 1.0.3(@types/react-dom@18.3.0)(@types/react@18.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-toggle-group':
+        specifier: ^1.0.4
+        version: 1.0.4(@types/react-dom@18.3.0)(@types/react@18.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/themes':
         specifier: ^3.0.2
         version: 3.0.2(@types/react-dom@18.3.0)(@types/react@18.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -40,7 +46,7 @@ importers:
         version: 2.42.7
       blizzard.js:
         specifier: github:ziyafenn/blizzard.js
-        version: https://codeload.github.com/ziyafenn/blizzard.js/tar.gz/3e48def105077a1c92f9a67dd133c82ee6af3573
+        version: https://codeload.github.com/ziyafenn/blizzard.js/tar.gz/eb9b0e51b1a411450e7bd56353099b6e1b67129e
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -1234,8 +1240,8 @@ packages:
     resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
     engines: {node: '>=8'}
 
-  blizzard.js@https://codeload.github.com/ziyafenn/blizzard.js/tar.gz/3e48def105077a1c92f9a67dd133c82ee6af3573:
-    resolution: {tarball: https://codeload.github.com/ziyafenn/blizzard.js/tar.gz/3e48def105077a1c92f9a67dd133c82ee6af3573}
+  blizzard.js@https://codeload.github.com/ziyafenn/blizzard.js/tar.gz/eb9b0e51b1a411450e7bd56353099b6e1b67129e:
+    resolution: {tarball: https://codeload.github.com/ziyafenn/blizzard.js/tar.gz/eb9b0e51b1a411450e7bd56353099b6e1b67129e}
     version: 4.6.0
     engines: {node: '>=10'}
 
@@ -4025,7 +4031,7 @@ snapshots:
 
   binary-extensions@2.3.0: {}
 
-  blizzard.js@https://codeload.github.com/ziyafenn/blizzard.js/tar.gz/3e48def105077a1c92f9a67dd133c82ee6af3573:
+  blizzard.js@https://codeload.github.com/ziyafenn/blizzard.js/tar.gz/eb9b0e51b1a411450e7bd56353099b6e1b67129e:
     dependencies:
       axios: 1.6.8
     transitivePeerDependencies:

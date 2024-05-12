@@ -32,6 +32,7 @@ export async function searchHsCards({
   sort = "manaCost:asc",
   page = 1,
   minionType,
+  multiClass,
 }: CardSeachParams) {
   const hsClient = await createHsClient();
 
@@ -48,6 +49,7 @@ export async function searchHsCards({
     page,
     minionType,
     collectible: 1,
+    multiClass,
   });
 
   const {

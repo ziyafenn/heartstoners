@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/select";
 import { MinionTypes, Rarity } from "@/types/hs.type";
 import { useRef } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useSearchParams } from "next/navigation";
 
 export function DeckBuilderFilter({
@@ -23,33 +23,28 @@ export function DeckBuilderFilter({
 }) {
   const formRef = useRef<HTMLFormElement>(null);
   const searchParams = useSearchParams();
-  const deckClass = searchParams.get("class") as string;
+  const deckClass = searchParams.get("deckClass") as string;
 
-  function onValueChange(value: string, type: "tab" | "select") {
+  function onValueChange(value: string[] | string, type: "toggle" | "select") {
     const form = formRef.current!;
     const formData = new FormData(form);
     formData.append("filter", "true");
-    if (type === "tab") formData.append("class", value);
+    if (type === "toggle") formData.append("class", value);
 
     action(formData);
   }
 
   return (
     <form ref={formRef}>
-      <Tabs
-        defaultValue={deckClass}
+      <ToggleGroup
+        defaultValue={["neutral", deckClass]}
         className="w-[400px]"
-        onValueChange={(value) => onValueChange(value, "tab")}
+        type="multiple"
+        onValueChange={(value) => onValueChange(value, "toggle")}
       >
-        <TabsList>
-          <TabsTrigger value={deckClass}>{deckClass}</TabsTrigger>
-          <TabsTrigger value="neutral">Neutral</TabsTrigger>
-        </TabsList>
-        <TabsContent value="account">
-          Make changes to your account here.
-        </TabsContent>
-        <TabsContent value="password">Change your password here.</TabsContent>
-      </Tabs>
+        <ToggleGroupItem value={deckClass}>{deckClass}</ToggleGroupItem>
+        <ToggleGroupItem value="neutral">Neutral</ToggleGroupItem>
+      </ToggleGroup>
       <Select
         name="minionType"
         onValueChange={(value) => onValueChange(value, "select")}

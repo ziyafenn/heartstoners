@@ -15,7 +15,13 @@ export function cardViewerProps({
   activeSideboardCard,
   onAddCard,
 }: Props) {
-  const { bannedFromSideboard, id, rarityId } = card;
+  const {
+    bannedFromSideboard,
+    id,
+    rarityId,
+    isZilliaxCosmeticModule,
+    isZilliaxFunctionalModule,
+  } = card;
   const selectedCardsCount = selectedCards.length;
   const sideboardCardCount =
     currentSideboard?.cardsInSideboard.filter(
@@ -31,13 +37,28 @@ export function cardViewerProps({
     : selectedCardsCount === 30;
   const isUnavailableForSideboard =
     !!activeSideboardCard && !!bannedFromSideboard;
+  const isCosmeticModulePresent =
+    isZilliaxCosmeticModule &&
+    currentSideboard?.cardsInSideboard.some(
+      (card) => card.isZilliaxCosmeticModule,
+    );
+  const isFunctionalModuleCountReached =
+    isZilliaxFunctionalModule &&
+    currentSideboard?.cardsInSideboard.filter(
+      (card) => card.isZilliaxFunctionalModule,
+    ).length === 2;
+
+  const isDisabled =
+    isTotalCardCountReached ||
+    legendaryLimit ||
+    nonLegendaryLimit ||
+    isUnavailableForSideboard ||
+    isCosmeticModulePresent ||
+    isFunctionalModuleCountReached;
 
   return {
     currentCardCount,
+    isDisabled,
     onAddCard,
-    legendaryLimit,
-    nonLegendaryLimit,
-    isTotalCardCountReached,
-    isUnavailableForSideboard,
   };
 }

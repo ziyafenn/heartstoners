@@ -74,7 +74,7 @@ const config = {
       },
       gridTemplateColumns: {
         "auto-fill-hscard": "repeat(auto-fill, minmax(200px, 1fr))",
-        "auto-fit-hscard": "repeat(auto-fit, minmax(200px, 1fr))",
+        "auto-fit-hscard": "repeat(auto-fit, minmax(280px, 1fr))",
       },
     },
   },

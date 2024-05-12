@@ -1,4 +1,4 @@
-import { cardViewerProps } from "@/hooks/cardViewerProps";
+import { cardViewerProps } from "@/lib/cardViewerProps";
 import { Card } from "@/types/hs.type";
 import Image from "next/image";
 
@@ -14,14 +14,8 @@ export function CardSearchResult({ cards, children, cardViewerProps }: Props) {
       <div className="flex-1 grid grid-cols-auto-fill-hscard">
         {cards.map((card) => {
           const { name, id, image } = card;
-          const {
-            currentCardCount,
-            isTotalCardCountReached,
-            isUnavailableForSideboard,
-            legendaryLimit,
-            nonLegendaryLimit,
-            onAddCard,
-          } = cardViewerProps(card);
+          const { currentCardCount, isDisabled, onAddCard } =
+            cardViewerProps(card);
 
           return (
             <div
@@ -31,12 +25,7 @@ export function CardSearchResult({ cards, children, cardViewerProps }: Props) {
               <div>{currentCardCount}</div>
               <button
                 onClick={() => onAddCard(card)}
-                disabled={
-                  isTotalCardCountReached ||
-                  legendaryLimit ||
-                  nonLegendaryLimit ||
-                  isUnavailableForSideboard
-                }
+                disabled={isDisabled}
                 type="button"
               >
                 <Image
