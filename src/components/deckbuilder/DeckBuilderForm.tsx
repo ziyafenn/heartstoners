@@ -26,12 +26,11 @@ import { DeckInitParams } from "@/types/deck.type";
 import { useSearchParams } from "next/navigation";
 import { CardClass } from "blizzard.js/dist/resources/hs";
 import { useState } from "react";
-import { ETC_ID, ZILLIAX_ID } from "@/lib/constants";
 
 type SelectedCards = Card[];
 
 type Props = {
-  children: React.ReactNode;
+  //children: React.ReactNode;
   deckSearchParams: CardSeachParams;
   selectedCards: SelectedCards;
   sideboardCards: SideboardCards[];
@@ -63,7 +62,7 @@ function BarChart({
 }
 
 export default function DeckBuilderForm({
-  children,
+  // children,
   selectedCards,
   deckSearchParams,
   sideboardCards,
@@ -155,7 +154,7 @@ export default function DeckBuilderForm({
   return (
     <Sheet>
       <SheetTrigger asChild onClick={getSubArchetype}>
-        {children}
+        <Button type="button">Create Deck</Button>
       </SheetTrigger>
       <SheetContent side="left">
         <SheetHeader>

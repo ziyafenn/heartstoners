@@ -69,6 +69,10 @@ export function DeckBuilder({
     ? actions.addSideboardCard
     : actions.addCard;
 
+  const onRemovedCard = activeSideboardCard
+    ? actions.removeSideboardCard
+    : actions.removeCard;
+
   const isActiveSideboardCardZilliax = activeSideboardCard?.id === ZILLIAX_ID;
 
   const cardsDisplayedOnSearchPage = isActiveSideboardCardZilliax
@@ -100,18 +104,24 @@ export function DeckBuilder({
           <div ref={ref}>loading</div>
         </CardSearchResult>
         <CurrentDeck
-          activeSideboardCard={activeSideboardCard}
+          sideboardCards={sideboardCards}
           toggleSideboard={actions.toggleSideboard}
-          currentCardsInSideboard={currentCardsInSideboard}
-          selectedCards={selectedCards}
+          selectedCards={
+            activeSideboardCard ? currentCardsInSideboard : selectedCards
+          }
+          removeCard={onRemovedCard}
         >
-          <DeckBuilderForm
-            selectedCards={selectedCards}
-            deckSearchParams={cardsPage.params}
-            sideboardCards={sideboardCards}
-          >
-            <Button>Create Deck</Button>
-          </DeckBuilderForm>
+          {activeSideboardCard ? (
+            <Button onClick={() => actions.toggleSideboard(null)} type="button">
+              Close
+            </Button>
+          ) : (
+            <DeckBuilderForm
+              selectedCards={selectedCards}
+              deckSearchParams={cardsPage.params}
+              sideboardCards={sideboardCards}
+            />
+          )}
         </CurrentDeck>
       </main>
     </div>

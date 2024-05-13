@@ -59,6 +59,46 @@ export function useDeckBuilder({
     setSelectedCards(currentSelection);
   }
 
+  function removeCard(cardId: number) {
+    // const currentCardCount = selectedCards.filter(
+    //   (card) => card.id === cardId,
+    // ).length;
+    // let updatedSelection: Card[] = [...selectedCards];
+
+    // if (currentCardCount === 1) {
+    //   updatedSelection = selectedCards.filter((card) => card.id !== cardId);
+    // } else {
+    //   const indexToRemove = updatedSelection.findIndex(
+    //     (card) => card.id === cardId,
+    //   );
+    //   updatedSelection.splice(indexToRemove, 1);
+    // }
+
+    // setSelectedCards(updatedSelection);
+
+    const updatedSelection = selectedCards.filter((card) => card.id !== cardId);
+    setSelectedCards(updatedSelection);
+  }
+
+  function removeSideboardCard(cardId: number) {
+    if (!activeSideboardCard) return null;
+    let currentSideboardCards = [...sideboardCards];
+    const currentSideboard = currentSideboardCards.find(
+      (sideboard) => sideboard.sideboardCard.id === activeSideboardCard.id,
+    )!;
+    const updatedSideboardCards = currentSideboard.cardsInSideboard.filter(
+      (card) => card.id !== cardId,
+    );
+    if (updatedSideboardCards.length) {
+      currentSideboard.cardsInSideboard = updatedSideboardCards;
+    } else {
+      currentSideboardCards = currentSideboardCards.filter(
+        (sideboard) => sideboard.sideboardCard.id !== activeSideboardCard.id,
+      );
+    }
+    setSideboardCards(currentSideboardCards);
+  }
+
   const loadNextPage = useCallback(async () => {
     const formData = new FormData();
     for (const [key, value] of Object.entries(cardsPage.params)) {
@@ -94,6 +134,8 @@ export function useDeckBuilder({
     actions: {
       addSideboardCard,
       addCard,
+      removeCard,
+      removeSideboardCard,
       getDeckFromCode,
       toggleSideboard,
       onSearch,
