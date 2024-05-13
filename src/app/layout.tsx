@@ -37,7 +37,7 @@ export default function RootLayout({
             </ul>
           </nav>
         </header>
-        {children}
+        <div className="p-8 ">{children}</div>
         <footer className="border-t p-4">
           <div className="text-xs">
             All assets are trademark of ©2014 Blizzard Entertainment, Inc.

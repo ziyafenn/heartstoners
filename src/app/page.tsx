@@ -9,7 +9,7 @@ export default async function Home() {
   const decks = await getDecks();
 
   return (
-    <div className="grid grid-cols-[1fr_320px] p-8 gap-8 rounded-md">
+    <div className="grid grid-cols-[1fr_320px] gap-8 rounded-md">
       <main className="flex gap-8 flex-col">
         <div
           id="hero"

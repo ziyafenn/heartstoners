@@ -10,7 +10,7 @@ type Props = {
 
 export function CardSearchResult({ cards, children, cardViewerProps }: Props) {
   return (
-    <div className="flex flex-col flex-1">
+    <div className="flex flex-col flex-1 pt-8">
       <div className="flex-1 grid grid-cols-auto-fill-hscard">
         {cards.map((card) => {
           const { name, id, image } = card;

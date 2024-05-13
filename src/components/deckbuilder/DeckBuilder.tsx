@@ -76,15 +76,15 @@ export function DeckBuilder({
     : cardsPage.cards;
 
   return (
-    <div className="flex justify-between">
-      <div className="flex-1">
-        <DeckBuilderFilter
-          action={actions.onSearch}
-          rarities={rarities}
-          minionTypes={minionTypes}
-          keywords={keywords}
-          cardTypes={cardTypes}
-        />
+    <div>
+      <DeckBuilderFilter
+        action={actions.onSearch}
+        rarities={rarities}
+        minionTypes={minionTypes}
+        keywords={keywords}
+        cardTypes={cardTypes}
+      />
+      <main className="grid grid-cols-[1fr,280px] gap-8">
         <CardSearchResult
           cards={cardsDisplayedOnSearchPage}
           cardViewerProps={(card) =>
@@ -99,21 +99,21 @@ export function DeckBuilder({
         >
           <div ref={ref}>loading</div>
         </CardSearchResult>
-      </div>
-      <CurrentDeck
-        activeSideboardCard={activeSideboardCard}
-        toggleSideboard={actions.toggleSideboard}
-        currentCardsInSideboard={currentCardsInSideboard}
-        selectedCards={selectedCards}
-      >
-        <DeckBuilderForm
+        <CurrentDeck
+          activeSideboardCard={activeSideboardCard}
+          toggleSideboard={actions.toggleSideboard}
+          currentCardsInSideboard={currentCardsInSideboard}
           selectedCards={selectedCards}
-          deckSearchParams={cardsPage.params}
-          sideboardCards={sideboardCards}
         >
-          <Button>Create Deck</Button>
-        </DeckBuilderForm>
-      </CurrentDeck>
+          <DeckBuilderForm
+            selectedCards={selectedCards}
+            deckSearchParams={cardsPage.params}
+            sideboardCards={sideboardCards}
+          >
+            <Button>Create Deck</Button>
+          </DeckBuilderForm>
+        </CurrentDeck>
+      </main>
     </div>
   );
 }

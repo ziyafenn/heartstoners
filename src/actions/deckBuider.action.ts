@@ -17,7 +17,7 @@ export async function loadPageWithFilters(
     minionType: formData.get("minionType"),
     textFilter: formData.get("textFilter"),
     keyword: formData.get("keyword"),
-    type: formData.get("cardType"),
+    type: formData.get("type"),
     manaCost: formData.get("manaCost") as unknown,
   } as CardSeachParams;
   const isFilter: boolean = formData.has("filter");

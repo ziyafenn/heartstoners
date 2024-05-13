@@ -112,11 +112,13 @@ export function DeckBuilderFilter({
           <SelectValue placeholder="Keyword" />
         </SelectTrigger>
         <SelectContent>
-          {keywords.map((keyword) => (
-            <SelectItem value={keyword.slug} key={keyword.id}>
-              {keyword.name}
-            </SelectItem>
-          ))}
+          {keywords
+            .filter((keyword) => keyword.gameModes.includes(5))
+            .map((keyword) => (
+              <SelectItem value={keyword.slug} key={keyword.id}>
+                {keyword.name}
+              </SelectItem>
+            ))}
         </SelectContent>
       </Select>
       <Select
@@ -135,6 +137,7 @@ export function DeckBuilderFilter({
         </SelectContent>
       </Select>
       <Input
+        placeholder="Text search"
         name="textFilter"
         className="w-48"
         type="text"
