@@ -102,6 +102,7 @@ export type Database = {
       }
       meta_sub_archetypes: {
         Row: {
+          card_class: Database["public"]["Enums"]["card_class"]
           core_cards: number[] | null
           created_at: string
           deck_class_id: number
@@ -109,11 +110,11 @@ export type Database = {
           name: string
           pct_of_class: number | null
           pct_of_total: number | null
-          player_class_name: Database["public"]["Enums"]["card_class"]
           total_games: number | null
           win_rate: number | null
         }
         Insert: {
+          card_class: Database["public"]["Enums"]["card_class"]
           core_cards?: number[] | null
           created_at: string
           deck_class_id: number
@@ -121,11 +122,11 @@ export type Database = {
           name: string
           pct_of_class?: number | null
           pct_of_total?: number | null
-          player_class_name: Database["public"]["Enums"]["card_class"]
           total_games?: number | null
           win_rate?: number | null
         }
         Update: {
+          card_class?: Database["public"]["Enums"]["card_class"]
           core_cards?: number[] | null
           created_at?: string
           deck_class_id?: number
@@ -133,7 +134,6 @@ export type Database = {
           name?: string
           pct_of_class?: number | null
           pct_of_total?: number | null
-          player_class_name?: Database["public"]["Enums"]["card_class"]
           total_games?: number | null
           win_rate?: number | null
         }
@@ -182,7 +182,8 @@ export type Database = {
           deck_class: Database["public"]["Enums"]["card_class"]
           deck_format: Database["public"]["Enums"]["deck_format"]
           description: string | null
-          dust_cost: number[] | null
+          dust_cost_per_card: number[]
+          dust_cost_sum: number
           game_mode: Database["public"]["Enums"]["game_mode"]
           game_version: string
           id: number
@@ -199,7 +200,8 @@ export type Database = {
           deck_class: Database["public"]["Enums"]["card_class"]
           deck_format: Database["public"]["Enums"]["deck_format"]
           description?: string | null
-          dust_cost?: number[] | null
+          dust_cost_per_card: number[]
+          dust_cost_sum?: number
           game_mode?: Database["public"]["Enums"]["game_mode"]
           game_version: string
           id?: number
@@ -216,7 +218,8 @@ export type Database = {
           deck_class?: Database["public"]["Enums"]["card_class"]
           deck_format?: Database["public"]["Enums"]["deck_format"]
           description?: string | null
-          dust_cost?: number[] | null
+          dust_cost_per_card?: number[]
+          dust_cost_sum?: number
           game_mode?: Database["public"]["Enums"]["game_mode"]
           game_version?: string
           id?: number

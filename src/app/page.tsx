@@ -10,10 +10,10 @@ export default async function Home() {
 
   return (
     <div className="grid grid-cols-[1fr_320px] gap-8 rounded-md">
-      <main className="flex gap-8 flex-col">
+      <main className="flex flex-col gap-8">
         <div
           id="hero"
-          className="flex gap-4 flex-col justify-start bg-slate-600 rounded-sm p-10 gap-8"
+          className="flex flex-col justify-start gap-4 gap-8 rounded-sm bg-slate-600 p-10"
         >
           <h3 className="text-2xl">
             Craft your winning deck with our Reno-certified deckbuilder for
@@ -47,21 +47,21 @@ export default async function Home() {
           <Button>Join</Button>
         </div>
         <div className="border border-border p-4">
-          <ul className="flex flex-col divide-y gap-2">
+          <ul className="flex flex-col gap-2 divide-y">
             <SidebarCardItem />
             <SidebarCardItem />
             <SidebarCardItem />
           </ul>
         </div>
         <div className="border border-border p-4">
-          <ul className="flex flex-col divide-y gap-2">
+          <ul className="flex flex-col gap-2 divide-y">
             <SidebarCardItem />
             <SidebarCardItem />
             <SidebarCardItem />
           </ul>
         </div>
         <div className="border border-border p-4">
-          <ul className="flex flex-col divide-y gap-2">
+          <ul className="flex flex-col gap-2 divide-y">
             <SidebarCardItem />
             <SidebarCardItem />
             <SidebarCardItem />

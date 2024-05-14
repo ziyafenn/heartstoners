@@ -7,7 +7,7 @@ import {
   Rarity,
   SetGroups,
 } from "@/types/hs.type";
-import { CardClass, CardGameMode, card } from "blizzard.js/dist/resources/hs";
+import { CardClass, CardGameMode } from "blizzard.js/dist/resources/hs";
 
 export default async function ClassDeckBuilder({
   params,

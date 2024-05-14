@@ -15,7 +15,7 @@ async function createHsClient() {
   });
 }
 export async function searchHsCards({
-  class: deckClass,
+  class: cardClass,
   rarity,
   type,
   manaCost,
@@ -34,7 +34,7 @@ export async function searchHsCards({
     gameMode,
     type,
     rarity,
-    class: deckClass,
+    class: cardClass,
     manaCost,
     locale: "en_US",
     set,

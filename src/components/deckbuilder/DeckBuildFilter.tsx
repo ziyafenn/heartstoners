@@ -39,11 +39,11 @@ export function DeckBuilderFilter({
     type: keyof CardSearchOptions,
   ) {
     const form = formRef.current!;
-    const deckClass = classRef.current!;
+    const cardClass = classRef.current!;
     const manaCost = manaCostRef.current!;
     const formattedValue = Array.isArray(value) ? value.join(",") : value;
 
-    if (type === "class") deckClass.value = formattedValue;
+    if (type === "class") cardClass.value = formattedValue;
     if (type === "manaCost") manaCost.value = formattedValue;
 
     const formData = new FormData(form);
@@ -82,9 +82,9 @@ export function DeckBuilderFilter({
           <SelectValue placeholder="Minion Types" />
         </SelectTrigger>
         <SelectContent>
-          {minionTypes.map((deckClass) => (
-            <SelectItem value={deckClass.slug} key={deckClass.id}>
-              {deckClass.name}
+          {minionTypes.map((cardClass) => (
+            <SelectItem value={cardClass.slug} key={cardClass.id}>
+              {cardClass.name}
             </SelectItem>
           ))}
         </SelectContent>
@@ -154,7 +154,7 @@ export function DeckBuilderFilter({
           <ToggleGroupItem
             value={index === 10 ? "10^" : mana.toString()}
             key={mana}
-            className="size-10 p-0 bg-[url(/assets/mana.png)] bg-contain bg-no-repeat font-outline-2 text-[16px]"
+            className="font-outline-2 size-10 bg-[url(/assets/mana.png)] bg-contain bg-no-repeat p-0 text-[16px]"
           >
             {mana}
           </ToggleGroupItem>

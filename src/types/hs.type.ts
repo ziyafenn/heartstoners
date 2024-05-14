@@ -55,20 +55,44 @@ export type SetGroups = {
 };
 
 export type Rarity = {
-  slug: string;
+  slug: "common" | "free" | "rare" | "epic" | "legendary";
   id: number;
   craftingCost: number[];
   dustValue: number[];
-  name: string;
+  name: "Common" | "Free" | "Rare" | "Epic" | "Legendary";
 };
 
-export type DeckClass = {
-  slug: Enums<"card_class">;
+export type CardClass = {
+  slug:
+    | "deathknight"
+    | "demonhunter"
+    | "druid"
+    | "hunter"
+    | "mage"
+    | "paladin"
+    | "priest"
+    | "rogue"
+    | "shaman"
+    | "warlock"
+    | "warrior"
+    | "neutral";
   id: number;
-  name: string;
-  cardId: number;
-  heroPowerCardId: number;
-  alternateHeroCardIds: number[];
+  name:
+    | "Death Knight"
+    | "Demon Hunter"
+    | "Druid"
+    | "Hunter"
+    | "Mage"
+    | "Paladin"
+    | "Priest"
+    | "Rogue"
+    | "Shaman"
+    | "Warlock"
+    | "Warrior"
+    | "Neutral";
+  cardId?: number;
+  heroPowerCardId?: number;
+  alternateHeroCardIds?: number[];
 };
 
 export type MinionTypes = {
@@ -134,7 +158,7 @@ export type CardType = {
     | "HeroPower"
     | "Location"
     | "Reward";
-  gameModes: number[];
+  gameModes?: number[];
 };
 
 export type CardSeachParams = ResourceOptions<CardSearchOptions>;

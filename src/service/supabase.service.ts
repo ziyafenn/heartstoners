@@ -1,6 +1,6 @@
 "use server";
 
-import { DeckClass } from "@/types/hs.type";
+import { CardClass } from "@/types/hs.type";
 import { UserCollection } from "@/types/hsreplay.type";
 import { supabase } from "./fetch";
 import { getUserCollection } from "./hsreplay.service";
@@ -24,11 +24,11 @@ export async function getSingleDeck(deckId: string) {
   return data;
 }
 
-export async function getMetasByClass(className: DeckClass["name"]) {
+export async function getMetasByClass(className: CardClass["slug"]) {
   const { data, error } = await supabase
     .from("meta_sub_archetypes")
     .select("*")
-    .eq("player_class_name", className);
+    .eq("card_class", className);
 
   return data;
 }

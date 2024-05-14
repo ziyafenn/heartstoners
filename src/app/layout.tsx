@@ -3,6 +3,7 @@ import { Patua_One } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const inter = Patua_One({ subsets: ["latin"], weight: ["400"] });
 
@@ -20,11 +21,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} dark h-screen`}>
         <header>
-          <nav className="flex justify-between p-4 items-center">
+          <nav className="flex items-center justify-between p-4">
             <div>
               <Link href="/">Logo</Link>
             </div>
-            <ul className="flex gap-4 items-center">
+            <ul className="flex items-center gap-4">
               <li>
                 <Link href="/decks">Decks</Link>
               </li>
@@ -37,7 +38,9 @@ export default function RootLayout({
             </ul>
           </nav>
         </header>
-        <div className="p-8 ">{children}</div>
+        <div className="p-8 ">
+          <TooltipProvider delayDuration={100}>{children}</TooltipProvider>
+        </div>
         <footer className="border-t p-4">
           <div className="text-xs">
             All assets are trademark of ©2014 Blizzard Entertainment, Inc.
