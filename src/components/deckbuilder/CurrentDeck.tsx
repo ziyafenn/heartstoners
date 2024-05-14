@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { MinusIcon, XIcon } from "lucide-react";
 
 type Props = {
   children: React.ReactNode;
@@ -47,7 +48,7 @@ export function CurrentDeck({
 
   return (
     <aside>
-      <div className="sticky top-0 pt-8 flex flex-col gap-4">
+      <div className="sticky top-0 flex flex-col gap-4 pt-8">
         {/* {!selectedCardsCount && (
           <form onSubmit={getDeckFromCode}>
             <Input name="deckCode" />
@@ -56,7 +57,7 @@ export function CurrentDeck({
         )} */}
 
         <ScrollArea ref={scrollAreaRef}>
-          <ul className="flex flex-col gap-1 max-h-[86vh] pr-3 min-h-32">
+          <ul className="flex max-h-[86vh] flex-col gap-1 pr-3">
             {showSelectedCard(selectedCards).map((card, index) => {
               const count =
                 selectedCards?.filter(
@@ -80,7 +81,7 @@ export function CurrentDeck({
                   ref={isLastItem ? endOfListRef : null}
                 >
                   {card.maxSideboardCards && (
-                    <div className="absolute bottom-0 flex justify-center w-full z-20">
+                    <div className="absolute bottom-0 z-20 flex w-full justify-center">
                       <Button
                         size="sm"
                         className="h-4"
@@ -90,27 +91,33 @@ export function CurrentDeck({
                       </Button>
                     </div>
                   )}
-                  <div className="z-10 h-10 flex items-center justify-between absolute bg-gradient-to-r from-black from-30% via-transparent via-70% w-full">
+                  <div className="absolute z-10 flex h-10 w-full items-center justify-between bg-gradient-to-r from-black from-30% via-transparent via-70%">
                     <div className="flex items-center gap-2">
-                      <div className="flex items-center justify-center size-8 text-center bg-[url(/assets/mana.png)] bg-contain bg-no-repeat font-outline-2 text-[16px]">
+                      <div className="font-outline-2 flex size-8 items-center justify-center bg-[url(/assets/mana.png)] bg-contain bg-no-repeat text-center text-[16px]">
                         {card.manaCost}
                       </div>
-                      <span className="font-outline-2 leading-none w-4/5">
+                      <span className="font-outline-2 w-4/5 leading-none">
                         {card.name}
                       </span>
                     </div>
-                    <div className="pl-1 rounded-l-lg bg-opacity-80 text-[gold] bg-black flex justify-center items-center w-4 size-8 text-center">
+                    <div className="flex size-8 w-4 items-center justify-center rounded-l-lg bg-black/80 pl-1 text-center text-[gold]">
                       {hovered === card.id ? (
-                        <button onClick={() => removeCard(card.id)}>X</button>
+                        <button onClick={() => removeCard(card.id)}>
+                          {count === 2 ? (
+                            <MinusIcon className="size-4" />
+                          ) : (
+                            <XIcon className="size-4" />
+                          )}
+                        </button>
                       ) : (
                         count
                       )}
                     </div>
                   </div>
-                  <div className="h-10 overflow-clip">
+                  <div className="h-10 overflow-hidden">
                     {card.cropImage ? (
                       <Image
-                        className="object-contain h-14 object-right"
+                        className="h-14 object-contain object-right"
                         src={card.cropImage}
                         width={243}
                         height={64}
@@ -118,7 +125,7 @@ export function CurrentDeck({
                       />
                     ) : (
                       <Image
-                        className="object-contain scale-[1.6] object-[38px_0px]"
+                        className="scale-[1.6] object-contain object-[38px_0px]"
                         src={card.image}
                         width={530}
                         height={384}

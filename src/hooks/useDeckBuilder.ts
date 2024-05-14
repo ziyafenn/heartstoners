@@ -60,23 +60,20 @@ export function useDeckBuilder({
   }
 
   function removeCard(cardId: number) {
-    // const currentCardCount = selectedCards.filter(
-    //   (card) => card.id === cardId,
-    // ).length;
-    // let updatedSelection: Card[] = [...selectedCards];
+    const currentCardCount = selectedCards.filter(
+      (card) => card.id === cardId,
+    ).length;
+    let updatedSelection: Card[] = [...selectedCards];
 
-    // if (currentCardCount === 1) {
-    //   updatedSelection = selectedCards.filter((card) => card.id !== cardId);
-    // } else {
-    //   const indexToRemove = updatedSelection.findIndex(
-    //     (card) => card.id === cardId,
-    //   );
-    //   updatedSelection.splice(indexToRemove, 1);
-    // }
+    if (currentCardCount === 1) {
+      updatedSelection = selectedCards.filter((card) => card.id !== cardId);
+    } else {
+      const indexToRemove = updatedSelection.findLastIndex(
+        (card) => card.id === cardId,
+      );
+      updatedSelection.splice(indexToRemove, 1);
+    }
 
-    // setSelectedCards(updatedSelection);
-
-    const updatedSelection = selectedCards.filter((card) => card.id !== cardId);
     setSelectedCards(updatedSelection);
   }
 

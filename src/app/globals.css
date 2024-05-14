@@ -76,18 +76,21 @@
 }
 
 @layer components {
+  .toggle {
+    --shadow-color: 122deg 91% 20%;
+    &:hover,
+    &[data-state="on"] {
+      filter: drop-shadow(2px 2px 3px green) drop-shadow(-2px -2px 5px green);
+    }
+  }
+}
+
+@layer utilities {
   .font-outline-2 {
     text-shadow:
       -2px -2px 0 #000,
       2px -2px 0 #000,
       -2px 2px 0 #000,
       2px 2px 0 #000;
-  }
-  .font-outline-1 {
-    text-shadow:
-      -1px -1px 0 #000,
-      1px -1px 0 #000,
-      -1x 1px 0 #000,
-      1px 1px 0 #000;
   }
 }
