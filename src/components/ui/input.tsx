@@ -1,13 +1,18 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
+import { Button } from "./button";
+import { X } from "lucide-react";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {}
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, ...props }, ref) => {
-    return (
+const Input = React.forwardRef<
+  HTMLInputElement,
+  InputProps & { onClear?: () => void; showClearIcon: boolean }
+>(({ className, type, onClear, showClearIcon, ...props }, ref) => {
+  return (
+    <div className="relative h-10">
       <input
         type={type}
         className={cn(
@@ -17,9 +22,19 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         ref={ref}
         {...props}
       />
-    );
-  },
-);
+      {showClearIcon && (
+        <Button
+          variant="ghost"
+          className="absolute bottom-0 right-0"
+          onClick={onClear}
+          type="button"
+        >
+          <X className="size-4" />
+        </Button>
+      )}
+    </div>
+  );
+});
 Input.displayName = "Input";
 
 export { Input };
