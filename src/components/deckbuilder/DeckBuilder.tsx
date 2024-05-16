@@ -19,6 +19,8 @@ import { useInView } from "react-intersection-observer";
 import { useDeckBuilder } from "@/hooks/useDeckBuilder";
 import { cardViewerProps } from "@/lib/cardViewerProps";
 import { ZILLIAX_ID } from "@/lib/constants";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 export function DeckBuilder({
   initialCards,
@@ -79,6 +81,7 @@ export function DeckBuilder({
     ? zilliaxCards
     : cardsPage.cards;
 
+  const canLoadMore = cardsPage.pageCount > cardsPage.page;
   return (
     <div>
       <DeckBuilderFilter
@@ -88,7 +91,7 @@ export function DeckBuilder({
         keywords={keywords}
         cardTypes={cardTypes}
       />
-      <main className="grid grid-cols-[1fr,280px] gap-8">
+      <main className="grid select-none grid-cols-[1fr,280px] gap-8">
         <CardSearchResult
           cards={cardsDisplayedOnSearchPage}
           cardViewerProps={(card) =>
@@ -101,7 +104,18 @@ export function DeckBuilder({
             })
           }
         >
-          <div ref={ref}>loading</div>
+          <div
+            ref={ref}
+            className={cn("self-center size-24", !canLoadMore && "hidden")}
+          >
+            <Image
+              src="/assets/hs-logo.png"
+              width={256}
+              height={256}
+              alt="heartstone-logo"
+              className="animate-spin-slow object-contain delay-1000"
+            />
+          </div>
         </CardSearchResult>
         <CurrentDeck
           sideboardCards={sideboardCards}

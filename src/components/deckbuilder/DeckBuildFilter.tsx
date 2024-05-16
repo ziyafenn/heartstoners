@@ -36,14 +36,12 @@ export function DeckBuilderFilter({
   const deckClass = searchParams.get("deckClass") as string;
   const manaCost = [...Array(10).keys(), "10+"];
 
-  const [values, setValues] = useState({
+  const [values, setValues] = useState<
+    Partial<Record<keyof CardSearchOptions, string | string[]>>
+  >({
     class: ["neutral", deckClass],
-    manaCost: [],
     textFilter: "",
-    rarity: "",
-    keyword: "",
-    minionType: "",
-    type: "",
+    manaCost: [],
   });
   const [textSearchActive, setTextSearchActive] = useState(false);
   const [activeFilters, setActiveFilters] = useState<
@@ -51,7 +49,7 @@ export function DeckBuilderFilter({
   >(new Map());
 
   function onValueChange(
-    value: string[] | string,
+    value: string[] | string | null,
     type: keyof CardSearchOptions,
     isReset?: boolean,
   ) {
@@ -60,7 +58,7 @@ export function DeckBuilderFilter({
 
     if (!(type === "class" || type === "manaCost")) {
       if (isReset) updatedFilters.delete(type);
-      else updatedFilters.set(type, formattedValue);
+      else updatedFilters.set(type, formattedValue!);
     }
 
     setValues((state) => ({ ...state, [type]: formattedValue }));
@@ -69,7 +67,7 @@ export function DeckBuilderFilter({
     const form = formRef.current!;
     const formData = new FormData(form);
 
-    formData.set(type, formattedValue);
+    isReset ? formData.delete(type) : formData.set(type, formattedValue!);
     formData.set("filter", "true");
 
     action(formData);
@@ -85,7 +83,7 @@ export function DeckBuilderFilter({
         }}
       >
         <ToggleGroup
-          defaultValue={["neutral", deckClass]}
+          defaultValue={values.class as string[]}
           type="multiple"
           onValueChange={(value) => onValueChange(value, "class")}
         >
@@ -96,9 +94,24 @@ export function DeckBuilderFilter({
             <HeroIcon slug="neutral" />
           </ToggleGroupItem>
         </ToggleGroup>
+        <ToggleGroup
+          type="multiple"
+          onValueChange={(value) => onValueChange(value, "manaCost")}
+        >
+          {manaCost.map((mana, index) => (
+            <ToggleGroupItem
+              value={index === 10 ? "10^" : mana.toString()}
+              key={mana}
+              className="font-outline-2 size-10 bg-[url(/assets/mana.png)] bg-contain bg-no-repeat p-0 text-[16px]"
+            >
+              {mana}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
         <Select
           name="minionType"
           onValueChange={(value) => onValueChange(value, "minionType")}
+          value={values.minionType as string}
         >
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Minion Types" />
@@ -112,7 +125,7 @@ export function DeckBuilderFilter({
           </SelectContent>
         </Select>
         <Select
-          value={values["rarity"]}
+          value={values.rarity as string}
           name="rarity"
           onValueChange={(value) => {
             onValueChange(value, "rarity");
@@ -132,6 +145,7 @@ export function DeckBuilderFilter({
         <Select
           name="keyword"
           onValueChange={(value) => onValueChange(value, "keyword")}
+          value={values.keyword as string}
         >
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Keyword" />
@@ -149,6 +163,7 @@ export function DeckBuilderFilter({
         <Select
           name="type"
           onValueChange={(value) => onValueChange(value, "type")}
+          value={values.type as string}
         >
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Type" />
@@ -167,7 +182,7 @@ export function DeckBuilderFilter({
           onChange={(e) =>
             setValues((state) => ({
               ...state,
-              textFilter: e.currentTarget.value,
+              textFilter: e.target.value,
             }))
           }
           onClear={() => {
@@ -188,20 +203,6 @@ export function DeckBuilderFilter({
             }
           }}
         />
-        <ToggleGroup
-          type="multiple"
-          onValueChange={(value) => onValueChange(value, "manaCost")}
-        >
-          {manaCost.map((mana, index) => (
-            <ToggleGroupItem
-              value={index === 10 ? "10^" : mana.toString()}
-              key={mana}
-              className="font-outline-2 size-10 bg-[url(/assets/mana.png)] bg-contain bg-no-repeat p-0 text-[16px]"
-            >
-              {mana}
-            </ToggleGroupItem>
-          ))}
-        </ToggleGroup>
         <input hidden name="class" type="hidden" value={values.class} />
         <input hidden type="hidden" name="manaCost" value={values.manaCost} />
       </form>
