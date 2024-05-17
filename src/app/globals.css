@@ -86,9 +86,44 @@
   }
 
   .card {
-    &.selected {
-      filter: drop-shadow(1px 1px 0px red) drop-shadow(-1px -1px 0px red)
-        drop-shadow(-1px -1px 20px red);
+    position: relative;
+    transition-duration: 300ms;
+    transition-property: transform, box-shadow;
+    transition-timing-function: ease-out;
+    transform: rotate3d(0);
+    &:hover {
+      transition-duration: 150ms;
+      box-shadow: 0 5px 20px 5px #00000044;
+    }
+
+    .image {
+      &.selected {
+        filter: drop-shadow(1px 1px 0px red) drop-shadow(-1px -1px 0px red)
+          drop-shadow(-1px -1px 20px red);
+      }
+    }
+  }
+  .coin {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, gold, #8b4513);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    right: 20px;
+    top: 24px;
+    position: absolute;
+    &::before {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      border-radius: 50%;
+      background: radial-gradient(circle at center, #ffd700, gold);
     }
   }
 }

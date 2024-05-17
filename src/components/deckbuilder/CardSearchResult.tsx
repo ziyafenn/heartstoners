@@ -1,7 +1,7 @@
 import { cardViewerProps } from "@/lib/cardViewerProps";
-import { cn } from "@/lib/utils";
-import { Card } from "@/types/hs.type";
-import Image from "next/image";
+
+import type { Card } from "@/types/hs.type";
+import { HsCard } from "./HsCard";
 
 type Props = {
   children: React.ReactNode;
@@ -17,26 +17,15 @@ export function CardSearchResult({ cards, children, cardViewerProps }: Props) {
           const { name, id, image } = card;
           const { currentCardCount, isDisabled, onAddCard } =
             cardViewerProps(card);
-
           return (
-            <div key={id}>
-              <div>{currentCardCount}</div>
-              <button
-                onClick={() => onAddCard(card)}
-                disabled={isDisabled}
-                type="button"
-              >
-                <Image
-                  draggable={false}
-                  className={cn("card", currentCardCount && "selected")}
-                  alt={name}
-                  src={image}
-                  height={530}
-                  width={384}
-                  key={id}
-                />
-              </button>
-            </div>
+            <HsCard
+              key={id}
+              currentCount={currentCardCount}
+              image={image}
+              name={name}
+              isDisabled={isDisabled}
+              onAddCard={() => onAddCard(card)}
+            />
           );
         })}
       </div>
