@@ -1,27 +1,52 @@
-import { Flame } from "lucide-react";
+import { Tables } from "@/types/superbase.type";
+import { HeroIcon } from "./HeroIcon";
+import { AssetIcon } from "./AssetIcon";
+import Link from "next/link";
 
-export function DeckCard() {
+type Props = Tables<"user_decks"> & { profiles: Tables<"profiles"> };
+
+export function DeckCard({ data }: { data: Props }) {
+  const {
+    archetype,
+    deck_class,
+    deck_format,
+    dust_cost_sum,
+    id,
+    name,
+    sub_archetype,
+    profiles,
+  } = data;
   return (
-    <li className="flex flex-col justify-between flex-1 bg-slate-400 p-4">
-      <div>
-        <div id="name-meta" className="flex justify-between">
-          <div className="leading-none">
-            <h3>Deck Name</h3>
-            <span className="text-xs">Aggro - Deck Hunter</span>
+    <li className="flex flex-1 flex-col justify-between gap-4 bg-slate-400 p-4">
+      <Link href={`/decks/${id}/`}>
+        <div>
+          <div id="name-meta" className="flex justify-between">
+            <div className="leading-none">
+              <h3>{name}</h3>
+              <span className="text-xs">
+                {archetype}
+                {sub_archetype && ` - ${sub_archetype}`}
+              </span>
+            </div>
+            <div id="mode-class" className="flex gap-2">
+              <div className="size-6 rounded-full bg-red-600" />
+              <div className="size-6">
+                <HeroIcon slug={deck_class} />
+              </div>
+            </div>
           </div>
-          <div id="mode-class" className="flex gap-2">
-            <div className="rounded-full bg-red-600 size-6" />
-            <div className="rounded-full bg-red-600 size-6" />
+          <div className="flex text-xs">
+            <AssetIcon name="dust" type="asset" />
+            {dust_cost_sum}
           </div>
         </div>
-        <span className="text-xs">45432</span>
-      </div>
-      <div className="flex justify-between text-sm items-center">
-        <span>💎💎💎💎</span>
-        <div id="author" className="flex items-center gap-2">
-          <span className="text-sm">Author Name</span>
+        <div className="flex items-center justify-between text-sm">
+          <span>💎💎💎💎</span>
+          <div id="author" className="flex items-center gap-2">
+            <span className="text-sm">{profiles.username}</span>
+          </div>
         </div>
-      </div>
+      </Link>
     </li>
   );
 }

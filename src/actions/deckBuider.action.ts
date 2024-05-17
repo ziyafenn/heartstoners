@@ -1,7 +1,7 @@
 "use server";
 
-import { supabase } from "@/service/fetch";
 import { searchHsCards } from "@/service/hs.service";
+import { createClient } from "@/service/supabase.auth.server";
 import { getCurrentGameVersion } from "@/service/supabase.service";
 import { DeckInitParams, DeckUserInputParams } from "@/types/deck.type";
 import { CardSeachParams, CardsPage } from "@/types/hs.type";
@@ -44,6 +44,7 @@ export async function createDeck(
   deckParams: DeckInitParams,
   formData: FormData,
 ) {
+  const supabase = createClient();
   let userInput = {} as DeckUserInputParams;
   const gameVersion = await getCurrentGameVersion();
 
@@ -61,8 +62,6 @@ export async function createDeck(
       ...userInput,
       game_version: gameVersion,
     })
-    .select();
-
-  if (error) console.log(error, "errror");
-  else console.log(data, "done");
+    .select()
+    .single();
 }

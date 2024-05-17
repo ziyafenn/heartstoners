@@ -45,7 +45,7 @@ export type Database = {
           views: number | null
         }
         Insert: {
-          author_id: string
+          author_id?: string
           copies?: number | null
           deck_id?: number
           game_version: string
@@ -67,7 +67,14 @@ export type Database = {
             foreignKeyName: "public_deck_interactions_author_id_fkey"
             columns: ["author_id"]
             isOneToOne: false
-            referencedRelation: "users"
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_deck_interactions_deck_id_fkey"
+            columns: ["deck_id"]
+            isOneToOne: true
+            referencedRelation: "user_decks"
             referencedColumns: ["id"]
           },
           {
@@ -76,6 +83,55 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "game_versions"
             referencedColumns: ["version_name"]
+          },
+        ]
+      }
+      deck_likes: {
+        Row: {
+          author_id: string
+          created_at: string
+          deck_id: number
+          id: number
+          ip: string
+          user_id: string | null
+        }
+        Insert: {
+          author_id: string
+          created_at?: string
+          deck_id: number
+          id?: number
+          ip: string
+          user_id?: string | null
+        }
+        Update: {
+          author_id?: string
+          created_at?: string
+          deck_id?: number
+          id?: number
+          ip?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_deck_likes_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_deck_likes_deck_id_fkey"
+            columns: ["deck_id"]
+            isOneToOne: false
+            referencedRelation: "user_decks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_deck_likes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -191,7 +247,7 @@ export type Database = {
           sideboard_cards: string[] | null
           sub_archetype: number | null
           updated_at: string
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           archetype: Database["public"]["Enums"]["archetypes"]
@@ -209,7 +265,7 @@ export type Database = {
           sideboard_cards?: string[] | null
           sub_archetype?: number | null
           updated_at?: string
-          user_id?: string | null
+          user_id?: string
         }
         Update: {
           archetype?: Database["public"]["Enums"]["archetypes"]
@@ -227,7 +283,7 @@ export type Database = {
           sideboard_cards?: string[] | null
           sub_archetype?: number | null
           updated_at?: string
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: [
           {
@@ -245,10 +301,10 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "user_decks_user_id_fkey"
+            foreignKeyName: "public_user_decks_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "users"
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -268,6 +324,18 @@ export type Database = {
           missing_cards: number[]
           required_dust_cost: number
         }[]
+      }
+      increment_copies: {
+        Args: {
+          id: number
+        }
+        Returns: undefined
+      }
+      increment_views: {
+        Args: {
+          id: number
+        }
+        Returns: undefined
       }
     }
     Enums: {

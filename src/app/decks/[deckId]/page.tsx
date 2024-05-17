@@ -1,31 +1,42 @@
 import { getDeckByCardList } from "@/service/hs.service";
-import { getSingleDeck } from "@/service/supabase.service";
-import Image from "next/image";
+import { getDeckLikeByIp, getSingleDeck } from "@/service/supabase.service";
+import { UserDeck } from "./_content/UserDeck";
+import { encrypt, getUserIp } from "@/lib/serverUtils";
 
-export default async function Deck({ params }: { params: { deckId: string } }) {
+export default async function Deck({ params }: { params: { deckId: number } }) {
   const { deckId } = params;
+
+  // if (!hasUserViewedPage) {
+  //   await deckInteraction({ deckId, type: "increment_views" });
+  //   cookieStore.set("view", "y");
+  // }
+  // if (!hasUserCopiedDeck) {
+  //   cookieStore.set("copy", "y");
+  // }
+
   const userDeck = await getSingleDeck(deckId);
   const deckData = await getDeckByCardList({
     cardIds: userDeck!.card_ids,
     sideboardCards: userDeck?.sideboard_cards ?? undefined,
   });
 
-  console.log(userDeck);
+  const userIp = getUserIp();
+  const encryptedUserIp = encrypt(userIp);
+
+  const didUserLike = await getDeckLikeByIp({
+    deckId: Number(deckId),
+    ip: encryptedUserIp,
+  });
+
+  console.log(didUserLike, "didUserLike");
 
   return (
-    <div>
-      <ul>
-        {/* {Object.entries(deck!).map(([key, value]) => (
-          <li key={key}>
-            {key}: {value}
-          </li>
-        ))} */}
-        {deckData.cards.map((card) => (
-          <li key={card.id}>
-            <Image src={card.image} alt={card.name} height={530} width={384} />
-          </li>
-        ))}
-      </ul>
+    <div className="grid grid-cols-2">
+      <UserDeck
+        deck={userDeck!}
+        cards={deckData.cards}
+        didUserLike={!!didUserLike}
+      />
     </div>
   );
 }

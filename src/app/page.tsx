@@ -13,7 +13,7 @@ export default async function Home() {
       <main className="flex flex-col gap-8">
         <div
           id="hero"
-          className="flex flex-col justify-start gap-4 gap-8 rounded-sm bg-slate-600 p-10"
+          className="flex flex-col justify-start gap-4 rounded-sm bg-slate-600 p-10"
         >
           <h3 className="text-2xl">
             Craft your winning deck with our Reno-certified deckbuilder for
@@ -28,16 +28,8 @@ export default async function Home() {
           <h2 className="text-xl leading-loose">
             Most upvoted deck of the week
           </h2>
-          <ul className="grid grid-cols-auto-fit-hscard gap-4">
-            <DeckCard />
-            <DeckCard />
-            <DeckCard />
-            <DeckCard />
-            <DeckCard />
-            <DeckCard />
-            <DeckCard />
-            <DeckCard />
-            <DeckCard />
+          <ul className="grid grid-cols-auto-fill-hscard gap-4">
+            {decks?.map((deck) => <DeckCard data={deck} key={deck.id} />)}
           </ul>
         </div>
       </main>
@@ -47,6 +39,7 @@ export default async function Home() {
           <Button>Join</Button>
         </div>
         <div className="border border-border p-4">
+          <h3>Top 5 creators</h3>
           <ul className="flex flex-col gap-2 divide-y">
             <SidebarCardItem />
             <SidebarCardItem />
@@ -54,6 +47,8 @@ export default async function Home() {
           </ul>
         </div>
         <div className="border border-border p-4">
+          <h3>Top 5 metas</h3>
+
           <ul className="flex flex-col gap-2 divide-y">
             <SidebarCardItem />
             <SidebarCardItem />
@@ -61,6 +56,8 @@ export default async function Home() {
           </ul>
         </div>
         <div className="border border-border p-4">
+          <h3>Top 5 classes</h3>
+
           <ul className="flex flex-col gap-2 divide-y">
             <SidebarCardItem />
             <SidebarCardItem />

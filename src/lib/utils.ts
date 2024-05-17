@@ -8,7 +8,6 @@ export function cn(...inputs: ClassValue[]) {
 export function getDustCost(id: number | null) {
   switch (id) {
     case 1: //common
-      return 40;
     case 3:
       return 100;
     case 4:
