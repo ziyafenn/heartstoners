@@ -1,12 +1,22 @@
 import type { Metadata } from "next";
-import { Patua_One } from "next/font/google";
+import { Patua_One as FonsHs, Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { createClient } from "@/service/supabase.auth.server";
+import { cn } from "@/lib/utils";
 
-const inter = Patua_One({ subsets: ["latin"], weight: ["400"] });
+const hs = FonsHs({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-hs",
+});
+const inter = FontSans({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-sans",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,7 +28,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = await createClient();
+  const supabase = createClient();
 
   const {
     data: { user },
@@ -26,7 +36,9 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${inter.className} dark h-screen`}>
+      <body
+        className={cn(inter.variable, hs.variable, "dark h-screen font-sans")}
+      >
         <header>
           <nav className="flex items-center justify-between p-4">
             <div>

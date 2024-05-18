@@ -1,14 +1,20 @@
 import Link from "next/link";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
-import { CardGameMode } from "blizzard.js/dist/resources/hs";
 import { CARD_CLASSES } from "@/lib/cardClasses";
+import { HeroIcon } from "@/components/HeroIcon";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+
+import { loadDeckFromCode } from "@/actions/deckBuider.action";
 
 export default async function DeckBuilderMode() {
-  const gameMode = "constructed" as CardGameMode;
-
   return (
     <div className="m-auto flex max-w-screen-lg flex-col items-center justify-center">
+      <form action={loadDeckFromCode}>
+        <Input name="deckCode" type="text" required />
+        <Button type="submit">Find</Button>
+      </form>
       <Tabs defaultValue="standard">
         <TabsList>
           <TabsTrigger value="standard">Standard</TabsTrigger>
@@ -22,19 +28,15 @@ export default async function DeckBuilderMode() {
             <li className="select-none" key={cardClass.id}>
               <Link
                 href={{
-                  pathname: `/deckbuilder/${gameMode}`,
-                  query: { deckClass: cardClass.slug, format: "standard" },
+                  pathname: `/deckbuilder/standard`, //TODO: update the format
+                  query: { deckClass: cardClass.slug },
                 }}
               >
                 <div className="relative rounded-sm border-8 border-double border-orange-400">
                   <div className="absolute bottom-8 flex h-12 w-full items-center gap-4 border border-orange-500 bg-black/80 px-4">
-                    <Image
-                      src={`/hero_icons/${cardClass.slug}.png`}
-                      width={193}
-                      height={193}
-                      className="size-16 drop-shadow-[1px_0_0_orange]"
-                      alt={cardClass.name}
-                    />
+                    <div className="size-16 drop-shadow-[1px_0_0_orange]">
+                      <HeroIcon slug={cardClass.slug} />
+                    </div>
                     <div className="text-xl">{cardClass.name}</div>
                   </div>
                   <Image

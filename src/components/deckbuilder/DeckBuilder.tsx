@@ -5,13 +5,14 @@ import { DeckBuilderFilter } from "./DeckBuildFilter";
 import { Button } from "../ui/button";
 import DeckBuilderForm from "./DeckBuilderForm";
 import {
+  CardClass,
   CardType,
   CardsPage,
   Keyword,
   MinionTypes,
   Rarity,
+  SetGroups,
 } from "@/types/hs.type";
-import { CardClass, CardGameMode } from "blizzard.js/dist/resources/hs";
 import { useParams, useSearchParams } from "next/navigation";
 import { CurrentDeck } from "./CurrentDeck";
 import { CardSearchResult } from "./CardSearchResult";
@@ -36,15 +37,14 @@ export function DeckBuilder({
   cardTypes: CardType[];
 }) {
   const searchParams = useSearchParams();
-  const params = useParams<{ gameMode: CardGameMode }>();
-  const { gameMode } = params;
-  const deckClass = searchParams.get("deckClass") as CardClass;
+  const params = useParams<{ format: SetGroups["slug"] }>();
+  const { format } = params;
+  const deckClass = searchParams.get("deckClass") as CardClass["slug"];
   const initState = {
     ...initialCards,
     params: {
-      gameMode,
-      set: searchParams.get("format") ?? "standard",
-      class: [deckClass, "neutral"] as CardClass[],
+      set: format as "standard",
+      class: [deckClass, "neutral"] as CardClass["slug"][],
       multiClass: deckClass,
     },
   };

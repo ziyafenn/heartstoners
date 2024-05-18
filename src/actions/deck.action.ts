@@ -26,7 +26,7 @@ export async function copyDeck(deckId: number) {
     cookieStore.set({
       name: "copy",
       value: "true",
-      path: `decks/${deckId}`,
+      path: `/decks/${deckId}`,
     });
 
     await deckInteraction({

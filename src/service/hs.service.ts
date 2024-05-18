@@ -20,7 +20,7 @@ export async function searchHsCards({
   type,
   manaCost,
   set,
-  gameMode,
+  gameMode = "constructed",
   sort = "manaCost:asc",
   page = 1,
   minionType,

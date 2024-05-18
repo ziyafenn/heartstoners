@@ -17,7 +17,7 @@ export function useDeckBuilder({
 }: {
   inView: boolean;
   initState: CardsPage & {
-    params: Pick<CardSeachParams, "gameMode" | "set" | "class" | "multiClass">;
+    params: Pick<CardSeachParams, "set" | "class" | "multiClass">;
   };
 }) {
   const [cardsPage, onSearch] = useFormState(loadPageWithFilters, initState);

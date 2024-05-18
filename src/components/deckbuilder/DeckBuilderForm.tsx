@@ -188,7 +188,6 @@ export default function DeckBuilderForm({
     dust_cost_per_card: dust_cost_per_card,
     deck_class: cardClass as CardClass["slug"],
     deck_format: deckSearchParams.set as "standard",
-    game_mode: deckSearchParams.gameMode as "constructed",
     sub_archetype: subArchetype?.id ?? null,
     sideboard_cards: sideboard_cards.length ? sideboard_cards : null,
     dust_cost_sum,

@@ -1,6 +1,6 @@
 import { getDeckByCardList } from "@/service/hs.service";
 import { getDeckLikeByIp, getSingleDeck } from "@/service/supabase.service";
-import { UserDeck } from "./_content/UserDeck";
+import { UserDeck } from "./_components/UserDeck";
 import { encrypt, getUserIp } from "@/lib/serverUtils";
 
 export default async function Deck({ params }: { params: { deckId: number } }) {

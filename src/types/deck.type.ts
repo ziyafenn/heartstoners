@@ -13,4 +13,5 @@ export type DeckInitParams = Omit<
   | "updated_at"
   | "user_id"
   | "game_version"
+  | "game_mode"
 >;

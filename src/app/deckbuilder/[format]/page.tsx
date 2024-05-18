@@ -7,21 +7,20 @@ import {
   Rarity,
   SetGroups,
 } from "@/types/hs.type";
-import { CardClass, CardGameMode } from "blizzard.js/dist/resources/hs";
+import { CardClass } from "blizzard.js/dist/resources/hs";
 
 export default async function ClassDeckBuilder({
   params,
   searchParams,
 }: {
-  params: { gameMode: CardGameMode };
-  searchParams: { deckClass: CardClass; format: SetGroups["slug"] };
+  params: { format: SetGroups["slug"] };
+  searchParams: { deckClass: CardClass };
 }) {
-  const { gameMode } = params;
-  const { deckClass, format } = searchParams;
+  const { format } = params;
+  const { deckClass } = searchParams;
 
   const cards = searchHsCards({
     class: [deckClass, "neutral"],
-    gameMode,
     set: format,
     page: 1,
     multiClass: deckClass,

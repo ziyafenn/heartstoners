@@ -15,7 +15,7 @@ export default async function Home() {
           id="hero"
           className="flex flex-col justify-start gap-4 rounded-sm bg-slate-600 p-10"
         >
-          <h3 className="text-2xl">
+          <h3 className="font-hs text-2xl">
             Craft your winning deck with our Reno-certified deckbuilder for
             Hearthstone! Conquer all challengers with Reno and his minions!
           </h3>

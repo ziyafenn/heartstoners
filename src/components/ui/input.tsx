@@ -9,8 +9,8 @@ export interface InputProps
 
 const Input = React.forwardRef<
   HTMLInputElement,
-  InputProps & { onClear?: () => void; showClearIcon: boolean }
->(({ className, type, onClear, showClearIcon, ...props }, ref) => {
+  InputProps & { onClear?: () => void; showClearIcon?: boolean }
+>(({ className, type, onClear, showClearIcon = false, ...props }, ref) => {
   return (
     <div className="relative h-10">
       <input

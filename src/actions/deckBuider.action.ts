@@ -1,10 +1,11 @@
 "use server";
 
-import { searchHsCards } from "@/service/hs.service";
+import { getDeckByCode, searchHsCards } from "@/service/hs.service";
 import { createClient } from "@/service/supabase.auth.server";
 import { getCurrentGameVersion } from "@/service/supabase.service";
 import { DeckInitParams, DeckUserInputParams } from "@/types/deck.type";
 import { CardSeachParams, CardsPage } from "@/types/hs.type";
+import { redirect } from "next/navigation";
 
 export async function loadPageWithFilters(
   currentState: CardsPage & { params: CardSeachParams },
@@ -64,4 +65,12 @@ export async function createDeck(
     })
     .select()
     .single();
+}
+
+export async function loadDeckFromCode(formData: FormData) {
+  const deckCode = formData.get("deckCode")!.toString();
+
+  const deck = await getDeckByCode(deckCode);
+
+  redirect(`/deckbuilder/con/${deck.class}}`);
 }
