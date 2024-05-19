@@ -72,5 +72,7 @@ export async function loadDeckFromCode(formData: FormData) {
 
   const deck = await getDeckByCode(deckCode);
 
-  redirect(`/deckbuilder/con/${deck.class}}`);
+  redirect(
+    `/deckbuilder/${deck.format}?deckClass=${deck.class.slug}&deckCode=${deck.deckCode}`,
+  );
 }

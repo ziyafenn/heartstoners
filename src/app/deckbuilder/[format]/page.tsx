@@ -1,7 +1,12 @@
 import { DeckBuilder } from "@/components/deckbuilder/DeckBuilder";
-import { searchHsCards, getHsMetadata } from "@/service/hs.service";
+import {
+  searchHsCards,
+  getHsMetadata,
+  getDeckByCode,
+} from "@/service/hs.service";
 import {
   CardType,
+  Deck,
   Keyword,
   MinionTypes,
   Rarity,
@@ -14,10 +19,13 @@ export default async function ClassDeckBuilder({
   searchParams,
 }: {
   params: { format: SetGroups["slug"] };
-  searchParams: { deckClass: CardClass };
+  searchParams: { deckClass: CardClass; deckCode?: string };
 }) {
   const { format } = params;
-  const { deckClass } = searchParams;
+  const { deckClass, deckCode } = searchParams;
+  let currentDeck: Promise<Deck> | null = null;
+
+  if (deckCode) currentDeck = getDeckByCode(deckCode);
 
   const cards = searchHsCards({
     class: [deckClass, "neutral"],
@@ -37,6 +45,7 @@ export default async function ClassDeckBuilder({
     minionTypes,
     keywords,
     cardType,
+    currentDeck,
   ]);
 
   return (
@@ -46,6 +55,7 @@ export default async function ClassDeckBuilder({
       minionTypes={hsData[2]}
       keywords={hsData[3]}
       cardTypes={hsData[4]}
+      deck={hsData[5]}
     />
   );
 }

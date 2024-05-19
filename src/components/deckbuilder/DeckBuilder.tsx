@@ -8,6 +8,7 @@ import {
   CardClass,
   CardType,
   CardsPage,
+  Deck,
   Keyword,
   MinionTypes,
   Rarity,
@@ -29,12 +30,14 @@ export function DeckBuilder({
   rarities,
   keywords,
   cardTypes,
+  deck,
 }: {
   initialCards: CardsPage;
   minionTypes: MinionTypes[];
   rarities: Rarity[];
   keywords: Keyword[];
   cardTypes: CardType[];
+  deck: Deck | null;
 }) {
   const searchParams = useSearchParams();
   const params = useParams<{ format: SetGroups["slug"] }>();
@@ -59,6 +62,7 @@ export function DeckBuilder({
   } = useDeckBuilder({
     initState,
     inView,
+    deck,
   });
 
   const currentSideboard = sideboardCards.find(

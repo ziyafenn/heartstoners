@@ -5,6 +5,7 @@ import {
   Card,
   CardSeachParams,
   CardsPage,
+  Deck,
   SideboardCards,
 } from "@/types/hs.type";
 
@@ -14,15 +15,21 @@ import { ZILLIAX_ID } from "@/lib/constants";
 export function useDeckBuilder({
   initState,
   inView,
+  deck,
 }: {
+  deck: Deck | null;
   inView: boolean;
   initState: CardsPage & {
     params: Pick<CardSeachParams, "set" | "class" | "multiClass">;
   };
 }) {
   const [cardsPage, onSearch] = useFormState(loadPageWithFilters, initState);
-  const [selectedCards, setSelectedCards] = useState<Card[]>([]);
-  const [sideboardCards, setSideboardCards] = useState<SideboardCards[]>([]);
+  const [selectedCards, setSelectedCards] = useState<Card[]>(
+    () => deck?.cards ?? [],
+  );
+  const [sideboardCards, setSideboardCards] = useState<SideboardCards[]>(
+    () => deck?.sideboardCards ?? [],
+  );
   const [activeSideboardCard, setActiveSideboardCard] = useState<Card | null>(
     null,
   );
