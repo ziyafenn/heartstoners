@@ -4,6 +4,7 @@ import { Card, CardSeachParams, CardsPage, Deck } from "@/types/hs.type";
 import { hs } from "blizzard.js";
 import { CardMetaDataType } from "blizzard.js/dist/resources/hs";
 import { promises as fs } from "fs";
+import { cache } from "react";
 
 async function createHsClient() {
   return await hs.createInstance({
@@ -88,13 +89,17 @@ export async function getDeckByCardList({
   return data;
 }
 
-export async function getDeckByCode(code: string) {
+export async function getDeckByCode(deckCode: string) {
   const hsClient = await createHsClient();
 
-  const res = await hsClient.deck({
-    locale: "en_US",
-    code,
+  const getDeck = cache(async (code: string) => {
+    return await hsClient.deck({
+      locale: "en_US",
+      code,
+    });
   });
+
+  const res = await getDeck(deckCode);
 
   const { data }: { data: Deck } = res;
 

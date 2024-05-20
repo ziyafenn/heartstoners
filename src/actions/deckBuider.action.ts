@@ -1,11 +1,14 @@
 "use server";
 
-import { getDeckByCode, searchHsCards } from "@/service/hs.service";
+import { searchHsCards } from "@/service/hs.service";
 import { createClient } from "@/service/supabase.auth.server";
 import { getCurrentGameVersion } from "@/service/supabase.service";
 import { DeckInitParams, DeckUserInputParams } from "@/types/deck.type";
 import { CardSeachParams, CardsPage } from "@/types/hs.type";
 import { redirect } from "next/navigation";
+import { decode } from "deckstrings";
+import { CARD_CLASSES } from "@/lib/cardClasses";
+import { Enums } from "@/types/superbase.type";
 
 export async function loadPageWithFilters(
   currentState: CardsPage & { params: CardSeachParams },
@@ -70,9 +73,11 @@ export async function createDeck(
 export async function loadDeckFromCode(formData: FormData) {
   const deckCode = formData.get("deckCode")!.toString();
 
-  const deck = await getDeckByCode(deckCode);
+  // const deck = await getDeckByCode(deckCode);
+  const deck = decode(deckCode);
 
-  redirect(
-    `/deckbuilder/${deck.format}?deckClass=${deck.class.slug}&deckCode=${deck.deckCode}`,
-  );
+  const slug = CARD_CLASSES.find((c) => c.cardId === deck.heroes[0])?.slug;
+  const format: Enums<"deck_format"> = deck.format === 1 ? "wild" : "standard";
+
+  redirect(`/deckbuilder/${format}?deckClass=${slug}&deckCode=${deckCode}`);
 }

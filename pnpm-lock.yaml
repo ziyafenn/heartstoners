@@ -62,6 +62,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      deckstrings:
+        specifier: ^3.1.2
+        version: 3.1.2
       lucide-react:
         specifier: ^0.376.0
         version: 0.376.0(react@18.3.1)
@@ -1438,6 +1441,9 @@ packages:
     peerDependenciesMeta:
       supports-color:
         optional: true
+
+  deckstrings@3.1.2:
+    resolution: {integrity: sha512-u495/2wXLJJwusL27Tp8d5srTMg7H5ZZxhnvLG7ZYeVxQOpKaCTHx/JTLElG6j/jZX5QUFh6/nOmqoGnQtSFKw==}
 
   deep-is@0.1.4:
     resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==}
@@ -4266,6 +4272,8 @@ snapshots:
   debug@4.3.4:
     dependencies:
       ms: 2.1.2
+
+  deckstrings@3.1.2: {}
 
   deep-is@0.1.4: {}
 

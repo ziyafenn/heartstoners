@@ -27,6 +27,7 @@
     "blizzard.js": "github:ziyafenn/blizzard.js",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "deckstrings": "^3.1.2",
     "lucide-react": "^0.376.0",
     "next": "14.2.3",
     "react": "^18.3.1",

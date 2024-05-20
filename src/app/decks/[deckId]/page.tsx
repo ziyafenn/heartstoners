@@ -6,14 +6,6 @@ import { encrypt, getUserIp } from "@/lib/serverUtils";
 export default async function Deck({ params }: { params: { deckId: number } }) {
   const { deckId } = params;
 
-  // if (!hasUserViewedPage) {
-  //   await deckInteraction({ deckId, type: "increment_views" });
-  //   cookieStore.set("view", "y");
-  // }
-  // if (!hasUserCopiedDeck) {
-  //   cookieStore.set("copy", "y");
-  // }
-
   const userDeck = await getSingleDeck(deckId);
   const deckData = await getDeckByCardList({
     cardIds: userDeck!.card_ids,
@@ -28,13 +20,11 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
     ip: encryptedUserIp,
   });
 
-  console.log(didUserLike, "didUserLike");
-
   return (
-    <div className="grid grid-cols-2">
+    <div className="grid-cols-2">
       <UserDeck
-        deck={userDeck!}
-        cards={deckData.cards}
+        userDeck={userDeck!}
+        deckData={deckData}
         didUserLike={!!didUserLike}
       />
     </div>
