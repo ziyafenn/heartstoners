@@ -99,13 +99,13 @@ export default function DeckBuilderForm({
       [key: number]: number;
     },
   );
-  const manaCostCounts: { name: string; count: number }[] = [];
   let aggroCount = 0;
   let midrangeCount = 0;
   let controlCount = 0;
-  const dust_cost_per_card: number[] = [];
   let dust_cost_sum = 0;
+  const dust_cost_per_card: number[] = [];
   const card_ids: number[] = [];
+  const manaCostCounts: { name: string; count: number }[] = [];
   const cardTypes: Record<CardType["name"], number> = {
     Hero: 0,
     Location: 0,
@@ -220,7 +220,7 @@ export default function DeckBuilderForm({
     <Sheet>
       <SheetTrigger asChild onClick={getSubArchetype}>
         <Button type="button" disabled={selectedCards.length < 30}>
-          Create Deck
+          {`Create Deck (${selectedCards.length}/30)`}
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="flex flex-col">
@@ -257,7 +257,7 @@ export default function DeckBuilderForm({
                 return (
                   <li key={cardType[0]} className="flex items-center gap-1">
                     <CardTypeIcon name={cardType[0] as CardType["name"]} />
-                    {`${cardType[0]}: ${cardType[1]}`}
+                    {`${cardType[0]}s: ${cardType[1]}`}
                   </li>
                 );
               })}
