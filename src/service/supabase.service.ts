@@ -80,17 +80,15 @@ export async function getCraftableDecks(
 
 export async function getRequestedDecks(
   filters?: Tables<"user_decks"> & {
-    craftable_decks?:
-      | {
-          user_deck_id: number;
-          missing_cards: number[];
-          required_dust_cost: number;
-        }[]
-      | null;
+    craftable_decks?: boolean;
   },
+  craftable_decks?: {
+    user_deck_id: number;
+    missing_cards: number[];
+    required_dust_cost: number;
+  }[],
 ) {
   const supabase = createClient();
-
   let query = supabase
     .from("user_decks")
     .select(
@@ -98,12 +96,12 @@ export async function getRequestedDecks(
     );
 
   if (filters?.craftable_decks) {
-    const deckIds = filters.craftable_decks.map((deck) => deck.user_deck_id);
+    const deckIds = craftable_decks!.map((deck) => deck.user_deck_id);
     query = query.in("id", deckIds);
   }
-  if (filters?.archetype) {
-    query = query.eq("archetype", filters.archetype);
-  }
+  // if (filters?.archetype) {
+  //   query = query.eq("archetype", filters.archetype);
+  // }
   // if (card_ids)   { query = query.eq('card_ids', card_ids) }
   if (filters?.deck_class) {
     query = query.eq("deck_class", filters.deck_class);
@@ -117,19 +115,25 @@ export async function getRequestedDecks(
   // if (filters?.game_mode) {
   //   query = query.eq("game_mode", game_mode);
   // }
-  if (filters?.sub_archetype) {
-    query = query.eq("sub_archetype", filters.sub_archetype);
-  }
-  if (filters?.user_id) {
-    query = query.eq("user_id", filters.user_id);
-  }
-  if (filters?.name) {
-    query = query.textSearch("name", filters.name);
-  }
+  // if (filters?.sub_archetype) {
+  //   query = query.eq("sub_archetype", filters.sub_archetype);
+  // }
+  // if (filters?.user_id) {
+  //   query = query.eq("user_id", filters.user_id);
+  // }
+  // if (filters?.name) {
+  //   query = query.textSearch("name", filters.name);
+  // }
 
-  const { data, error } = await query;
+  const { data } = await query;
 
-  return data;
+  type Data = Tables<"user_decks"> & {
+    profiles: Tables<"profiles">;
+    deck_interactions: Tables<"deck_interactions">;
+    meta_sub_archetypes: Tables<"meta_sub_archetypes">;
+  };
+
+  return data as unknown as Data[];
 }
 
 export async function deckLiked({

@@ -5,7 +5,7 @@ import Link from "next/link";
 
 type Props = Tables<"user_decks"> & { profiles: Tables<"profiles"> };
 
-export function DeckCard({ data }: { data: Props }) {
+export function DeckUICard({ data }: { data: Props }) {
   const {
     archetype,
     deck_class,

@@ -2,7 +2,7 @@ import { getDecks } from "@/service/supabase.service";
 
 import { Button } from "@/components/ui/button";
 
-import { DeckCard } from "@/components/DeckCard";
+import { DeckUICard } from "@/components/DeckUICard";
 import { SidebarCardItem } from "@/components/SidebarCardItem";
 
 export default async function Home() {
@@ -29,7 +29,7 @@ export default async function Home() {
             Most upvoted deck of the week
           </h2>
           <ul className="grid grid-cols-auto-fill-hscard gap-4">
-            {decks?.map((deck) => <DeckCard data={deck} key={deck.id} />)}
+            {decks?.map((deck) => <DeckUICard data={deck} key={deck.id} />)}
           </ul>
         </div>
       </main>

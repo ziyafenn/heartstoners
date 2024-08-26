@@ -35,9 +35,14 @@ export function useDeckBuilder({
   );
   const [zilliaxCards, setZilliaxCards] = useState<Card[]>([]);
 
-  useEffect(() => {
-    if (inView) loadNextPage();
-  }, [inView]);
+  const loadNextPage = useCallback(async () => {
+    const formData = new FormData();
+    for (const [key, value] of Object.entries(cardsPage.params)) {
+      formData.append(key, value as string);
+    }
+
+    onSearch(formData);
+  }, [cardsPage.params, onSearch]);
 
   function addSideboardCard(sideboardCard: Card) {
     if (!activeSideboardCard) return null;
@@ -103,15 +108,6 @@ export function useDeckBuilder({
     setSideboardCards(currentSideboardCards);
   }
 
-  const loadNextPage = useCallback(async () => {
-    const formData = new FormData();
-    for (const [key, value] of Object.entries(cardsPage.params)) {
-      formData.append(key, value as string);
-    }
-
-    onSearch(formData);
-  }, [cardsPage.params, onSearch]);
-
   async function getDeckFromCode(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -128,6 +124,10 @@ export function useDeckBuilder({
     }
     setActiveSideboardCard(card);
   }
+
+  useEffect(() => {
+    if (inView) loadNextPage();
+  }, [inView, loadNextPage]);
 
   return {
     cardsPage,

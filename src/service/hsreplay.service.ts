@@ -11,7 +11,7 @@ export function hsreplayFetch() {
     .addon(QueryStringAddon);
 }
 
-export async function getUserCollection(userId: string) {
+export async function getUserCollection() {
   const api = hsreplayFetch();
 
   const res: UserCollection = await api
