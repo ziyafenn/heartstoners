@@ -11,7 +11,7 @@ type Props = {
   children: React.ReactNode;
   selectedCards: Card[] | undefined;
   toggleSideboard: (card: Card | null) => void;
-  removeCard: (cardId: number) => void;
+  removeCard: (card: Card) => void;
   sideboardCards: SideboardCards[];
   deckClass: CardClass["slug"];
 };
@@ -102,7 +102,7 @@ export function CurrentDeck({
                   <CardCrop card={card}>
                     <>
                       {hovered === card.id ? (
-                        <button onClick={() => removeCard(card.id)}>
+                        <button onClick={() => removeCard(card)}>
                           {count === 2 ? (
                             <MinusIcon className="size-4" />
                           ) : (

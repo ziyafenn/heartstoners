@@ -87,6 +87,40 @@ export function useDeckBuilder({
     setDeathKnightRuneSlots(runeSlots);
   }
 
+  function removeRuneSlots(card: Card) {
+    const { id } = card;
+    const { blood, frost, unholy } = card.runeCost!;
+
+    const runeSlots: RuneCost = {
+      blood: 0,
+      frost: 0,
+      unholy: 0,
+    };
+
+    function updateRuneCount([rune, value]: [Rune, number]) {
+      if (value && value > runeSlots[rune]) {
+        runeSlots[rune] = value;
+      }
+    }
+
+    if (
+      (blood && blood === deathKnightRuneSlots.blood) ||
+      (frost && frost === deathKnightRuneSlots.frost) ||
+      (unholy && unholy === deathKnightRuneSlots.unholy)
+    ) {
+      selectedCards
+        .filter((card) => card.id !== id)
+        .forEach(({ runeCost }) => {
+          if (runeCost)
+            Object.entries(runeCost).forEach(([key, value]) =>
+              updateRuneCount([key as Rune, value]),
+            );
+        });
+    }
+
+    setDeathKnightRuneSlots(runeSlots);
+  }
+
   function addCard(card: Card) {
     const currentSelection = [...selectedCards];
     currentSelection.push(card);
@@ -96,32 +130,36 @@ export function useDeckBuilder({
     setSelectedCards(currentSelection);
   }
 
-  function removeCard(cardId: number) {
+  function removeCard(card: Card) {
+    const { id, runeCost } = card;
     const currentCardCount = selectedCards.filter(
-      (card) => card.id === cardId,
+      (card) => card.id === id,
     ).length;
     let updatedSelection: Card[] = [...selectedCards];
 
     if (currentCardCount === 1) {
-      updatedSelection = selectedCards.filter((card) => card.id !== cardId);
+      updatedSelection = selectedCards.filter((card) => card.id !== id);
     } else {
       const indexToRemove = updatedSelection.findLastIndex(
-        (card) => card.id === cardId,
+        (card) => card.id === id,
       );
       updatedSelection.splice(indexToRemove, 1);
     }
 
+    if (runeCost) removeRuneSlots(card);
     setSelectedCards(updatedSelection);
   }
 
-  function removeSideboardCard(cardId: number) {
+  function removeSideboardCard(card: Card) {
+    const { id } = card;
+
     if (!activeSideboardCard) return null;
     let currentSideboardCards = [...sideboardCards];
     const currentSideboard = currentSideboardCards.find(
       (sideboard) => sideboard.sideboardCard.id === activeSideboardCard.id,
     )!;
     const updatedSideboardCards = currentSideboard.cardsInSideboard.filter(
-      (card) => card.id !== cardId,
+      (card) => card.id !== id,
     );
     if (updatedSideboardCards.length) {
       currentSideboard.cardsInSideboard = updatedSideboardCards;
