@@ -1,0 +1,152 @@
+"use server";
+
+import { Card, CardSeachParams, CardsPage, Deck } from "@/types/hs.type";
+import { hs } from "blizzard.js";
+import { CardMetaDataType } from "blizzard.js/dist/resources/hs";
+import { promises as fs } from "fs";
+import { cache } from "react";
+
+async function createHsClient() {
+  return await hs.createInstance({
+    key: "19f0676648064185bb153378a805a0dc",
+    secret: "q8uTKo4XOOY4F3daN2WrH66shTicAAHj",
+    origin: "us", // optional
+    locale: "en_US", // optional
+    token: "", // optional
+  });
+}
+export async function searchHsCards({
+  class: cardClass,
+  rarity,
+  type,
+  manaCost,
+  set,
+  gameMode = "constructed",
+  sort = "manaCost:asc",
+  page = 1,
+  minionType,
+  multiClass,
+  textFilter,
+  keyword,
+}: CardSeachParams) {
+  const hsClient = await createHsClient();
+
+  const res = await hsClient.cardSearch({
+    gameMode,
+    type,
+    rarity,
+    class: cardClass,
+    manaCost,
+    locale: "en_US",
+    set,
+    sort,
+    pageSize: 15,
+    page,
+    minionType,
+    collectible: 1,
+    multiClass,
+    textFilter,
+    keyword,
+  });
+
+  const {
+    data,
+  }: {
+    data: CardsPage;
+  } = res;
+
+  return data;
+}
+
+export async function getHsMetadata<T>(type: CardMetaDataType): Promise<T[]> {
+  const hsClient = await createHsClient();
+
+  const res = await hsClient.metadata({
+    type,
+  });
+  const { data }: { data: T[] } = res;
+
+  return data;
+}
+
+export async function getDeckByCardList({
+  cardIds,
+  sideboardCards,
+}: {
+  cardIds: number[];
+  sideboardCards?: string[];
+}) {
+  const hsClient = await createHsClient();
+
+  const res = await hsClient.deck({
+    locale: "en_US",
+    ids: cardIds,
+    sideboardCards,
+  });
+
+  const { data }: { data: Deck } = res;
+
+  return data;
+}
+
+export async function getDeckByCode(deckCode: string) {
+  const hsClient = await createHsClient();
+
+  const getDeck = cache(async (code: string) => {
+    return await hsClient.deck({
+      locale: "en_US",
+      code,
+    });
+  });
+
+  const res = await getDeck(deckCode);
+
+  const { data }: { data: Deck } = res;
+
+  return data;
+}
+
+export async function getZilliaxSideboardCards() {
+  // const hsClient = await createHsClient();
+
+  // const params: Partial<CardSeachParams> = {
+  //   collectible: 0,
+  //   page: 1,
+  //   pageSize: 20,
+  //   gameMode: "constructed",
+  //   set: "standard",
+  //   locale: "en_US",
+  // };
+
+  // const cosmeticCardSearch = hsClient.cardSearch({
+  //   ...params,
+  //   textFilter: "zilliax",
+  // });
+
+  // const functionalCardSearch = hsClient.cardSearch({
+  //   ...params,
+  //   textFilter: "module",
+  // });
+
+  // const res = await Promise.all([cosmeticCardSearch, functionalCardSearch]);
+  // const [{ data: cosmeticCardRes }, { data: functionalCardRes }]: {
+  //   data: CardsPage;
+  // }[] = res;
+
+  // const cosmeticCards = cosmeticCardRes.cards.filter(
+  //   (card) => card.isZilliaxCosmeticModule,
+  // );
+  // const functionalCards = functionalCardRes.cards.filter(
+  //   (card) => card.isZilliaxFunctionalModule,
+  // );
+
+  // return { cosmeticCards, functionalCards };
+
+  const file = await fs.readFile(
+    process.cwd() + "/public/zilliax.json",
+    "utf8",
+  );
+
+  const data: { functions: Card[]; modules: Card[] } = JSON.parse(file);
+  return data;
+}
