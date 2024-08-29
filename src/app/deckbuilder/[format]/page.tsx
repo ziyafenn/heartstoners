@@ -33,7 +33,6 @@ export default async function ClassDeckBuilder({
     page: 1,
     multiClass: deckClass,
   });
-
   const rarities = getHsMetadata<Rarity>("rarities");
   const minionTypes = getHsMetadata<MinionTypes>("minionTypes");
   const keywords = getHsMetadata<Keyword>("keywords");

@@ -58,6 +58,7 @@ export function DeckBuilder({
     selectedCards,
     sideboardCards,
     zilliaxCards,
+    deathKnightRuneSlots,
     actions,
   } = useDeckBuilder({
     initState,
@@ -105,6 +106,7 @@ export function DeckBuilder({
               onAddCard,
               selectedCards,
               card,
+              deathKnightRuneSlots,
             })
           }
         >
@@ -122,6 +124,7 @@ export function DeckBuilder({
           </div>
         </CardSearchResult>
         <CurrentDeck
+          deckClass={deckClass}
           sideboardCards={sideboardCards}
           toggleSideboard={actions.toggleSideboard}
           selectedCards={

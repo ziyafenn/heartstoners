@@ -1,10 +1,11 @@
-import { Card, SideboardCards } from "@/types/hs.type";
+import { Card, CardClass, SideboardCards } from "@/types/hs.type";
 import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { MinusIcon, XIcon } from "lucide-react";
 import { CardCrop } from "./CardCrop";
+import { CARD_CLASSES } from "@/lib/cardClasses";
 
 type Props = {
   children: React.ReactNode;
@@ -12,6 +13,7 @@ type Props = {
   toggleSideboard: (card: Card | null) => void;
   removeCard: (cardId: number) => void;
   sideboardCards: SideboardCards[];
+  deckClass: CardClass["slug"];
 };
 
 export function CurrentDeck({
@@ -20,10 +22,15 @@ export function CurrentDeck({
   toggleSideboard,
   removeCard,
   sideboardCards,
+  deckClass,
 }: Props) {
   const [hovered, setHovered] = useState<number | null>(null);
   const endOfListRef = useRef<HTMLLIElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+  const cardClass = CARD_CLASSES.find(
+    (cardClass) => cardClass.slug === deckClass,
+  )!;
 
   function showSelectedCard(cardsToShow: Card[] | undefined) {
     if (!cardsToShow) return [];
@@ -35,7 +42,7 @@ export function CurrentDeck({
     });
     return uniqueCards;
   }
-  const selectedCardsCount = selectedCards?.length ?? 0;
+  // const selectedCardsCount = selectedCards?.length ?? 0;
 
   useEffect(() => {
     const scrollArea = scrollAreaRef.current;
@@ -48,16 +55,17 @@ export function CurrentDeck({
 
   return (
     <aside>
-      <div className="sticky top-0 flex flex-col gap-4 pt-8">
+      <div className="sticky top-0 flex h-[86v] flex-col gap-4 pt-8">
         {/* {!selectedCardsCount && (
           <form onSubmit={getDeckFromCode}>
             <Input name="deckCode" />
             <Button>Paste</Button>
           </form>
         )} */}
-
+        <div>{cardClass.name}</div>
+        {deckClass === "deathknight" && <div className="flex">hello</div>}
         <ScrollArea ref={scrollAreaRef}>
-          <ul className="flex max-h-[86vh] flex-col gap-1 pr-3">
+          <ul className="flex flex-col gap-1 pr-3">
             {showSelectedCard(selectedCards).map((card, index) => {
               const count =
                 selectedCards?.filter(

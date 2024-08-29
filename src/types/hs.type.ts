@@ -30,6 +30,11 @@ export type Card = {
   bannedFromSideboard?: number;
   isZilliaxFunctionalModule: boolean;
   isZilliaxCosmeticModule: boolean;
+  runeCost?: {
+    blood: number;
+    frost: number;
+    unholy: number;
+  };
 };
 
 export type Sets = {
@@ -162,3 +167,5 @@ export type CardType = {
 };
 
 export type CardSeachParams = ResourceOptions<CardSearchOptions>;
+export type RuneCost = NonNullable<Card["runeCost"]>;
+export type Rune = keyof RuneCost;

@@ -1,4 +1,4 @@
-import { Card, SideboardCards } from "@/types/hs.type";
+import { Card, Rune, RuneCost, SideboardCards } from "@/types/hs.type";
 
 type Props = {
   card: Card;
@@ -6,6 +6,7 @@ type Props = {
   selectedCards: Card[];
   activeSideboardCard: Card | null;
   onAddCard: (card: Card) => void;
+  deathKnightRuneSlots: RuneCost;
 };
 
 export function cardViewerProps({
@@ -14,7 +15,31 @@ export function cardViewerProps({
   selectedCards,
   activeSideboardCard,
   onAddCard,
+  deathKnightRuneSlots,
 }: Props) {
+  function canDeathKnightCardBeAdded() {
+    const { runeCost } = card;
+    let result = true;
+
+    if (!runeCost) return result;
+
+    const runeSlotCount = Object.values(deathKnightRuneSlots).reduce(
+      (a, b) => a + b,
+    );
+
+    for (const [key, value] of Object.entries(runeCost)) {
+      const rune = key as Rune;
+      if (value <= deathKnightRuneSlots[rune]) continue;
+      const runeDiff = value - deathKnightRuneSlots[rune];
+      if (runeSlotCount + runeDiff > 3) {
+        result = false;
+        break;
+      }
+    }
+
+    return result;
+  }
+
   const {
     bannedFromSideboard,
     id,
@@ -48,13 +73,16 @@ export function cardViewerProps({
       (card) => card.isZilliaxFunctionalModule,
     ).length === 2;
 
+  const isAboveRuneSlotLimit = !canDeathKnightCardBeAdded();
+
   const isDisabled =
     isTotalCardCountReached ||
     legendaryLimit ||
     nonLegendaryLimit ||
     isUnavailableForSideboard ||
     isCosmeticModulePresent ||
-    isFunctionalModuleCountReached;
+    isFunctionalModuleCountReached ||
+    isAboveRuneSlotLimit;
 
   return {
     currentCardCount,

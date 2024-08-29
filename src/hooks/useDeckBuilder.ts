@@ -6,7 +6,9 @@ import {
   CardSeachParams,
   CardsPage,
   Deck,
+  Rune,
   SideboardCards,
+  RuneCost,
 } from "@/types/hs.type";
 
 import { getDeckByCode, getZilliaxSideboardCards } from "@/service/hs.service";
@@ -34,6 +36,11 @@ export function useDeckBuilder({
     null,
   );
   const [zilliaxCards, setZilliaxCards] = useState<Card[]>([]);
+  const [deathKnightRuneSlots, setDeathKnightRuneSlots] = useState<RuneCost>({
+    blood: 0,
+    frost: 0,
+    unholy: 0,
+  });
 
   const loadNextPage = useCallback(async () => {
     const formData = new FormData();
@@ -64,9 +71,27 @@ export function useDeckBuilder({
     setSideboardCards(currentSideboardCards);
   }
 
+  function createRuneSlots(runeCost: RuneCost) {
+    const runeSlots = { ...deathKnightRuneSlots };
+
+    for (const [key, value] of Object.entries(runeCost)) {
+      const rune = key as Rune;
+
+      const currentRuneCount = deathKnightRuneSlots[rune];
+
+      if (!value || value <= currentRuneCount) continue;
+      const runeDiff = value - currentRuneCount;
+      runeSlots[rune] += runeDiff;
+    }
+
+    setDeathKnightRuneSlots(runeSlots);
+  }
+
   function addCard(card: Card) {
     const currentSelection = [...selectedCards];
     currentSelection.push(card);
+
+    if (card.runeCost) createRuneSlots(card.runeCost);
 
     setSelectedCards(currentSelection);
   }
@@ -135,6 +160,7 @@ export function useDeckBuilder({
     sideboardCards,
     activeSideboardCard,
     zilliaxCards,
+    deathKnightRuneSlots,
     actions: {
       addSideboardCard,
       addCard,
