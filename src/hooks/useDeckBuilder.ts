@@ -87,9 +87,8 @@ export function useDeckBuilder({
     setDeathKnightRuneSlots(runeSlots);
   }
 
-  function removeRuneSlots(card: Card) {
-    const { id } = card;
-    const { blood, frost, unholy } = card.runeCost!;
+  function removeRuneSlots(runeCost: RuneCost, updatedCardList: Card[]) {
+    const { blood, frost, unholy } = runeCost;
 
     const runeSlots: RuneCost = {
       blood: 0,
@@ -108,14 +107,12 @@ export function useDeckBuilder({
       (frost && frost === deathKnightRuneSlots.frost) ||
       (unholy && unholy === deathKnightRuneSlots.unholy)
     ) {
-      selectedCards
-        .filter((card) => card.id !== id)
-        .forEach(({ runeCost }) => {
-          if (runeCost)
-            Object.entries(runeCost).forEach(([key, value]) =>
-              updateRuneCount([key as Rune, value]),
-            );
-        });
+      updatedCardList.forEach(({ runeCost }) => {
+        if (runeCost)
+          Object.entries(runeCost).forEach(([key, value]) =>
+            updateRuneCount([key as Rune, value]),
+          );
+      });
     }
 
     setDeathKnightRuneSlots(runeSlots);
@@ -146,7 +143,7 @@ export function useDeckBuilder({
       updatedSelection.splice(indexToRemove, 1);
     }
 
-    if (runeCost) removeRuneSlots(card);
+    if (runeCost) removeRuneSlots(runeCost, updatedSelection);
     setSelectedCards(updatedSelection);
   }
 

@@ -131,6 +131,7 @@ export function DeckBuilder({
             activeSideboardCard ? currentCardsInSideboard : selectedCards
           }
           removeCard={onRemovedCard}
+          deathKnightRuneSlots={deathKnightRuneSlots}
         >
           {activeSideboardCard ? (
             <Button onClick={() => actions.toggleSideboard(null)} type="button">

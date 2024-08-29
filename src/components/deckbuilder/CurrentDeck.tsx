@@ -1,4 +1,10 @@
-import { Card, CardClass, SideboardCards } from "@/types/hs.type";
+import {
+  Card,
+  CardClass,
+  Rune,
+  RuneCost,
+  SideboardCards,
+} from "@/types/hs.type";
 import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
 import { useEffect, useRef, useState } from "react";
@@ -6,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { MinusIcon, XIcon } from "lucide-react";
 import { CardCrop } from "./CardCrop";
 import { CARD_CLASSES } from "@/lib/cardClasses";
+import { AssetIcon } from "../AssetIcon";
 
 type Props = {
   children: React.ReactNode;
@@ -14,6 +21,7 @@ type Props = {
   removeCard: (card: Card) => void;
   sideboardCards: SideboardCards[];
   deckClass: CardClass["slug"];
+  deathKnightRuneSlots: RuneCost;
 };
 
 export function CurrentDeck({
@@ -23,6 +31,7 @@ export function CurrentDeck({
   removeCard,
   sideboardCards,
   deckClass,
+  deathKnightRuneSlots,
 }: Props) {
   const [hovered, setHovered] = useState<number | null>(null);
   const endOfListRef = useRef<HTMLLIElement>(null);
@@ -44,6 +53,16 @@ export function CurrentDeck({
   }
   // const selectedCardsCount = selectedCards?.length ?? 0;
 
+  function showRunes() {
+    const runes: Rune[] = [];
+
+    for (const [key, value] of Object.entries(deathKnightRuneSlots)) {
+      runes.push(...Array.from({ length: value }, () => key as Rune));
+    }
+
+    return runes;
+  }
+
   useEffect(() => {
     const scrollArea = scrollAreaRef.current;
     const lastItem = endOfListRef.current;
@@ -63,7 +82,13 @@ export function CurrentDeck({
           </form>
         )} */}
         <div>{cardClass.name}</div>
-        {deckClass === "deathknight" && <div className="flex">hello</div>}
+        {deckClass === "deathknight" && (
+          <div className="flex items-center justify-center">
+            {showRunes().map((rune, index) => (
+              <AssetIcon type="rune" name={rune} key={index} />
+            ))}
+          </div>
+        )}
         <ScrollArea ref={scrollAreaRef}>
           <ul className="flex flex-col gap-1 pr-3">
             {showSelectedCard(selectedCards).map((card, index) => {
