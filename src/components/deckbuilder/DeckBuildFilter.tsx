@@ -7,15 +7,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CardType, Keyword, MinionTypes, Rarity } from "@/types/hs.type";
+import {
+  CardClass,
+  CardType,
+  Keyword,
+  MinionTypes,
+  Rarity,
+} from "@/types/hs.type";
 import { useRef, useState } from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useSearchParams } from "next/navigation";
 import { HeroIcon } from "../HeroIcon";
 import { CardSearchOptions } from "blizzard.js/dist/resources/hs";
 import { Input } from "../ui/input";
-import { Badge } from "../ui/badge";
-import { X } from "lucide-react";
+// import { Badge } from "../ui/badge";
+// import { X } from "lucide-react";
 
 export function DeckBuilderFilter({
   action,
@@ -33,7 +39,7 @@ export function DeckBuilderFilter({
   const formRef = useRef<HTMLFormElement>(null);
 
   const searchParams = useSearchParams();
-  const deckClass = searchParams.get("deckClass") as string;
+  const deckClass = searchParams.get("deckClass") as CardClass["slug"];
   const manaCost = [...Array(10).keys(), "10+"];
 
   const [values, setValues] = useState<
@@ -78,7 +84,7 @@ export function DeckBuilderFilter({
   }
 
   return (
-    <div className="sticky top-16 z-20 flex flex-col gap-4 bg-black">
+    <div className="sticky top-4 z-20 flex flex-col bg-black">
       <form
         ref={formRef}
         className="flex flex-wrap gap-4"
@@ -210,20 +216,17 @@ export function DeckBuilderFilter({
         <input hidden name="class" type="hidden" value={values.class} />
         <input hidden type="hidden" name="manaCost" value={values.manaCost} />
       </form>
-
-      <ul className="flex gap-4">
+    </div>
+  );
+}
+{
+  /* <ul className="flex h-8 gap-4">
         {Array.from(activeFilters.entries()).map(([type, value]) => (
           <li key={type}>
-            <Badge
-              onClick={() => {
-                onValueChange("", type, true);
-              }}
-            >
+            <Badge onClick={() => onValueChange("", type, true)}>
               {value.toUpperCase()} <X className="ml-1 size-4" />
             </Badge>
           </li>
         ))}
-      </ul>
-    </div>
-  );
+      </ul> */
 }

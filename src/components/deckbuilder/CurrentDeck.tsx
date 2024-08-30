@@ -35,6 +35,7 @@ export function CurrentDeck({
 }: Props) {
   const [hovered, setHovered] = useState<number | null>(null);
   const [availHeight, setAvailHeight] = useState<number | string>("100vh");
+  const [offsetY, setOffsetY] = useState(0);
   const endOfListRef = useRef<HTMLLIElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
@@ -82,14 +83,21 @@ export function CurrentDeck({
       x: rect.left + window.scrollX,
       y: rect.top + window.scrollY,
     };
+    const height = innerHeight - position.y;
+    if (scrollAreaRef.current) {
+      const scrollArea = scrollAreaRef.current.getBoundingClientRect();
+      const offset = scrollArea.top - rect.top;
 
-    setAvailHeight(innerHeight - position.y);
-  }, []);
+      setOffsetY(height - offset);
+    }
+
+    setAvailHeight(height);
+  }, [scrollAreaRef]);
 
   return (
     <aside>
       <div
-        className="sticky top-24 flex flex-col gap-4 pt-8"
+        className="sticky top-20 flex flex-col gap-4"
         style={{ maxHeight: availHeight }}
       >
         {/* {!selectedCardsCount && (
@@ -100,14 +108,19 @@ export function CurrentDeck({
         )} */}
         <div>{cardClass.name}</div>
         {deckClass === "deathknight" && (
-          <div className="flex items-center justify-center">
+          <div className="flex h-16 items-center justify-center bg-red-50">
             {showRunes().map((rune, index) => (
               <AssetIcon type="rune" name={rune} key={index} />
             ))}
           </div>
         )}
         <ScrollArea ref={scrollAreaRef}>
-          <ul className="flex flex-col gap-1 pr-3">
+          <ul
+            className="flex flex-col gap-1 pr-3"
+            style={{
+              maxHeight: offsetY,
+            }}
+          >
             {showSelectedCard(selectedCards).map((card, index) => {
               const count =
                 selectedCards?.filter(

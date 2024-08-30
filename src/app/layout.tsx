@@ -44,7 +44,7 @@ export default async function RootLayout({
             <div>
               <Link href="/">Logo {user?.id || "no user"}</Link>
             </div>
-            <ul className="flex items-center gap-4">
+            <ul className="flex items-center gap-8">
               <li>
                 <Link href="/decks">Decks</Link>
               </li>
@@ -57,7 +57,7 @@ export default async function RootLayout({
             </ul>
           </nav>
         </header>
-        <div className="p-8 ">
+        <div className="flex flex-col gap-8 p-8">
           <TooltipProvider delayDuration={100}>{children}</TooltipProvider>
         </div>
         <footer className="border-t p-4">
