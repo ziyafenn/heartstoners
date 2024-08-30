@@ -23,6 +23,7 @@ import { cardViewerProps } from "@/lib/cardViewerProps";
 import { ZILLIAX_ID } from "@/lib/constants";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { useEffect } from "react";
 
 export function DeckBuilder({
   initialCards,
@@ -87,6 +88,10 @@ export function DeckBuilder({
     : cardsPage.cards;
 
   const canLoadMore = cardsPage.pageCount > cardsPage.page;
+
+  useEffect(() => {
+    window.scroll({ top: 0 });
+  }, []);
 
   return (
     <>

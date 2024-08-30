@@ -35,7 +35,7 @@ export function CurrentDeck({
 }: Props) {
   const [hovered, setHovered] = useState<number | null>(null);
   const [availHeight, setAvailHeight] = useState<number | string>("100vh");
-  const [offsetY, setOffsetY] = useState(0);
+  const [cardListMaxHeight, setCardListMaxHeight] = useState(0);
   const endOfListRef = useRef<HTMLLIElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
@@ -84,11 +84,13 @@ export function CurrentDeck({
       y: rect.top + window.scrollY,
     };
     const height = innerHeight - position.y;
-    if (scrollAreaRef.current) {
-      const scrollArea = scrollAreaRef.current.getBoundingClientRect();
-      const offset = scrollArea.top - rect.top;
 
-      setOffsetY(height - offset);
+    if (scrollAreaRef.current) {
+      const BOTTOM_PADDING = 64;
+      const scrollArea = scrollAreaRef.current.getBoundingClientRect();
+      const maxHeight = innerHeight - scrollArea.top - BOTTOM_PADDING;
+
+      setCardListMaxHeight(maxHeight);
     }
 
     setAvailHeight(height);
@@ -118,7 +120,7 @@ export function CurrentDeck({
           <ul
             className="flex flex-col gap-1 pr-3"
             style={{
-              maxHeight: offsetY,
+              maxHeight: cardListMaxHeight,
             }}
           >
             {showSelectedCard(selectedCards).map((card, index) => {
