@@ -45,7 +45,7 @@ export function useDeckBuilder({
   const loadNextPage = useCallback(async () => {
     const formData = new FormData();
     for (const [key, value] of Object.entries(cardsPage.params)) {
-      formData.append(key, value as string);
+      if (value) formData.append(key, value as string);
     }
 
     onSearch(formData);

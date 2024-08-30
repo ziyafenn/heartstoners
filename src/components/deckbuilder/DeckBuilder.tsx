@@ -87,6 +87,7 @@ export function DeckBuilder({
     : cardsPage.cards;
 
   const canLoadMore = cardsPage.pageCount > cardsPage.page;
+
   return (
     <>
       <DeckBuilderFilter
