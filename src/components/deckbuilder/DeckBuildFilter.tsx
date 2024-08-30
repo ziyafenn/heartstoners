@@ -67,14 +67,18 @@ export function DeckBuilderFilter({
     const form = formRef.current!;
     const formData = new FormData(form);
 
-    isReset ? formData.delete(type) : formData.set(type, formattedValue!);
+    if (isReset) {
+      formData.delete(type);
+    } else {
+      formData.set(type, formattedValue!);
+    }
     formData.set("filter", "true");
 
     action(formData);
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="sticky top-16 z-20 flex flex-col gap-4 bg-black">
       <form
         ref={formRef}
         className="flex flex-wrap gap-4"

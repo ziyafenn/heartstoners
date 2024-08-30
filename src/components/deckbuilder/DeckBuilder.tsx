@@ -88,7 +88,7 @@ export function DeckBuilder({
 
   const canLoadMore = cardsPage.pageCount > cardsPage.page;
   return (
-    <div>
+    <>
       <DeckBuilderFilter
         action={actions.onSearch}
         rarities={rarities}
@@ -146,6 +146,6 @@ export function DeckBuilder({
           )}
         </CurrentDeck>
       </main>
-    </div>
+    </>
   );
 }

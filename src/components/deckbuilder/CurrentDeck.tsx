@@ -34,6 +34,7 @@ export function CurrentDeck({
   deathKnightRuneSlots,
 }: Props) {
   const [hovered, setHovered] = useState<number | null>(null);
+  const [availHeight, setAvailHeight] = useState<number | string>("100vh");
   const endOfListRef = useRef<HTMLLIElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
@@ -72,9 +73,25 @@ export function CurrentDeck({
     }
   }, [selectedCards]);
 
+  useEffect(() => {
+    const innerHeight = window.innerHeight;
+    const main = document.getElementsByTagName("main")[0];
+
+    const rect = main.getBoundingClientRect();
+    const position = {
+      x: rect.left + window.scrollX,
+      y: rect.top + window.scrollY,
+    };
+
+    setAvailHeight(innerHeight - position.y);
+  }, []);
+
   return (
     <aside>
-      <div className="sticky top-0 flex h-[86v] flex-col gap-4 pt-8">
+      <div
+        className="sticky top-24 flex flex-col gap-4 pt-8"
+        style={{ maxHeight: availHeight }}
+      >
         {/* {!selectedCardsCount && (
           <form onSubmit={getDeckFromCode}>
             <Input name="deckCode" />
