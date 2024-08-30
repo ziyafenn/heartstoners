@@ -125,19 +125,17 @@ export function CurrentDeck({
                     </div>
                   )}
                   <CardCrop card={card}>
-                    <>
-                      {hovered === card.id ? (
-                        <button onClick={() => removeCard(card)}>
-                          {count === 2 ? (
-                            <MinusIcon className="size-4" />
-                          ) : (
-                            <XIcon className="size-4" />
-                          )}
-                        </button>
-                      ) : (
-                        count
-                      )}
-                    </>
+                    {hovered === card.id ? (
+                      <button onClick={() => removeCard(card)}>
+                        {count === 2 ? (
+                          <MinusIcon className="size-4" />
+                        ) : (
+                          <XIcon className="size-4" />
+                        )}
+                      </button>
+                    ) : (
+                      count
+                    )}
                   </CardCrop>
                 </li>
               );

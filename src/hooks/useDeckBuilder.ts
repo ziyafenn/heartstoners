@@ -97,9 +97,7 @@ export function useDeckBuilder({
     };
 
     function updateRuneCount([rune, value]: [Rune, number]) {
-      if (value && value > runeSlots[rune]) {
-        runeSlots[rune] = value;
-      }
+      if (value && value > runeSlots[rune]) runeSlots[rune] = value;
     }
 
     if (
@@ -113,9 +111,8 @@ export function useDeckBuilder({
             updateRuneCount([key as Rune, value]),
           );
       });
+      setDeathKnightRuneSlots(runeSlots);
     }
-
-    setDeathKnightRuneSlots(runeSlots);
   }
 
   function addCard(card: Card) {
