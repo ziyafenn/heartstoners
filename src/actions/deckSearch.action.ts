@@ -12,6 +12,7 @@ export async function searchForCraftableDecks(maxDust?: number) {
     userCollection.collection,
     maxDust || userCollection.dust,
   );
+
   return { craftableDecks, userCollection };
 }
 

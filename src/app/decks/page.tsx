@@ -1,8 +1,19 @@
+import { searchForCraftableDecks } from "@/actions/deckSearch.action";
 import { getRequestedDecks } from "@/service/supabase.service";
 import { DeckSearch } from "./_components/DeckSearch";
 
 export default async function Decks() {
   const decks = await getRequestedDecks();
+  const {
+    userCollection: { dust },
+    craftableDecks,
+  } = await searchForCraftableDecks();
 
-  return <DeckSearch decks={decks} />;
+  return (
+    <DeckSearch
+      decks={decks}
+      craftableDecks={craftableDecks}
+      availableDust={dust}
+    />
+  );
 }
