@@ -5,26 +5,32 @@ import {
   getCraftableDecks,
   getRequestedDecks,
 } from "@/service/supabase.service";
-import { DeckFilters } from "@/types/deck.type";
 
-export async function searchForCraftableDecks() {
+export async function searchForCraftableDecks(maxDust?: number) {
   const userCollection = await getUserCollection();
   const craftableDecks = await getCraftableDecks(
     userCollection.collection,
-    userCollection.dust,
+    maxDust || userCollection.dust,
   );
   return { craftableDecks, userCollection };
 }
 
-export async function filterDecks(filters: DeckFilters) {
+export async function filterDecks(formData: FormData) {
   let craftableDecks: Awaited<
     ReturnType<typeof searchForCraftableDecks>
   >["craftableDecks"] = null;
+  const filters: Record<string, string> = {};
+  const isCraftable = formData.get("craftable_decks");
 
-  if (filters.craftable_decks) {
-    const decks = await searchForCraftableDecks();
+  if (isCraftable === "true") {
+    const maxDust = formData.get("dustCost");
+    const decks = await searchForCraftableDecks(Number(maxDust));
     craftableDecks = decks.craftableDecks;
   }
+
+  formData.forEach((value, key) => {
+    filters[key] = value as string;
+  });
 
   const decks = await getRequestedDecks(filters, craftableDecks);
 

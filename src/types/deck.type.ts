@@ -18,6 +18,6 @@ export type DeckInitParams = Omit<
 
 export type DeckFilters = Partial<
   Tables<"user_decks"> & {
-    craftable_decks?: boolean;
+    craftable_decks?: "true" | "false";
   }
 >;

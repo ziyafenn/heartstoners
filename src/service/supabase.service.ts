@@ -92,7 +92,7 @@ export async function getRequestedDecks(
       `*, profiles:user_id (*), meta_sub_archetypes:sub_archetype (*), deck_interactions:deck_interactions!public_deck_interactions_deck_id_fkey (*)`,
     );
 
-  if (filters?.craftable_decks) {
+  if (filters?.craftable_decks === "true") {
     const deckIds = craftableDecks!.map((deck) => deck.user_deck_id);
     query = query.in("id", deckIds);
   }

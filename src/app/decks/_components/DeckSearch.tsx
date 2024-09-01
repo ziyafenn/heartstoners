@@ -20,7 +20,6 @@ import { HeroIcon } from "@/components/HeroIcon";
 import { Filters } from "./Filters";
 import { useState } from "react";
 import { filterDecks } from "@/actions/deckSearch.action";
-import { DeckFilters } from "@/types/deck.type";
 
 type Props = {
   decks: Awaited<ReturnType<typeof filterDecks>>;
@@ -29,12 +28,12 @@ type Props = {
 export function DeckSearch({ decks }: Props) {
   const [currentDecks, setCurrentDecks] = useState(() => decks);
 
-  async function updateFilters(activeFilters: DeckFilters) {
+  async function updateFilters(activeFilters: FormData) {
     const updatedDecks = await filterDecks(activeFilters);
     setCurrentDecks(updatedDecks);
   }
   return (
-    <div className="grid grid-cols-[320px_1fr]">
+    <div className="grid grid-cols-[200px_1fr] gap-12">
       <Filters onUpdateFilters={updateFilters} />
       <div>
         <Table>
@@ -47,7 +46,7 @@ export function DeckSearch({ decks }: Props) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {decks?.map((deck) => (
+            {currentDecks.map((deck) => (
               <TableRow key={deck.id}>
                 <TableCell className="flex items-center gap-2 font-medium">
                   <HeroIcon slug={deck.deck_class} className="size-6" />
