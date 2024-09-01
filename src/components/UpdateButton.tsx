@@ -1,6 +1,5 @@
 "use client";
 
-import { getCraftableDecks } from "@/service/supabase.service";
 import { Button } from "./ui/button";
 import { searchForCraftableDecks } from "@/actions/deckSearch.action";
 

@@ -4,6 +4,8 @@ import { CardClass } from "@/types/hs.type";
 import { UserCollection } from "@/types/hsreplay.type";
 import { Tables } from "@/types/superbase.type";
 import { createClient } from "./supabase.auth.server";
+import { DBFunction } from "@/types/supabase.func.type";
+import { DeckFilters } from "@/types/deck.type";
 
 export async function getDecks() {
   const supabase = createClient();
@@ -68,25 +70,20 @@ export async function getCurrentGameVersion() {
 
 export async function getCraftableDecks(
   userCollection: UserCollection["collection"],
+  availableDust: number,
 ) {
   const supabase = createClient();
 
   const { data, error } = await supabase.rpc("get_craftable_decks", {
-    p_available_dust: 100,
+    p_available_dust: availableDust,
     p_card_collection: userCollection,
   });
   return data;
 }
 
 export async function getRequestedDecks(
-  filters?: Tables<"user_decks"> & {
-    craftable_decks?: boolean;
-  },
-  craftable_decks?: {
-    user_deck_id: number;
-    missing_cards: number[];
-    required_dust_cost: number;
-  }[],
+  filters?: DeckFilters,
+  craftableDecks?: DBFunction<"get_craftable_decks", "Returns"> | null,
 ) {
   const supabase = createClient();
   let query = supabase
@@ -96,7 +93,7 @@ export async function getRequestedDecks(
     );
 
   if (filters?.craftable_decks) {
-    const deckIds = craftable_decks!.map((deck) => deck.user_deck_id);
+    const deckIds = craftableDecks!.map((deck) => deck.user_deck_id);
     query = query.in("id", deckIds);
   }
   // if (filters?.archetype) {

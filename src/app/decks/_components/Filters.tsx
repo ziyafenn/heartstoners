@@ -1,22 +1,26 @@
 "use client";
 
-import { filterDecks } from "@/actions/deckSearch.action";
 import { Toggle } from "@/components/ui/toggle";
+import { DeckFilters } from "@/types/deck.type";
 import { useState } from "react";
 
 type Props = {
-  onUpdateFilters: (activeFilters: Record<string, boolean>) => Promise<unknown>;
+  onUpdateFilters: (activeFilters: DeckFilters) => Promise<unknown>;
 };
 
 export function Filters({ onUpdateFilters }: Props) {
-  const [activeFilters, setActiveFilters] = useState<Record<string, boolean>>();
+  const [activeFilters, setActiveFilters] = useState<DeckFilters>();
 
   async function onValueChange(key: "craftable_decks", value: boolean) {
-    const currentFilters = { ...activeFilters };
-    currentFilters[key] = value;
-    setActiveFilters(currentFilters);
+    let currentFilters: DeckFilters;
 
-    onUpdateFilters(activeFilters);
+    if (activeFilters) {
+      currentFilters = { ...activeFilters, [key]: value };
+    } else {
+      currentFilters = { [key]: value };
+    }
+    setActiveFilters(currentFilters);
+    onUpdateFilters(currentFilters);
   }
   return (
     <div className="flex">

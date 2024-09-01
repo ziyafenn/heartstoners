@@ -15,3 +15,9 @@ export type DeckInitParams = Omit<
   | "game_version"
   | "game_mode"
 >;
+
+export type DeckFilters = Partial<
+  Tables<"user_decks"> & {
+    craftable_decks?: boolean;
+  }
+>;

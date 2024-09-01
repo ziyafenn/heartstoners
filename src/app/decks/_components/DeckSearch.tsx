@@ -18,28 +18,24 @@ import {
 } from "@/components/ui/table";
 import { HeroIcon } from "@/components/HeroIcon";
 import { Filters } from "./Filters";
-import { Database, Tables } from "@/types/superbase.type";
 import { useState } from "react";
 import { filterDecks } from "@/actions/deckSearch.action";
+import { DeckFilters } from "@/types/deck.type";
 
 type Props = {
-  decks: any;
-  craftableDecks: any;
+  decks: Awaited<ReturnType<typeof filterDecks>>;
 };
 
-export function DeckSearch({ decks, craftableDecks }: Props) {
+export function DeckSearch({ decks }: Props) {
   const [currentDecks, setCurrentDecks] = useState(() => decks);
 
-  async function updateFilters(activeFilters: Record<string, boolean>) {
+  async function updateFilters(activeFilters: DeckFilters) {
     const updatedDecks = await filterDecks(activeFilters);
     setCurrentDecks(updatedDecks);
   }
   return (
     <div className="grid grid-cols-[320px_1fr]">
-      <Filters
-        onUpdateFilters={updateFilters}
-        craftableDecks={craftableDecks}
-      />
+      <Filters onUpdateFilters={updateFilters} />
       <div>
         <Table>
           <TableHeader>
