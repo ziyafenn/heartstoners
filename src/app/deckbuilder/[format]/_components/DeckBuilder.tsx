@@ -2,7 +2,7 @@
 
 import { DeckBuilderFilter } from "./DeckBuildFilter";
 
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import DeckBuilderForm from "./DeckBuilderForm";
 import {
   CardClass,

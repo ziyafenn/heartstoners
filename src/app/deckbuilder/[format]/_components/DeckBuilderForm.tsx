@@ -5,10 +5,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { createDeck } from "@/actions/deckBuider.action";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { ResponsiveBar } from "@nivo/bar";
 import {
   Card,
@@ -33,9 +33,13 @@ import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { CARD_TYPES } from "@/lib/cardTypes";
 import { CARD_RARITIES } from "@/lib/cardRarities";
-import { AssetIcon } from "../AssetIcon";
-import { Label } from "../ui/label";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { AssetIcon } from "@/components/AssetIcon";
+import { Label } from "@/components/ui/label";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import {
   InfoIcon,
   MapIcon,

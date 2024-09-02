@@ -1,6 +1,6 @@
 "use client";
 import { copyDeck, likeDeck } from "@/actions/deck.action";
-import { CardCrop } from "@/components/deckbuilder/CardCrop";
+import { CardCrop } from "@/components/CardCrop";
 import { Button } from "@/components/ui/button";
 import { Card, Deck } from "@/types/hs.type";
 import { DeckPopularity } from "@/components/DeckPopularity";

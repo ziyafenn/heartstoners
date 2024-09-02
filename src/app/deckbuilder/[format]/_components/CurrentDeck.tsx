@@ -5,14 +5,14 @@ import {
   RuneCost,
   SideboardCards,
 } from "@/types/hs.type";
-import { Button } from "../ui/button";
-import { ScrollArea } from "../ui/scroll-area";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { MinusIcon, XIcon } from "lucide-react";
-import { CardCrop } from "./CardCrop";
+import { CardCrop } from "@/components/CardCrop";
 import { CARD_CLASSES } from "@/lib/cardClasses";
-import { AssetIcon } from "../AssetIcon";
+import { AssetIcon } from "@/components/AssetIcon";
 
 type Props = {
   children: React.ReactNode;

@@ -17,9 +17,9 @@ import {
 import { useRef, useState } from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useSearchParams } from "next/navigation";
-import { HeroIcon } from "../HeroIcon";
+import { HeroIcon } from "@/components/HeroIcon";
 import { CardSearchOptions } from "blizzard.js/dist/resources/hs";
-import { Input } from "../ui/input";
+import { Input } from "@/components/ui/input";
 // import { Badge } from "../ui/badge";
 // import { X } from "lucide-react";
 
