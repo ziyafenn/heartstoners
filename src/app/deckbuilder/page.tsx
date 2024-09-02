@@ -5,7 +5,6 @@ import { CARD_CLASSES } from "@/lib/cardClasses";
 import { HeroIcon } from "@/components/HeroIcon";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
 import { loadDeckFromCode } from "@/actions/deckBuider.action";
 
 export default async function DeckBuilderMode() {
