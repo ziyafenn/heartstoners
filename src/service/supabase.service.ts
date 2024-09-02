@@ -139,6 +139,35 @@ export async function getRequestedDecks(
   return data as UserDecks;
 }
 
+export async function getTopClasses() {
+  const supabase = createClient();
+
+  const { data } = await supabase
+    .from("user_decks")
+    .select("deck_class, deck_class.count()");
+
+  return data;
+}
+export async function getTopMetas() {
+  const supabase = createClient();
+
+  const { data } = await supabase
+    .from("user_decks")
+    .select("meta_sub_archetypes (*), sub_archetype, sub_archetype.count()");
+
+  return data;
+}
+
+export async function getTopAuthors() {
+  const supabase = createClient();
+
+  const { data } = await supabase
+    .from("user_decks")
+    .select("profiles (*), user_id, user_id.count()");
+
+  return data;
+}
+
 export async function deckLiked({
   author_id,
   deck_id,

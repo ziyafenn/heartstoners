@@ -40,7 +40,6 @@ export type Database = {
           copies: number | null
           deck_id: number
           game_version: string
-          likes: number | null
           updated_at: string
           views: number | null
         }
@@ -49,7 +48,6 @@ export type Database = {
           copies?: number | null
           deck_id?: number
           game_version: string
-          likes?: number | null
           updated_at?: string
           views?: number | null
         }
@@ -58,7 +56,6 @@ export type Database = {
           copies?: number | null
           deck_id?: number
           game_version?: string
-          likes?: number | null
           updated_at?: string
           views?: number | null
         }
@@ -201,7 +198,7 @@ export type Database = {
           hsreplay_id: string | null
           id: string
           updated_at: string | null
-          username: string | null
+          username: string
           website: string | null
         }
         Insert: {
@@ -209,7 +206,7 @@ export type Database = {
           hsreplay_id?: string | null
           id: string
           updated_at?: string | null
-          username?: string | null
+          username: string
           website?: string | null
         }
         Update: {
@@ -217,7 +214,7 @@ export type Database = {
           hsreplay_id?: string | null
           id?: string
           updated_at?: string | null
-          username?: string | null
+          username?: string
           website?: string | null
         }
         Relationships: [

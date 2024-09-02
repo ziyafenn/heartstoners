@@ -1,11 +1,33 @@
-import { getDecks } from "@/service/supabase.service";
+import {
+  getDecks,
+  getTopAuthors,
+  getTopClasses,
+  getTopMetas,
+} from "@/service/supabase.service";
 import { Button } from "@/components/ui/button";
 import { DeckUICard } from "./_components/DeckUICard";
 import { SidebarCardItem } from "./_components/SidebarCardItem";
 import { getDeckPopularity } from "@/lib/deckPopularity";
+import { CARD_CLASSES } from "@/lib/cardClasses";
 
 export default async function Home() {
-  const decks = await getDecks();
+  const fetchDecks = getDecks();
+  const fetchTopClasses = getTopClasses();
+  const fetchTopAuthors = getTopAuthors();
+  const fetchTopMetas = getTopMetas();
+
+  const {
+    "0": decks,
+    "1": topClasses,
+    "2": topAuthors,
+    "3": topMetas,
+  } = await Promise.all([
+    fetchDecks,
+    fetchTopClasses,
+    fetchTopAuthors,
+    fetchTopMetas,
+  ]);
+
   const mostPopular = decks.toSorted((a, b) => {
     const popularityA = getDeckPopularity({
       copies: a.deck_interactions?.copies,
@@ -62,29 +84,37 @@ export default async function Home() {
           <Button>Join</Button>
         </div>
         <div className="border border-border p-4">
-          <h3>Top 5 creators</h3>
+          <h3>Top creators</h3>
           <ul className="flex flex-col gap-2 divide-y">
-            <SidebarCardItem />
-            <SidebarCardItem />
-            <SidebarCardItem />
+            {topAuthors?.map((author, index) => (
+              <SidebarCardItem name={author.profiles!.username} key={index} />
+            ))}
           </ul>
         </div>
         <div className="border border-border p-4">
-          <h3>Top 5 metas</h3>
-
+          <h3>Top metas</h3>
           <ul className="flex flex-col gap-2 divide-y">
-            <SidebarCardItem />
-            <SidebarCardItem />
-            <SidebarCardItem />
+            {topMetas?.map((meta, index) => (
+              <SidebarCardItem
+                name={meta.meta_sub_archetypes?.name}
+                key={index}
+              />
+            ))}
           </ul>
         </div>
         <div className="border border-border p-4">
-          <h3>Top 5 classes</h3>
-
+          <h3>Top classes</h3>
           <ul className="flex flex-col gap-2 divide-y">
-            <SidebarCardItem />
-            <SidebarCardItem />
-            <SidebarCardItem />
+            {topClasses?.map((deckClass, index) => (
+              <SidebarCardItem
+                name={
+                  CARD_CLASSES.find(
+                    (cardClass) => cardClass.slug === deckClass.deck_class,
+                  )?.name
+                }
+                key={index}
+              />
+            ))}
           </ul>
         </div>
       </aside>
