@@ -3,14 +3,15 @@ import { copyDeck, likeDeck } from "@/actions/deck.action";
 import { CardCrop } from "@/components/deckbuilder/CardCrop";
 import { Button } from "@/components/ui/button";
 import { Card, Deck } from "@/types/hs.type";
-import { Tables } from "@/types/superbase.type";
+import { DeckPopularity } from "@/components/DeckPopularity";
+import { UserDecks } from "@/types/deck.type";
 
 export function UserDeck({
   userDeck,
   deckData,
   didUserLike,
 }: {
-  userDeck: Tables<"user_decks">;
+  userDeck: UserDecks[number];
   deckData: Deck;
   didUserLike: boolean;
 }) {
@@ -21,16 +22,7 @@ export function UserDeck({
     deckCode,
     format,
   } = deckData;
-  const {
-    archetype,
-    updated_at,
-    description,
-    name,
-    dust_cost_sum,
-    sub_archetype,
-    user_id,
-    id,
-  } = userDeck;
+  const { user_id, id } = userDeck;
 
   function showSelectedCard(cardsToShow: Card[] | undefined) {
     if (!cardsToShow) return [];
@@ -89,6 +81,9 @@ export function UserDeck({
         </Button>
 
         <Button onClick={() => copyDeck(id)}>Copy</Button>
+      </div>
+      <div>
+        <DeckPopularity deck={userDeck} />
       </div>
     </>
   );

@@ -6,18 +6,22 @@ import { Tables } from "@/types/superbase.type";
 import { createClient } from "./supabase.auth.server";
 import { DBFunction } from "@/types/supabase.func.type";
 import { DeckFilters } from "@/types/deck.type";
+import { QueryResult, QueryData, QueryError } from "@supabase/supabase-js";
+
+const deckQuery = `*, 
+    profiles (*),
+    deck_likes (*),
+    deck_interactions (views, copies)`;
 
 export async function getDecks() {
   const supabase = createClient();
+  const userDecksQuery = supabase.from("user_decks").select(deckQuery);
 
-  const { data: user_decks, error } = await supabase.from("user_decks").select(
-    `*, 
-    profiles:user_id (
-      *
-    )`,
-  );
+  type UserDecks = QueryData<typeof userDecksQuery>;
 
-  return user_decks;
+  const { data: user_decks, error } = await userDecksQuery;
+
+  return user_decks as UserDecks;
 }
 
 export async function getSingleDeck(deckId: number) {
@@ -25,7 +29,7 @@ export async function getSingleDeck(deckId: number) {
 
   const { data, error } = await supabase
     .from("user_decks")
-    .select("*")
+    .select(deckQuery)
     .eq("id", deckId)
     .single();
 
@@ -86,11 +90,10 @@ export async function getRequestedDecks(
   craftableDecks?: DBFunction<"get_craftable_decks", "Returns"> | null,
 ) {
   const supabase = createClient();
-  let query = supabase
-    .from("user_decks")
-    .select(
-      `*, profiles:user_id (*), meta_sub_archetypes:sub_archetype (*), deck_interactions:deck_interactions!public_deck_interactions_deck_id_fkey (*)`,
-    );
+  let query = supabase.from("user_decks").select(
+    `*, profiles (*), meta_sub_archetypes:sub_archetype (*), deck_likes (*),
+    deck_interactions (views, copies)`,
+  );
 
   if (filters?.craftable_decks === "true") {
     const deckIds = craftableDecks!.map((deck) => deck.user_deck_id);
@@ -121,16 +124,15 @@ export async function getRequestedDecks(
   // if (filters?.name) {
   //   query = query.textSearch("name", filters.name);
   // }
-
   const { data } = await query;
+  // type Data = Tables<"user_decks"> & {
+  //   profiles: Tables<"profiles">;
+  //   deck_interactions: Tables<"deck_interactions">;
+  //   meta_sub_archetypes: Tables<"meta_sub_archetypes">;
+  // };
+  type UserDecks = QueryData<typeof query>;
 
-  type Data = Tables<"user_decks"> & {
-    profiles: Tables<"profiles">;
-    deck_interactions: Tables<"deck_interactions">;
-    meta_sub_archetypes: Tables<"meta_sub_archetypes">;
-  };
-
-  return data as unknown as Data[];
+  return data as UserDecks;
 }
 
 export async function deckLiked({

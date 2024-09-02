@@ -22,11 +22,11 @@ import { useState } from "react";
 import { filterDecks } from "@/actions/deckSearch.action";
 import { DBFunction } from "@/types/supabase.func.type";
 import { AssetIcon } from "@/components/AssetIcon";
-
-type Decks = Awaited<ReturnType<typeof filterDecks>>;
+import { DeckPopularity } from "@/components/DeckPopularity";
+import { UserDecks } from "@/types/deck.type";
 
 type Props = {
-  decks: Decks;
+  decks: UserDecks;
   craftableDecks: DBFunction<"get_craftable_decks", "Returns"> | null;
   availableDust: number;
 };
@@ -34,7 +34,7 @@ type Props = {
 export function DeckSearch({ decks, availableDust, craftableDecks }: Props) {
   const [currentDecks, setCurrentDecks] = useState(() => decks);
 
-  function checkIsCraftable(deck: Decks[number]) {
+  function checkIsCraftable(deck: UserDecks[number]) {
     const craftableDeck = craftableDecks?.find(
       (craftableDeck) => craftableDeck.user_deck_id === deck.id,
     );
@@ -48,6 +48,7 @@ export function DeckSearch({ decks, availableDust, craftableDecks }: Props) {
     const updatedDecks = await filterDecks(activeFilters);
     setCurrentDecks(updatedDecks);
   }
+
   return (
     <div className="grid grid-cols-[256px_1fr] gap-12">
       <Filters onUpdateFilters={updateFilters} />
@@ -59,7 +60,7 @@ export function DeckSearch({ decks, availableDust, craftableDecks }: Props) {
               <TableHead>Archetype</TableHead>
               <TableHead className="text-right">Date</TableHead>
               <TableHead>Author</TableHead>
-              <TableHead>Popularity</TableHead>
+              <TableHead className="text-right">Popularity</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -69,13 +70,13 @@ export function DeckSearch({ decks, availableDust, craftableDecks }: Props) {
                   <span>
                     <HeroIcon slug={deck.deck_class} className="size-12" />
                   </span>
-                  <span className="flex gap-1 flex-col">
-                    <div className="font-bold text-base">{deck.name}</div>
+                  <span className="flex flex-col gap-1">
+                    <div className="text-base font-bold">{deck.name}</div>
                     <div className="flex gap-1">
                       <AssetIcon type="asset" name="dust" />
 
                       {checkIsCraftable(deck) ? (
-                        <span className="text-green-500 font-bold">
+                        <span className="font-bold text-green-500">
                           Craftable
                         </span>
                       ) : (
@@ -92,8 +93,13 @@ export function DeckSearch({ decks, availableDust, craftableDecks }: Props) {
                   {new Date(deck.updated_at).toLocaleDateString()}
                 </TableCell>
                 <TableCell>
-                  <span>{deck.profiles.avatar_url}</span>
-                  <span>{deck.profiles.username}</span>
+                  <span>{deck.profiles!.avatar_url}</span>
+                  <span>{deck.profiles!.username}</span>
+                </TableCell>
+                <TableCell>
+                  <span>
+                    <DeckPopularity deck={deck} />
+                  </span>
                 </TableCell>
               </TableRow>
             ))}

@@ -1,3 +1,4 @@
+import { getDecks } from "@/service/supabase.service";
 import { Tables } from "./superbase.type";
 
 export type DeckUserInputParams = Pick<
@@ -21,3 +22,5 @@ export type DeckFilters = Partial<
     craftable_decks?: "true" | "false";
   }
 >;
+
+export type UserDecks = Awaited<ReturnType<typeof getDecks>>;
