@@ -1,13 +1,26 @@
 import { getDecks } from "@/service/supabase.service";
-
 import { Button } from "@/components/ui/button";
-
-import { DeckUICard } from "@/components/DeckUICard";
-import { SidebarCardItem } from "@/components/SidebarCardItem";
+import { DeckUICard } from "./_components/DeckUICard";
+import { SidebarCardItem } from "./_components/SidebarCardItem";
+import { getDeckPopularity } from "@/lib/deckPopularity";
 
 export default async function Home() {
   const decks = await getDecks();
+  const mostPopular = decks.toSorted((a, b) => {
+    const popularityA = getDeckPopularity({
+      copies: a.deck_interactions?.copies,
+      views: a.deck_interactions?.views,
+      likes: a.deck_likes.length,
+    });
 
+    const popularityB = getDeckPopularity({
+      copies: b.deck_interactions?.copies,
+      views: b.deck_interactions?.views,
+      likes: b.deck_likes.length,
+    });
+
+    return popularityB - popularityA;
+  });
   return (
     <div className="grid grid-cols-[1fr_320px] gap-8 rounded-md">
       <main className="flex flex-col gap-8">
@@ -26,7 +39,17 @@ export default async function Home() {
         </div>
         <div id="decks">
           <h2 className="text-xl leading-loose">
-            Most upvoted deck of the week
+            Most popular decks of the week
+          </h2>
+          <ul className="grid grid-cols-auto-fill-hscard gap-4">
+            {mostPopular?.map((deck) => (
+              <DeckUICard data={deck} key={deck.id} />
+            ))}
+          </ul>
+        </div>
+        <div id="decks">
+          <h2 className="text-xl leading-loose">
+            Recent submissions from our users
           </h2>
           <ul className="grid grid-cols-auto-fill-hscard gap-4">
             {decks?.map((deck) => <DeckUICard data={deck} key={deck.id} />)}

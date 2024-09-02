@@ -1,4 +1,4 @@
-import { Database } from "./supabase";
+import { Database } from "./supabase.type";
 type Functions = keyof Database["public"]["Functions"];
 
 export type DBFunction<

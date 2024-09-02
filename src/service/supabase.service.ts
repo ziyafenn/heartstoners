@@ -2,7 +2,7 @@
 
 import { CardClass } from "@/types/hs.type";
 import { UserCollection } from "@/types/hsreplay.type";
-import { Tables } from "@/types/supabase";
+import { Tables } from "@/types/supabase.type";
 import { createClient } from "./supabase.auth.server";
 import { DBFunction } from "@/types/supabase.func.type";
 import { DeckFilters } from "@/types/deck.type";
@@ -15,7 +15,11 @@ const deckQuery = `*,
 
 export async function getDecks() {
   const supabase = createClient();
-  const userDecksQuery = supabase.from("user_decks").select(deckQuery);
+  const userDecksQuery = supabase
+    .from("user_decks")
+    .select(deckQuery)
+    .order("created_at", { ascending: false })
+    .limit(20);
 
   type UserDecks = QueryData<typeof userDecksQuery>;
 

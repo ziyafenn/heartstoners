@@ -1,7 +1,7 @@
-import { HeroIcon } from "./HeroIcon";
-import { AssetIcon } from "./AssetIcon";
+import { HeroIcon } from "@/components/HeroIcon";
+import { AssetIcon } from "@/components/AssetIcon";
 import Link from "next/link";
-import { DeckPopularity } from "./DeckPopularity";
+import { DeckPopularity } from "@/components/DeckPopularity";
 import { UserDecks } from "@/types/deck.type";
 
 type Props = UserDecks[number];

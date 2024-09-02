@@ -3,7 +3,7 @@ import { getRequestedDecks } from "@/service/supabase.service";
 import { DeckSearch } from "./_components/DeckSearch";
 
 export default async function Decks() {
-  const decks = await getRequestedDecks();
+  const decks = await getRequestedDecks({ deck_format: "standard" });
   const {
     userCollection: { dust },
     craftableDecks,
