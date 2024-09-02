@@ -1,5 +1,5 @@
 import { getDecks } from "@/service/supabase.service";
-import { Tables } from "./superbase.type";
+import { Tables } from "./supabase";
 
 export type DeckUserInputParams = Pick<
   Tables<"user_decks">,

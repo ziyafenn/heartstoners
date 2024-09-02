@@ -27,7 +27,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { getMetasByClass } from "@/service/supabase.service";
-import { Enums, Tables } from "@/types/superbase.type";
+import { Enums, Tables } from "@/types/supabase";
 import { DeckInitParams } from "@/types/deck.type";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";

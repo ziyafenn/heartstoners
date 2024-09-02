@@ -1,5 +1,5 @@
 import { ResourceOptions } from "blizzard.js/dist/resources";
-import { Enums } from "./superbase.type";
+import { Enums } from "./supabase";
 import { CardSearchOptions } from "blizzard.js/dist/resources/hs";
 
 export type Card = {

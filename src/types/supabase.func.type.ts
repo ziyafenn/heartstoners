@@ -1,4 +1,4 @@
-import { Database } from "./superbase.type";
+import { Database } from "./supabase";
 type Functions = keyof Database["public"]["Functions"];
 
 export type DBFunction<

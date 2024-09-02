@@ -2,7 +2,7 @@
 
 import { CardClass } from "@/types/hs.type";
 import { UserCollection } from "@/types/hsreplay.type";
-import { Tables } from "@/types/superbase.type";
+import { Tables } from "@/types/supabase";
 import { createClient } from "./supabase.auth.server";
 import { DBFunction } from "@/types/supabase.func.type";
 import { DeckFilters } from "@/types/deck.type";

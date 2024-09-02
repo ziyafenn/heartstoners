@@ -8,7 +8,7 @@ import { CardSeachParams, CardsPage } from "@/types/hs.type";
 import { redirect } from "next/navigation";
 import { decode } from "deckstrings";
 import { CARD_CLASSES } from "@/lib/cardClasses";
-import { Enums } from "@/types/superbase.type";
+import { Enums } from "@/types/supabase";
 
 export async function loadPageWithFilters(
   currentState: CardsPage & { params: CardSeachParams },
