@@ -81,6 +81,7 @@ export function DeckBuilderFilter({
     formData.set("filter", "true");
 
     action(formData);
+    window.scroll({ top: 0 });
   }
 
   useEffect(() => {

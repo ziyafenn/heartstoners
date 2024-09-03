@@ -84,7 +84,7 @@ export function CurrentDeck({
     const height = innerHeight - position.y;
 
     if (scrollAreaRef.current) {
-      const BOTTOM_PADDING = 64;
+      const BOTTOM_PADDING = 80;
       const scrollArea = scrollAreaRef.current.getBoundingClientRect();
       const maxHeight = innerHeight - scrollArea.top - BOTTOM_PADDING;
 
@@ -95,7 +95,7 @@ export function CurrentDeck({
   }, [scrollAreaRef]);
 
   return (
-    <aside>
+    <aside className="mt-6">
       <div
         className="sticky top-40 flex flex-col overflow-hidden rounded-md border-2 border-white"
         style={{ maxHeight: availHeight }}
@@ -128,10 +128,9 @@ export function CurrentDeck({
             alt={cardClass.name}
           />
         </div>
-
-        <ScrollArea ref={scrollAreaRef}>
+        <ScrollArea ref={scrollAreaRef} className="py-3">
           <ul
-            className="flex flex-1 flex-col gap-1 p-3"
+            className="flex flex-col gap-1 px-3"
             style={{
               height: cardListMaxHeight,
             }}

@@ -84,7 +84,7 @@ export function HsCard({
         onClick={onAddCard}
         disabled={isDisabled}
         type="button"
-        className={cn(isDisabled && "grayscale")}
+        className={cn(isDisabled && "grayscale cursor-not-allowed")}
       >
         <Image
           draggable={false}

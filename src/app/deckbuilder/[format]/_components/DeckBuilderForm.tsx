@@ -223,7 +223,11 @@ export default function DeckBuilderForm({
   return (
     <Sheet>
       <SheetTrigger asChild onClick={getSubArchetype}>
-        <Button type="button" disabled={selectedCards.length < 30}>
+        <Button
+          type="button"
+          disabled={selectedCards.length < 30}
+          className="rounded-none bg-orange-200"
+        >
           {`Create Deck (${selectedCards.length}/30)`}
         </Button>
       </SheetTrigger>

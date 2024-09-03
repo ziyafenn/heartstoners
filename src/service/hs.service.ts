@@ -40,7 +40,7 @@ export async function searchHsCards({
     locale: "en_US",
     set,
     sort,
-    pageSize: 15,
+    pageSize: 30,
     page,
     minionType,
     collectible: 1,

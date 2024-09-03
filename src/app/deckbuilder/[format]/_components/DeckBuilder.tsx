@@ -23,7 +23,11 @@ import { cardViewerProps } from "@/lib/cardViewerProps";
 import { ZILLIAX_ID } from "@/lib/constants";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+function Loading() {
+  return <div className="size-full bg-red-500 z-50">Loading</div>;
+}
 
 export function DeckBuilder({
   initialCards,
@@ -67,6 +71,8 @@ export function DeckBuilder({
     deck,
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const currentSideboard = sideboardCards.find(
     (sideboard) => sideboard.sideboardCard.id === activeSideboardCard?.id,
   );
@@ -89,46 +95,65 @@ export function DeckBuilder({
 
   const canLoadMore = cardsPage.pageCount > cardsPage.page;
 
+  function updateFilters(formData: FormData) {
+    setIsLoading(true);
+    actions.onSearch(formData);
+    window.scroll({ top: 0 });
+  }
+
   useEffect(() => {
     window.scroll({ top: 0 });
   }, []);
 
+  useEffect(() => {
+    if (!cardsPage.loading) {
+      setIsLoading(false);
+    }
+  }, [cardsPage]);
+
   return (
     <div className="flex flex-col gap-4">
       <DeckBuilderFilter
-        action={actions.onSearch}
+        action={updateFilters}
         rarities={rarities}
         minionTypes={minionTypes}
         keywords={keywords}
         cardTypes={cardTypes}
       />
       <main className="grid select-none grid-cols-[1fr,320px] gap-8">
-        <CardSearchResult
-          cards={cardsDisplayedOnSearchPage}
-          cardViewerProps={(card) =>
-            cardViewerProps({
-              activeSideboardCard,
-              currentSideboard,
-              onAddCard,
-              selectedCards,
-              card,
-              deathKnightRuneSlots,
-            })
-          }
-        >
-          <div
-            ref={ref}
-            className={cn("self-center size-24", !canLoadMore && "hidden")}
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <CardSearchResult
+            cards={cardsDisplayedOnSearchPage}
+            cardViewerProps={(card) =>
+              cardViewerProps({
+                activeSideboardCard,
+                currentSideboard,
+                onAddCard,
+                selectedCards,
+                card,
+                deathKnightRuneSlots,
+              })
+            }
           >
-            <Image
-              src="/assets/hs-logo.png"
-              width={256}
-              height={256}
-              alt="heartstone-logo"
-              className="animate-spin-slow object-contain delay-1000"
-            />
-          </div>
-        </CardSearchResult>
+            <div
+              ref={ref}
+              className={cn(
+                "self-center size-24",
+                (!canLoadMore || isActiveSideboardCardZilliax) && "hidden",
+              )}
+            >
+              <Image
+                src="/assets/hs-logo.png"
+                width={256}
+                height={256}
+                alt="heartstone-logo"
+                className="animate-spin-slow object-contain delay-1000"
+              />
+            </div>
+          </CardSearchResult>
+        )}
         <CurrentDeck
           deckClass={deckClass}
           sideboardCards={sideboardCards}
@@ -141,7 +166,7 @@ export function DeckBuilder({
         >
           {activeSideboardCard ? (
             <Button onClick={() => actions.toggleSideboard(null)} type="button">
-              Close
+              {`Close ${activeSideboardCard.name} sideboard`}
             </Button>
           ) : (
             <DeckBuilderForm

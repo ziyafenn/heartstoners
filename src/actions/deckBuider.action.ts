@@ -8,12 +8,14 @@ import { CardSeachParams, CardsPage } from "@/types/hs.type";
 import { redirect } from "next/navigation";
 import { decode } from "deckstrings";
 import { CARD_CLASSES } from "@/lib/cardClasses";
-import { Enums } from "@/types/supabase";
+import { Enums } from "@/types/supabase.type";
+
+type Params = CardsPage & { params: CardSeachParams; loading?: boolean };
 
 export async function loadPageWithFilters(
-  currentState: CardsPage & { params: CardSeachParams },
+  currentState: Params,
   formData: FormData,
-): Promise<CardsPage & { params: CardSeachParams }> {
+): Promise<Params> {
   const deckSearchParams = {
     ...currentState.params,
     class: formData.get("class"),
@@ -33,12 +35,13 @@ export async function loadPageWithFilters(
   });
 
   // if it's filter, reset search state
-  const res: CardsPage & { params: CardSeachParams } = isFilter
-    ? { ...data, cards, params: deckSearchParams }
+  const res: Params = isFilter
+    ? { ...data, cards, params: deckSearchParams, loading: false }
     : {
         ...data,
         params: deckSearchParams,
         cards: [...currentState.cards, ...cards],
+        loading: false,
       };
 
   return res;

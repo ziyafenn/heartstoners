@@ -23,6 +23,7 @@ export function useDeckBuilder({
   inView: boolean;
   initState: CardsPage & {
     params: Pick<CardSeachParams, "set" | "class" | "multiClass">;
+    loading?: boolean;
   };
 }) {
   const [cardsPage, onSearch] = useFormState(loadPageWithFilters, initState);
