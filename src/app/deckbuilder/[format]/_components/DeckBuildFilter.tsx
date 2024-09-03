@@ -14,14 +14,14 @@ import {
   MinionTypes,
   Rarity,
 } from "@/types/hs.type";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useSearchParams } from "next/navigation";
 import { HeroIcon } from "@/components/HeroIcon";
 import { CardSearchOptions } from "blizzard.js/dist/resources/hs";
 import { Input } from "@/components/ui/input";
-// import { Badge } from "../ui/badge";
-// import { X } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { X } from "lucide-react";
 
 export function DeckBuilderFilter({
   action,
@@ -37,7 +37,7 @@ export function DeckBuilderFilter({
   cardTypes: CardType[];
 }) {
   const formRef = useRef<HTMLFormElement>(null);
-
+  const filterRef = useRef<HTMLDivElement>(null);
   const searchParams = useSearchParams();
   const deckClass = searchParams.get("deckClass") as CardClass["slug"];
   const manaCost = [...Array(10).keys(), "10+"];
@@ -83,150 +83,169 @@ export function DeckBuilderFilter({
     action(formData);
   }
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const filter = filterRef.current;
+      if (!filter) return;
+      if (window.scrollY > 128) return filter.classList.add("floating");
+      return filter.classList.remove("floating");
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [filterRef]);
+
   return (
-    <div className="sticky top-4 z-20 flex flex-col bg-black">
-      <form
-        ref={formRef}
-        className="flex flex-wrap gap-4"
-        onSubmit={(e) => {
-          e.preventDefault();
-        }}
-      >
-        <ToggleGroup
-          defaultValue={values.class as string[]}
-          type="multiple"
-          onValueChange={(value) => onValueChange(value, "class")}
+    <>
+      <div ref={filterRef} className="deckBuilderFilter">
+        <form
+          ref={formRef}
+          className="flex flex-wrap gap-4"
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
         >
-          <ToggleGroupItem value={deckClass} className="size-10 p-0">
-            <HeroIcon slug={deckClass} />
-          </ToggleGroupItem>
-          <ToggleGroupItem value="neutral" className="size-10 p-0">
-            <HeroIcon slug="neutral" />
-          </ToggleGroupItem>
-        </ToggleGroup>
-        <ToggleGroup
-          type="multiple"
-          onValueChange={(value) => onValueChange(value, "manaCost")}
-        >
-          {manaCost.map((mana, index) => (
-            <ToggleGroupItem
-              value={index === 10 ? "10^" : mana.toString()}
-              key={mana}
-              className="font-outline-2 size-10 bg-[url(/assets/mana.png)] bg-contain bg-no-repeat p-0 text-[16px]"
-            >
-              {mana}
+          <ToggleGroup
+            defaultValue={values.class as string[]}
+            type="multiple"
+            onValueChange={(value) => onValueChange(value, "class")}
+          >
+            <ToggleGroupItem value={deckClass} className="size-10 p-0">
+              <HeroIcon slug={deckClass} />
             </ToggleGroupItem>
+            <ToggleGroupItem value="neutral" className="size-10 p-0">
+              <HeroIcon slug="neutral" />
+            </ToggleGroupItem>
+          </ToggleGroup>
+          <ToggleGroup
+            type="multiple"
+            onValueChange={(value) => onValueChange(value, "manaCost")}
+          >
+            {manaCost.map((mana, index) => (
+              <ToggleGroupItem
+                value={index === 10 ? "10^" : mana.toString()}
+                key={mana}
+                className="font-outline-2 size-10 bg-[url(/assets/mana.png)] bg-contain bg-no-repeat p-0 text-[16px]"
+              >
+                {mana}
+              </ToggleGroupItem>
+            ))}
+          </ToggleGroup>
+          <div className="flex flex-1 gap-4">
+            <Select
+              name="minionType"
+              onValueChange={(value) => onValueChange(value, "minionType")}
+              value={values.minionType as string}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Minion Types" />
+              </SelectTrigger>
+              <SelectContent>
+                {minionTypes.map((cardClass) => (
+                  <SelectItem value={cardClass.slug} key={cardClass.id}>
+                    {cardClass.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select
+              value={values.rarity as string}
+              name="rarity"
+              onValueChange={(value) => {
+                onValueChange(value, "rarity");
+              }}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Rarity" />
+              </SelectTrigger>
+              <SelectContent>
+                {rarities.map((rarity) => (
+                  <SelectItem value={rarity.slug} key={rarity.id}>
+                    {rarity.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select
+              name="keyword"
+              onValueChange={(value) => onValueChange(value, "keyword")}
+              value={values.keyword as string}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Keyword" />
+              </SelectTrigger>
+              <SelectContent>
+                {keywords
+                  .filter((keyword) => keyword.gameModes.includes(5))
+                  .map((keyword) => (
+                    <SelectItem value={keyword.slug} key={keyword.id}>
+                      {keyword.name}
+                    </SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
+            <Select
+              name="type"
+              onValueChange={(value) => onValueChange(value, "type")}
+              value={values.type as string}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Type" />
+              </SelectTrigger>
+              <SelectContent>
+                {cardTypes.map((cardType) => (
+                  <SelectItem value={cardType.slug} key={cardType.id}>
+                    {cardType.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Input
+              value={values.textFilter}
+              showClearIcon={!!values.textFilter}
+              onChange={(e) =>
+                setValues((state) => ({
+                  ...state,
+                  textFilter: e.target.value,
+                }))
+              }
+              onClear={() => {
+                setValues((state) => ({ ...state, textFilter: "" }));
+                if (textSearchActive) {
+                  setTextSearchActive(false);
+                  onValueChange("", "textFilter", true);
+                }
+              }}
+              placeholder="Text search"
+              name="textFilter"
+              className="w-48"
+              type="text"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  onValueChange(e.currentTarget.value, "textFilter");
+                  setTextSearchActive(true);
+                }
+              }}
+            />
+          </div>
+          <input hidden name="class" type="hidden" value={values.class} />
+          <input hidden type="hidden" name="manaCost" value={values.manaCost} />
+        </form>
+      </div>
+      {!!activeFilters.size && (
+        <ul className="flex h-8 gap-4 pt-4">
+          {Array.from(activeFilters.entries()).map(([type, value]) => (
+            <li key={type}>
+              <Badge onClick={() => onValueChange("", type, true)}>
+                {value.toUpperCase()} <X className="ml-1 size-4" />
+              </Badge>
+            </li>
           ))}
-        </ToggleGroup>
-        <Select
-          name="minionType"
-          onValueChange={(value) => onValueChange(value, "minionType")}
-          value={values.minionType as string}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Minion Types" />
-          </SelectTrigger>
-          <SelectContent>
-            {minionTypes.map((cardClass) => (
-              <SelectItem value={cardClass.slug} key={cardClass.id}>
-                {cardClass.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <Select
-          value={values.rarity as string}
-          name="rarity"
-          onValueChange={(value) => {
-            onValueChange(value, "rarity");
-          }}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Rarity" />
-          </SelectTrigger>
-          <SelectContent>
-            {rarities.map((rarity) => (
-              <SelectItem value={rarity.slug} key={rarity.id}>
-                {rarity.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <Select
-          name="keyword"
-          onValueChange={(value) => onValueChange(value, "keyword")}
-          value={values.keyword as string}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Keyword" />
-          </SelectTrigger>
-          <SelectContent>
-            {keywords
-              .filter((keyword) => keyword.gameModes.includes(5))
-              .map((keyword) => (
-                <SelectItem value={keyword.slug} key={keyword.id}>
-                  {keyword.name}
-                </SelectItem>
-              ))}
-          </SelectContent>
-        </Select>
-        <Select
-          name="type"
-          onValueChange={(value) => onValueChange(value, "type")}
-          value={values.type as string}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Type" />
-          </SelectTrigger>
-          <SelectContent>
-            {cardTypes.map((cardType) => (
-              <SelectItem value={cardType.slug} key={cardType.id}>
-                {cardType.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <Input
-          value={values.textFilter}
-          showClearIcon={!!values.textFilter}
-          onChange={(e) =>
-            setValues((state) => ({
-              ...state,
-              textFilter: e.target.value,
-            }))
-          }
-          onClear={() => {
-            setValues((state) => ({ ...state, textFilter: "" }));
-            if (textSearchActive) {
-              setTextSearchActive(false);
-              onValueChange("", "textFilter", true);
-            }
-          }}
-          placeholder="Text search"
-          name="textFilter"
-          className="w-48"
-          type="text"
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              onValueChange(e.currentTarget.value, "textFilter");
-              setTextSearchActive(true);
-            }
-          }}
-        />
-        <input hidden name="class" type="hidden" value={values.class} />
-        <input hidden type="hidden" name="manaCost" value={values.manaCost} />
-      </form>
-    </div>
+        </ul>
+      )}
+    </>
   );
-}
-{
-  /* <ul className="flex h-8 gap-4">
-        {Array.from(activeFilters.entries()).map(([type, value]) => (
-          <li key={type}>
-            <Badge onClick={() => onValueChange("", type, true)}>
-              {value.toUpperCase()} <X className="ml-1 size-4" />
-            </Badge>
-          </li>
-        ))}
-      </ul> */
 }

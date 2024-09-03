@@ -8,11 +8,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useEffect, useRef, useState } from "react";
-import { cn } from "@/lib/utils";
-import { MinusIcon, XIcon } from "lucide-react";
 import { CardCrop } from "@/components/CardCrop";
 import { CARD_CLASSES } from "@/lib/cardClasses";
 import { AssetIcon } from "@/components/AssetIcon";
+import Image from "next/image";
 
 type Props = {
   children: React.ReactNode;
@@ -33,7 +32,6 @@ export function CurrentDeck({
   deckClass,
   deathKnightRuneSlots,
 }: Props) {
-  const [hovered, setHovered] = useState<number | null>(null);
   const [availHeight, setAvailHeight] = useState<number | string>("100vh");
   const [cardListMaxHeight, setCardListMaxHeight] = useState(0);
   const endOfListRef = useRef<HTMLLIElement>(null);
@@ -99,7 +97,7 @@ export function CurrentDeck({
   return (
     <aside>
       <div
-        className="sticky top-20 flex flex-col gap-4"
+        className="sticky top-40 flex flex-col overflow-hidden rounded-md border-2 border-white"
         style={{ maxHeight: availHeight }}
       >
         {/* {!selectedCardsCount && (
@@ -108,19 +106,34 @@ export function CurrentDeck({
             <Button>Paste</Button>
           </form>
         )} */}
-        <div>{cardClass.name}</div>
-        {deckClass === "deathknight" && (
-          <div className="flex h-16 items-center justify-center bg-red-50">
-            {showRunes().map((rune, index) => (
-              <AssetIcon type="rune" name={rune} key={index} />
-            ))}
+        <div className="relative text-xl font-bold">
+          <div className="absolute size-full bg-black/50" />
+          <div className="absolute flex size-full items-center justify-between pl-3 pr-2">
+            <span className="font-hs leading-tight drop-shadow-md">
+              {cardClass.name}
+            </span>
+            {deckClass === "deathknight" && (
+              <div className="flex min-w-32 items-center justify-end">
+                {showRunes().map((rune, index) => (
+                  <AssetIcon type="rune" name={rune} key={index} />
+                ))}
+              </div>
+            )}
           </div>
-        )}
+          <Image
+            src={`/heroes/${cardClass.slug}.jpg`}
+            width={1440}
+            height={1440}
+            className="h-16 object-cover object-[0px,-64px]"
+            alt={cardClass.name}
+          />
+        </div>
+
         <ScrollArea ref={scrollAreaRef}>
           <ul
-            className="flex flex-col gap-1 pr-3"
+            className="flex flex-1 flex-col gap-1 p-3"
             style={{
-              maxHeight: cardListMaxHeight,
+              height: cardListMaxHeight,
             }}
           >
             {showSelectedCard(selectedCards).map((card, index) => {
@@ -135,41 +148,15 @@ export function CurrentDeck({
                   (sideboard) => sideboard.sideboardCard.id === card.id,
                 )?.cardsInSideboard.length ?? 0;
               return (
-                <li
-                  key={card.id}
-                  className={cn(
-                    "flex justify-end rounded-sm min-h-10 relative select-none",
-                    card.maxSideboardCards && "min-h-12",
-                  )}
-                  onMouseEnter={() => setHovered(card.id)}
-                  onMouseLeave={() => setHovered(null)}
+                <CardCrop
                   ref={isLastItem ? endOfListRef : null}
-                >
-                  {card.maxSideboardCards && (
-                    <div className="absolute bottom-0 z-20 flex w-full justify-center">
-                      <Button
-                        size="sm"
-                        className="h-4"
-                        onClick={() => toggleSideboard(card)}
-                      >
-                        OPEN {`${cardsInSideboard}/3`}
-                      </Button>
-                    </div>
-                  )}
-                  <CardCrop card={card}>
-                    {hovered === card.id ? (
-                      <button onClick={() => removeCard(card)}>
-                        {count === 2 ? (
-                          <MinusIcon className="size-4" />
-                        ) : (
-                          <XIcon className="size-4" />
-                        )}
-                      </button>
-                    ) : (
-                      count
-                    )}
-                  </CardCrop>
-                </li>
+                  card={card}
+                  count={count}
+                  onRemove={removeCard}
+                  onSideboardClick={() => toggleSideboard(card)}
+                  cardsInSideboard={cardsInSideboard}
+                  key={card.id}
+                />
               );
             })}
           </ul>

@@ -23,7 +23,7 @@ export function AssetIcon({
 
   if (type === "rune")
     return (
-      <div className="size-14">
+      <div className="size-10">
         <Image src={`/runes/${name}.png`} alt={name} height={120} width={120} />
       </div>
     );

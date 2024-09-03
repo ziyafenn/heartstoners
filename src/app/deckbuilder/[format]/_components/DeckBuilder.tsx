@@ -94,7 +94,7 @@ export function DeckBuilder({
   }, []);
 
   return (
-    <>
+    <div className="flex flex-col gap-4">
       <DeckBuilderFilter
         action={actions.onSearch}
         rarities={rarities}
@@ -102,7 +102,7 @@ export function DeckBuilder({
         keywords={keywords}
         cardTypes={cardTypes}
       />
-      <main className="grid select-none grid-cols-[1fr,280px] gap-8">
+      <main className="grid select-none grid-cols-[1fr,320px] gap-8">
         <CardSearchResult
           cards={cardsDisplayedOnSearchPage}
           cardViewerProps={(card) =>
@@ -152,6 +152,6 @@ export function DeckBuilder({
           )}
         </CurrentDeck>
       </main>
-    </>
+    </div>
   );
 }

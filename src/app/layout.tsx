@@ -37,7 +37,11 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={cn(inter.variable, hs.variable, "dark h-screen font-sans")}
+        className={cn(
+          inter.variable,
+          hs.variable,
+          "dark min-h-svh font-sans bg-gradient-to-r from-[hsl(246,55%,10%)] via-[hsl(243,40%,19%)] to-[hsl(240,27%, 19%)]",
+        )}
       >
         <header>
           <nav className="flex items-center justify-between p-4">
@@ -57,7 +61,7 @@ export default async function RootLayout({
             </ul>
           </nav>
         </header>
-        <div className="flex flex-col gap-8 p-8">
+        <div className="flex flex-col p-8">
           <TooltipProvider delayDuration={100}>{children}</TooltipProvider>
         </div>
         <footer className="border-t p-4">
