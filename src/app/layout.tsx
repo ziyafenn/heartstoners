@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { createClient } from "@/service/supabase.auth.server";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { getUserProfile } from "@/service/supabase.service";
 
 const hs = FonsHs({
   subsets: ["latin"],
@@ -35,6 +36,8 @@ export default async function RootLayout({
     data: { user },
   } = await supabase.auth.getUser();
 
+  const userProfile = await getUserProfile(user.id);
+
   return (
     <html lang="en">
       <body
@@ -54,7 +57,7 @@ export default async function RootLayout({
                 alt="heartstoners logo"
                 className="h-20 w-auto"
               />
-              {/* {user?.id || "no user"} */}
+              {userProfile?.username || "no user"}
             </Link>
 
             <ul className="flex items-center gap-8">

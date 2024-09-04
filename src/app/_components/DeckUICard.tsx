@@ -36,31 +36,31 @@ export function DeckUICard({ data: deck }: { data: Props }) {
       <Link href={"/"}>
         <div className="absolute size-full bg-indigo-950 mix-blend-multiply	z-10 " />
         <div className="absolute z-20 items-center justify-between p-4 flex size-full bg-blend-overlay">
-          <div className="flex gap-4 items-center">
-            <HeroIcon
-              slug={deck_class}
-              className="size-12 drop-shadow-[1px_0_1px_orange]"
-            />
-            <div>
+          <div className="flex gap-4 ">
+            <div className="flex flex-col gap-2">
+              <HeroIcon
+                slug={deck_class}
+                className="size-5 border border-border box-content rounded-full"
+              />
+              <Image
+                src={`/format/${deck_format}.svg`}
+                width={25}
+                height={25}
+                className="size-5 rounded-full border border-border box-content"
+                alt={deck_format}
+              />
+            </div>
+            <div className="flex flex-col justify-between">
               <h3 className="text-xl font-hs outline-2">{name}</h3>
               <ul className="flex gap-2 items-center">
                 <Tag label={archetype} type="archetype" />
                 {meta_sub_archetypes && (
                   <Tag label={meta_sub_archetypes.name} type="sub_archetype" />
                 )}
-                <li>
-                  <Image
-                    src={`/format/${deck_format}.svg`}
-                    width={25}
-                    height={25}
-                    className="size-5"
-                    alt={deck_format}
-                  />
-                </li>
               </ul>
             </div>
           </div>
-          <div className="flex flex-col items-end gap-2 text-sm">
+          <div className="flex flex-col items-end gap-2">
             <div id="author" className="flex items-center gap-2">
               <span className="text-sm">by {profiles!.username}</span>
               <span className="size-6 bg-yellow-50 rounded-full" />

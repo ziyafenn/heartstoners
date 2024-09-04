@@ -28,8 +28,23 @@ import { UserDecks } from "@/types/deck.type";
 type Props = {
   decks: UserDecks;
   craftableDecks: DBFunction<"get_craftable_decks", "Returns"> | null;
-  availableDust: number;
+  availableDust: number | null;
 };
+
+function DustCost({
+  isCraftable,
+  dustCostSum,
+  availableDust,
+}: {
+  isCraftable: boolean;
+  dustCostSum: number;
+  availableDust: number | null;
+}) {
+  if (isCraftable)
+    return <span className="font-bold text-green-500">Craftable</span>;
+  if (availableDust) return <span>{dustCostSum - availableDust}</span>;
+  return <span>{dustCostSum}</span>;
+}
 
 export function DeckSearch({ decks, availableDust, craftableDecks }: Props) {
   const [currentDecks, setCurrentDecks] = useState(() => decks);
@@ -66,27 +81,22 @@ export function DeckSearch({ decks, availableDust, craftableDecks }: Props) {
           <TableBody>
             {currentDecks.map((deck) => (
               <TableRow key={deck.id}>
-                <TableCell className="flex gap-2">
-                  <span>
-                    <HeroIcon slug={deck.deck_class} className="size-12" />
-                  </span>
+                <TableCell className="flex gap-4 items-center">
+                  <HeroIcon slug={deck.deck_class} className="size-10" />
                   <span className="flex flex-col gap-1">
                     <div className="text-base font-bold">{deck.name}</div>
                     <div className="flex gap-1">
                       <AssetIcon type="asset" name="dust" />
-
-                      {checkIsCraftable(deck) ? (
-                        <span className="font-bold text-green-500">
-                          Craftable
-                        </span>
-                      ) : (
-                        <span>{deck.dust_cost_sum - availableDust}</span>
-                      )}
+                      <DustCost
+                        availableDust={availableDust}
+                        dustCostSum={deck.dust_cost_sum}
+                        isCraftable={checkIsCraftable(deck)}
+                      />
                     </div>
                   </span>
                 </TableCell>
                 <TableCell>
-                  <div>{deck.sub_archetype}</div>
+                  <div>{deck.meta_sub_archetypes?.name}</div>
                   <div>{deck.archetype}</div>
                 </TableCell>
                 <TableCell className="text-right">

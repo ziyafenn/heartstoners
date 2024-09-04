@@ -15,6 +15,17 @@ const deckQuery = `*,
     meta_sub_archetypes (name)
     `;
 
+export async function getUserProfile(id: string) {
+  const supabase = createClient();
+  const { data } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  return data;
+}
+
 export async function getDecks() {
   const supabase = createClient();
   const userDecksQuery = supabase
@@ -96,10 +107,7 @@ export async function getRequestedDecks(
   craftableDecks?: DBFunction<"get_craftable_decks", "Returns"> | null,
 ) {
   const supabase = createClient();
-  let query = supabase.from("user_decks").select(
-    `*, profiles (*), meta_sub_archetypes:sub_archetype (*), deck_likes (*),
-    deck_interactions (views, copies)`,
-  );
+  let query = supabase.from("user_decks").select(deckQuery);
 
   if (filters?.craftable_decks === "true") {
     const deckIds = craftableDecks!.map((deck) => deck.user_deck_id);

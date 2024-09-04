@@ -7,12 +7,14 @@ export function DeckPopularity({ deck }: { deck: UserDecks[number] }) {
     views: deck.deck_interactions?.views,
     likes: deck.deck_likes.length,
   });
-  const rating = Array.from({ length: score }, (_, index) => index + 1);
+  const ratings = Array.from({ length: score }, (_, index) => index + 1);
 
   return (
     <ul className="flex items-center gap-1 justify-end">
-      {rating.map((rate) => (
-        <span className="text-xs">⭐</span>
+      {ratings.map((rating) => (
+        <span className="text-xs" key={rating}>
+          ⭐
+        </span>
       ))}
     </ul>
   );

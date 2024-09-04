@@ -61,8 +61,8 @@ export default async function Home() {
             <Button>Discover decks</Button>
           </div>
         </div>
-        <div id="decks">
-          <h2 className="text-2xl leading-loose font-hs outline-2">
+        <div className="flex flex-col gap-4">
+          <h2 className="text-2xl font-hs outline-2">
             Most popular decks of the week
           </h2>
           <ul className="grid grid-cols-auto-fill-hscard gap-4">
@@ -71,8 +71,8 @@ export default async function Home() {
             ))}
           </ul>
         </div>
-        <div id="decks">
-          <h2 className="text-2xl leading-loose font-hs outline-2">
+        <div className="flex flex-col gap-4">
+          <h2 className="text-2xl font-hs outline-2">
             Recent submissions from our users
           </h2>
           <ul className="grid grid-cols-auto-fill-hscard gap-4">
