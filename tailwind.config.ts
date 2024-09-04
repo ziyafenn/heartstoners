@@ -82,6 +82,9 @@ const config = {
         "auto-fill-hscard": "repeat(auto-fill, minmax(500px, 1fr))",
         "auto-fit-hscard": "repeat(auto-fit, minmax(500px, 1fr))",
       },
+      backgroundImage: {
+        hero: "url('/img/hero.jpg')",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

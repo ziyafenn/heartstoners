@@ -3,14 +3,22 @@ import Image from "next/image";
 export function AssetIcon({
   name,
   type,
+  className,
 }: {
   name: string;
   type: "rarity" | "asset" | "rune";
+  className?: string;
 }) {
   if (type === "asset")
     return (
       <div className="size-4">
-        <Image src={`/assets/${name}.png`} alt={name} height={72} width={72} />
+        <Image
+          src={`/assets/${name}.png`}
+          alt={name}
+          height={72}
+          width={72}
+          className={className}
+        />
       </div>
     );
 

@@ -29,31 +29,34 @@ export function DeckUICard({ data: deck }: { data: Props }) {
     name,
     sub_archetype,
     profiles,
+    meta_sub_archetypes,
   } = deck;
   return (
     <li className="relative rounded-xl overflow-hidden select-none border border-border hover:shadow-xl hover:translate-y-[-4px] hover:border-orange-900">
-      <Link href={`/decks/${id}/`}>
-        <div className="absolute size-full bg-gradient-to-r from-black/80 via-black/20 to-black/80" />
-        <div className="absolute items-center justify-between p-4 flex size-full">
-          <div className="flex gap-2 items-center">
-            <HeroIcon slug={deck_class} className="size-12" />
+      <Link href={"/"}>
+        <div className="absolute size-full bg-indigo-950 mix-blend-multiply	z-10 " />
+        <div className="absolute z-20 items-center justify-between p-4 flex size-full bg-blend-overlay">
+          <div className="flex gap-4 items-center">
+            <HeroIcon
+              slug={deck_class}
+              className="size-12 drop-shadow-[1px_0_1px_orange]"
+            />
             <div>
-              <div className="flex gap-1 items-center">
-                <h3 className="text-xl font-hs outline-2">{name}</h3>
-                <Image
-                  src={`/format/${deck_format}.svg`}
-                  width={25}
-                  height={25}
-                  className="size-5"
-                  alt={deck_format}
-                />
-              </div>
-
-              <ul className="flex gap-2">
+              <h3 className="text-xl font-hs outline-2">{name}</h3>
+              <ul className="flex gap-2 items-center">
                 <Tag label={archetype} type="archetype" />
-                {sub_archetype && (
-                  <Tag label={sub_archetype.toString()} type="sub_archetype" />
+                {meta_sub_archetypes && (
+                  <Tag label={meta_sub_archetypes.name} type="sub_archetype" />
                 )}
+                <li>
+                  <Image
+                    src={`/format/${deck_format}.svg`}
+                    width={25}
+                    height={25}
+                    className="size-5"
+                    alt={deck_format}
+                  />
+                </li>
               </ul>
             </div>
           </div>
@@ -70,7 +73,7 @@ export function DeckUICard({ data: deck }: { data: Props }) {
         src={`/heroes/${deck_class}.jpg`}
         width={1440}
         height={1440}
-        className="h-24 object-[0px,-160px] object-cover "
+        className="h-24 object-[0px,-160px] object-cover grayscale"
         alt={deck_class}
       />
     </li>

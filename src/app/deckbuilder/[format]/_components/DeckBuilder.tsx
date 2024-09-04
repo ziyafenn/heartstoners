@@ -145,7 +145,7 @@ export function DeckBuilder({
               )}
             >
               <Image
-                src="/assets/hs-logo.png"
+                src="/img/hs-logo.png"
                 width={256}
                 height={256}
                 alt="heartstone-logo"

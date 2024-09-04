@@ -48,7 +48,7 @@ export default async function RootLayout({
           <nav className="flex items-center justify-between py-4 px-8 select-none">
             <Link href="/">
               <Image
-                src="/assets/logo.png"
+                src="/img/logo.png"
                 width={676}
                 height={362}
                 alt="heartstoners logo"

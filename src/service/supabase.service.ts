@@ -11,7 +11,9 @@ import { QueryResult, QueryData, QueryError } from "@supabase/supabase-js";
 const deckQuery = `*, 
     profiles (*),
     deck_likes (*),
-    deck_interactions (views, copies)`;
+    deck_interactions (views, copies),
+    meta_sub_archetypes (name)
+    `;
 
 export async function getDecks() {
   const supabase = createClient();

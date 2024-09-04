@@ -50,7 +50,7 @@ export default async function Home() {
       <main className="flex flex-col gap-8">
         <div
           id="hero"
-          className="flex flex-col justify-start gap-4 rounded-sm bg-slate-600 p-10"
+          className="flex flex-col justify-start gap-4 relative rounded-sm p-10 bg-hero bg-left bg-no-repeat"
         >
           <h3 className="font-hs text-2xl">
             Craft your winning deck with our Reno-certified deckbuilder for
@@ -58,7 +58,7 @@ export default async function Home() {
           </h3>
           <div className="flex gap-4">
             <Button>Sign up</Button>
-            <Button>Find decks</Button>
+            <Button>Discover decks</Button>
           </div>
         </div>
         <div id="decks">
