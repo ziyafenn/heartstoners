@@ -71,6 +71,11 @@ export async function createDeck(
     })
     .select()
     .single();
+
+  if (data) {
+    const { id } = data;
+    redirect(`/decks/${id}`);
+  }
 }
 
 export async function loadDeckFromCode(formData: FormData) {
