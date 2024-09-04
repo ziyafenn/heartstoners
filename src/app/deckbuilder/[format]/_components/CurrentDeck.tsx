@@ -97,7 +97,7 @@ export function CurrentDeck({
   return (
     <aside className="mt-6">
       <div
-        className="sticky top-40 flex flex-col overflow-hidden rounded-md border-2 border-white"
+        className="sticky top-40 flex flex-col overflow-hidden rounded-md border-4 border-border shadow-lg"
         style={{ maxHeight: availHeight }}
       >
         {/* {!selectedCardsCount && (
@@ -109,7 +109,7 @@ export function CurrentDeck({
         <div className="relative text-xl font-bold">
           <div className="absolute size-full bg-black/50" />
           <div className="absolute flex size-full items-center justify-between pl-3 pr-2">
-            <span className="font-hs leading-tight drop-shadow-md">
+            <span className="font-outline-2 font-hs leading-tight drop-shadow-md">
               {cardClass.name}
             </span>
             {deckClass === "deathknight" && (
@@ -128,7 +128,7 @@ export function CurrentDeck({
             alt={cardClass.name}
           />
         </div>
-        <ScrollArea ref={scrollAreaRef} className="py-3">
+        <ScrollArea ref={scrollAreaRef} className="bg-black/20 py-3 ">
           <ul
             className="flex flex-col gap-1 px-3"
             style={{

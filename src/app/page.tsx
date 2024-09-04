@@ -28,21 +28,23 @@ export default async function Home() {
     fetchTopMetas,
   ]);
 
-  const mostPopular = decks.toSorted((a, b) => {
-    const popularityA = getDeckPopularity({
-      copies: a.deck_interactions?.copies,
-      views: a.deck_interactions?.views,
-      likes: a.deck_likes.length,
-    });
+  const mostPopular = decks
+    .toSorted((a, b) => {
+      const popularityA = getDeckPopularity({
+        copies: a.deck_interactions?.copies,
+        views: a.deck_interactions?.views,
+        likes: a.deck_likes.length,
+      });
 
-    const popularityB = getDeckPopularity({
-      copies: b.deck_interactions?.copies,
-      views: b.deck_interactions?.views,
-      likes: b.deck_likes.length,
-    });
+      const popularityB = getDeckPopularity({
+        copies: b.deck_interactions?.copies,
+        views: b.deck_interactions?.views,
+        likes: b.deck_likes.length,
+      });
 
-    return popularityB - popularityA;
-  });
+      return popularityB - popularityA;
+    })
+    .slice(0, 6);
   return (
     <div className="grid grid-cols-[1fr_320px] gap-8 rounded-md">
       <main className="flex flex-col gap-8">
@@ -60,7 +62,7 @@ export default async function Home() {
           </div>
         </div>
         <div id="decks">
-          <h2 className="text-xl leading-loose">
+          <h2 className="text-2xl leading-loose font-hs outline-2">
             Most popular decks of the week
           </h2>
           <ul className="grid grid-cols-auto-fill-hscard gap-4">
@@ -70,11 +72,13 @@ export default async function Home() {
           </ul>
         </div>
         <div id="decks">
-          <h2 className="text-xl leading-loose">
+          <h2 className="text-2xl leading-loose font-hs outline-2">
             Recent submissions from our users
           </h2>
           <ul className="grid grid-cols-auto-fill-hscard gap-4">
-            {decks?.map((deck) => <DeckUICard data={deck} key={deck.id} />)}
+            {decks!.slice(0, 6).map((deck) => (
+              <DeckUICard data={deck} key={deck.id} />
+            ))}
           </ul>
         </div>
       </main>

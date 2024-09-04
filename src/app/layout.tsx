@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { createClient } from "@/service/supabase.auth.server";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 const hs = FonsHs({
   subsets: ["latin"],
@@ -44,10 +45,18 @@ export default async function RootLayout({
         )}
       >
         <header>
-          <nav className="flex items-center justify-between p-4">
-            <div>
-              <Link href="/">Logo {user?.id || "no user"}</Link>
-            </div>
+          <nav className="flex items-center justify-between py-4 px-8 select-none">
+            <Link href="/">
+              <Image
+                src="/assets/logo.png"
+                width={676}
+                height={362}
+                alt="heartstoners logo"
+                className="h-20 w-auto"
+              />
+              {/* {user?.id || "no user"} */}
+            </Link>
+
             <ul className="flex items-center gap-8">
               <li>
                 <Link href="/decks">Decks</Link>

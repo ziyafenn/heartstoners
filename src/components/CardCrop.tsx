@@ -61,7 +61,7 @@ export const CardCrop = forwardRef<HTMLLIElement, CardCropProps>(
           <div className="h-10 overflow-hidden">
             {card.cropImage ? (
               <Image
-                className="h-14 object-contain object-right w-auto"
+                className="h-14 w-auto object-contain object-right"
                 src={card.cropImage}
                 width={243}
                 height={64}

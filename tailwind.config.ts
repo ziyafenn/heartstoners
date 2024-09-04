@@ -79,8 +79,8 @@ const config = {
         "spin-slow": "spin 2s linear infinite",
       },
       gridTemplateColumns: {
-        "auto-fill-hscard": "repeat(auto-fill, minmax(200px, 1fr))",
-        "auto-fit-hscard": "repeat(auto-fit, minmax(280px, 1fr))",
+        "auto-fill-hscard": "repeat(auto-fill, minmax(500px, 1fr))",
+        "auto-fit-hscard": "repeat(auto-fit, minmax(500px, 1fr))",
       },
     },
   },
