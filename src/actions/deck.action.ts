@@ -1,7 +1,7 @@
 "use server";
 import { encrypt, getUserIp } from "@/lib/serverUtils";
 import { deckInteraction, deckLiked } from "@/service/supabase.service";
-import { Tables } from "@/types/supabase";
+import { Tables } from "@/types/supabase.type";
 import { cookies } from "next/headers";
 
 export async function likeDeck({

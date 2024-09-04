@@ -37,27 +37,27 @@ export type Database = {
       deck_interactions: {
         Row: {
           author_id: string
-          copies: number | null
+          copies: number
           deck_id: number
           game_version: string
           updated_at: string
-          views: number | null
+          views: number
         }
         Insert: {
           author_id?: string
-          copies?: number | null
+          copies?: number
           deck_id?: number
           game_version: string
           updated_at?: string
-          views?: number | null
+          views?: number
         }
         Update: {
           author_id?: string
-          copies?: number | null
+          copies?: number
           deck_id?: number
           game_version?: string
           updated_at?: string
-          views?: number | null
+          views?: number
         }
         Relationships: [
           {

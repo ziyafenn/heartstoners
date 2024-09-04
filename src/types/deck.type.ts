@@ -3,7 +3,7 @@ import { Tables } from "./supabase.type";
 
 export type DeckUserInputParams = Pick<
   Tables<"user_decks">,
-  "name" | "archetype" | "description"
+  "name" | "archetype" | "description" | "youtube_link"
 >;
 
 export type DeckInitParams = Omit<

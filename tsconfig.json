@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
     "lib": ["dom", "dom.iterable", "esnext"],
     "target": "es2017",
     "allowJs": true,

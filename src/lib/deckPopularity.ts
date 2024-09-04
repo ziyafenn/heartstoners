@@ -1,4 +1,4 @@
-import { Tables } from "@/types/supabase";
+import { Tables } from "@/types/supabase.type";
 
 // Define the average metrics
 const averageMetrics = {

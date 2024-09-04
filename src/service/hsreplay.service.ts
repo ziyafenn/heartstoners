@@ -2,7 +2,7 @@ import { UserCollection } from "@/types/hsreplay.type";
 import wretch from "wretch";
 import QueryStringAddon from "wretch/addons/queryString";
 
-export function hsreplayFetch() {
+function hsreplayFetch() {
   return wretch("https://hsreplay.net", { cache: "no-store" })
     .headers({
       Accept: "application/json",

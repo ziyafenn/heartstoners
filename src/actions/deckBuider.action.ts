@@ -9,6 +9,7 @@ import { redirect } from "next/navigation";
 import { decode } from "deckstrings";
 import { CARD_CLASSES } from "@/lib/cardClasses";
 import { Enums } from "@/types/supabase.type";
+import { checkProfanity } from "@/service/profanity.service";
 
 type Params = CardsPage & { params: CardSeachParams; loading?: boolean };
 
@@ -47,35 +48,46 @@ export async function loadPageWithFilters(
   return res;
 }
 
+type CreateDeck = { data: DeckInitParams | null; error?: string };
+
 export async function createDeck(
-  deckParams: DeckInitParams,
+  state: CreateDeck,
   formData: FormData,
-) {
+): Promise<CreateDeck> {
   const supabase = createClient();
   let userInput = {} as DeckUserInputParams;
   const gameVersion = await getCurrentGameVersion();
-
   for (const [key, value] of formData.entries()) {
     userInput = {
       ...userInput,
       [key]: value,
     };
   }
+  const { data: initData } = state;
+
+  const text = `${userInput.name}. ${userInput.description}`;
+  const { isProfanity } = await checkProfanity(text);
+
+  if (isProfanity)
+    return {
+      data: null,
+      error:
+        "It seems your text input contains profanity. If it's not, please contant us on Discord.",
+    };
 
   const { data, error } = await supabase
     .from("user_decks")
     .insert({
-      ...deckParams,
+      ...(initData as DeckInitParams),
       ...userInput,
       game_version: gameVersion,
     })
     .select()
     .single();
 
-  if (data) {
-    const { id } = data;
-    redirect(`/decks/${id}`);
-  }
+  if (error) return { data: null, error: error.message };
+
+  redirect(`/decks/${data.id}`);
 }
 
 export async function loadDeckFromCode(formData: FormData) {

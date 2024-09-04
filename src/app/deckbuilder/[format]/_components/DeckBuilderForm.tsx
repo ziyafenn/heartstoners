@@ -31,7 +31,7 @@ import { getMetasByClass } from "@/service/supabase.service";
 import { Enums, Tables } from "@/types/supabase.type";
 import { DeckInitParams } from "@/types/deck.type";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CARD_TYPES } from "@/lib/cardTypes";
 import { CARD_RARITIES } from "@/lib/cardRarities";
 import { AssetIcon } from "@/components/AssetIcon";
@@ -49,8 +49,14 @@ import {
   SwordsIcon,
   VenetianMask,
 } from "lucide-react";
-import { useFormStatus } from "react-dom";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { useFormState, useFormStatus } from "react-dom";
+import resolveConfig from "tailwindcss/resolveConfig";
+import tailwindConfig from "tailwind.config";
+
+const fullConfig = resolveConfig(tailwindConfig);
+const {
+  theme: { colors },
+} = fullConfig;
 
 type Props = {
   deckSearchParams: CardSeachParams;
@@ -69,11 +75,18 @@ function BarChart({
         axisLeft={null}
         data={manaCostCounts}
         keys={["count"]}
+        borderRadius={3}
         indexBy="name"
         margin={{ top: 0, right: 0, bottom: 40, left: 0 }}
         padding={0.4}
-        colors={["#2563eb"]}
+        colors={[colors.blue[300]]}
         isInteractive={false}
+        theme={{
+          grid: { line: { stroke: colors.border } },
+          axis: { legend: { text: { fill: "#FFFFFF" } } },
+          labels: { text: { fill: "red" } },
+          text: { fill: "white" },
+        }}
         axisBottom={{
           tickSize: 0,
           tickPadding: 16,
@@ -198,7 +211,7 @@ export default function DeckBuilderForm({
     if (bestMatch.matchedCardCount > 2) setSubArchetype(bestMatch.meta);
   }
 
-  const params: DeckInitParams = {
+  const initParams: DeckInitParams = {
     card_ids: card_ids,
     dust_cost_per_card: dust_cost_per_card,
     deck_class: cardClass as CardClass["slug"],
@@ -207,8 +220,6 @@ export default function DeckBuilderForm({
     sideboard_cards: sideboard_cards.length ? sideboard_cards : null,
     dust_cost_sum,
   };
-
-  const createUserDeck = createDeck.bind(null, params);
   const cardTypeAllocation = Object.entries(cardTypes);
   const cardRarityAllocation = Object.entries(cardRarities);
 
@@ -231,6 +242,14 @@ export default function DeckBuilderForm({
     }
   }
 
+  const [state, formAction] = useFormState(createDeck, {
+    data: initParams,
+  });
+
+  useEffect(() => {
+    if (state.error) window.alert(state.error);
+  }, [state.error]);
+
   return (
     <Sheet>
       <SheetTrigger asChild onClick={getSubArchetype}>
@@ -251,129 +270,120 @@ export default function DeckBuilderForm({
           <SheetTitle>Create your deck</SheetTitle>
           <SheetDescription>Description</SheetDescription>
         </SheetHeader>
-        <ScrollArea type="scroll">
-          <div className="flex flex-1 flex-col gap-4">
-            <div className="flex flex-col gap-4 text-sm">
-              <BarChart manaCostCounts={manaCostCounts} />
-              <div className="flex items-center gap-2">
-                <span>Dust Cost:</span>
-                <span className="flex gap-1">
-                  <AssetIcon type="asset" name="dust" />
-                  {dust_cost_sum}
-                </span>
-              </div>
-              <ul className="flex flex-wrap gap-4">
-                {cardRarityAllocation.map((cardRarity) => {
-                  if (cardRarity[1] === 0) return null;
-                  return (
-                    <li key={cardRarity[0]} className="flex gap-1">
-                      <AssetIcon
-                        type="rarity"
-                        name={cardRarity[0].toLowerCase()}
-                      />
-                      {`${cardRarity[0]}: ${cardRarity[1]}`}
-                    </li>
-                  );
-                })}
-              </ul>
-              <ul className="flex flex-wrap gap-2">
-                {cardTypeAllocation.map((cardType) => {
-                  if (cardType[1] === 0) return null;
-                  return (
-                    <li key={cardType[0]} className="flex items-center gap-1">
-                      <CardTypeIcon name={cardType[0] as CardType["name"]} />
-                      {`${cardType[0]}s: ${cardType[1]}`}
-                    </li>
-                  );
-                })}
-              </ul>
+        <div className="flex flex-1 flex-col gap-8">
+          <div className="flex flex-col gap-4 text-sm">
+            <BarChart manaCostCounts={manaCostCounts} />
+            <div className="flex items-center gap-2">
+              <span>Dust Cost:</span>
+              <span className="flex gap-1">
+                <AssetIcon type="asset" name="dust" />
+                {dust_cost_sum}
+              </span>
             </div>
-            <form
-              action={createUserDeck}
-              className="flex flex-1 flex-col gap-8"
-            >
-              <div className="flex flex-1 flex-col gap-4">
-                <div>
-                  <Label htmlFor="name">Deck name</Label>
-                  <Input
-                    value={deckName}
-                    onChange={(e) => setDeckName(e.currentTarget.value)}
-                    name="name"
-                    key="name"
-                    type="text"
-                    required
-                    autoComplete="off"
-                    autoFocus
-                    spellCheck="true"
-                    placeholder="Name should capture the essence of your Hearthstone deck"
-                  />
-                </div>
-                <div className="flex-1">
-                  <Label htmlFor="description">Description</Label>
-                  <Textarea
-                    value={deckDescription}
-                    onChange={(e) => setDeckDescription(e.currentTarget.value)}
-                    name="description"
-                    maxLength={3000}
-                    className="h-full flex-1"
-                    spellCheck="true"
-                    autoCapitalize="sentences"
-                    draggable={false}
-                    placeholder="Describe Your Deck's Strategy and Key Cards"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="youtube_link">Youtube link</Label>
-                  <Input
-                    name="youtube_link"
-                    key="youtube_link"
-                    type="url"
-                    autoComplete="off"
-                    pattern="https?:\/\/(www\.)?(youtube\.com|youtu\.be)\/(watch\?v=|embed\/|v\/|.+\?v=)?([^&=%\?]{11})"
-                    placeholder="Make sure to add youtube video link if you got one!"
-                  />
-                </div>
-              </div>
-              <div className="flex items-start gap-8">
-                <div>
-                  <Label>Archetype</Label>
-                  <Select
-                    defaultValue={getArchetype()}
-                    name="archetype"
-                    required
-                  >
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Archetype" />
-                    </SelectTrigger>
-                    <SelectContent side="top">
-                      <SelectItem value="aggro">Aggro</SelectItem>
-                      <SelectItem value="midrange">Midrange</SelectItem>
-                      <SelectItem value="control">Control</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label>Sub-archetype</Label>
-                  <div className="flex h-10 items-center gap-2">
-                    <span className="text-lg">
-                      {subArchetype?.name ?? "None"}
-                    </span>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <InfoIcon className="size-4" />
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        Sub-archetype is determined based on current metas and
-                        cards in your deck
-                      </TooltipContent>
-                    </Tooltip>
-                  </div>
-                </div>
-              </div>
-              <SubmitButton />
-            </form>
+            <ul className="flex flex-wrap gap-4">
+              {cardRarityAllocation.map((cardRarity) => {
+                if (cardRarity[1] === 0) return null;
+                return (
+                  <li key={cardRarity[0]} className="flex gap-1">
+                    <AssetIcon
+                      type="rarity"
+                      name={cardRarity[0].toLowerCase()}
+                    />
+                    {`${cardRarity[0]}: ${cardRarity[1]}`}
+                  </li>
+                );
+              })}
+            </ul>
+            <ul className="flex flex-wrap gap-2">
+              {cardTypeAllocation.map((cardType) => {
+                if (cardType[1] === 0) return null;
+                return (
+                  <li key={cardType[0]} className="flex items-center gap-1">
+                    <CardTypeIcon name={cardType[0] as CardType["name"]} />
+                    {`${cardType[0]}s: ${cardType[1]}`}
+                  </li>
+                );
+              })}
+            </ul>
           </div>
-        </ScrollArea>
+          <form action={formAction} className="flex flex-1 flex-col gap-8">
+            <div className="flex flex-1 flex-col gap-4">
+              <div>
+                <Label htmlFor="name">Deck name</Label>
+                <Input
+                  value={deckName}
+                  onChange={(e) => setDeckName(e.currentTarget.value)}
+                  name="name"
+                  key="name"
+                  type="text"
+                  required
+                  autoComplete="off"
+                  autoFocus
+                  spellCheck="true"
+                  placeholder="Name should capture the essence of your Hearthstone deck"
+                />
+              </div>
+              <div className="flex flex-1 flex-col">
+                <Label htmlFor="description">Description</Label>
+                <Textarea
+                  value={deckDescription}
+                  onChange={(e) => setDeckDescription(e.currentTarget.value)}
+                  name="description"
+                  maxLength={3000}
+                  className="flex-1 resize-none"
+                  spellCheck="true"
+                  autoCapitalize="sentences"
+                  draggable={false}
+                  placeholder="Describe Your Deck's Strategy and Key Cards"
+                />
+              </div>
+              <div>
+                <Label htmlFor="youtube_link">Youtube link</Label>
+                <Input
+                  name="youtube_link"
+                  key="youtube_link"
+                  type="url"
+                  autoComplete="off"
+                  pattern="^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$"
+                  placeholder="Make sure to add youtube video link if you got one!"
+                />
+              </div>
+            </div>
+            <div className="flex items-start gap-8">
+              <div>
+                <Label>Archetype</Label>
+                <Select defaultValue={getArchetype()} name="archetype" required>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Archetype" />
+                  </SelectTrigger>
+                  <SelectContent side="top">
+                    <SelectItem value="aggro">Aggro</SelectItem>
+                    <SelectItem value="midrange">Midrange</SelectItem>
+                    <SelectItem value="control">Control</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label>Sub-archetype</Label>
+                <div className="flex h-10 items-center gap-2">
+                  <span className="text-lg">
+                    {subArchetype?.name ?? "None"}
+                  </span>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <InfoIcon className="size-4" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      Sub-archetype is determined based on current metas and
+                      cards in your deck
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+              </div>
+            </div>
+            <SubmitButton />
+          </form>
+        </div>
       </SheetContent>
     </Sheet>
   );
