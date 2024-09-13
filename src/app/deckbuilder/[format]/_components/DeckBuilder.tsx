@@ -64,6 +64,7 @@ export function DeckBuilder({
     sideboardCards,
     zilliaxCards,
     deathKnightRuneSlots,
+    touristCard,
     actions,
   } = useDeckBuilder({
     initState,
@@ -130,6 +131,7 @@ export function DeckBuilder({
           minionTypes={minionTypes}
           keywords={keywords}
           cardTypes={cardTypes}
+          touristCard={touristCard}
         />
         <main className="grid select-none grid-cols-[1fr,320px] gap-8">
           {isLoading ? (

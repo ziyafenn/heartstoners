@@ -30,6 +30,7 @@ export type Card = {
   bannedFromSideboard?: number;
   isZilliaxFunctionalModule: boolean;
   isZilliaxCosmeticModule: boolean;
+  touristClassId?: number;
   runeCost?: {
     blood: number;
     frost: number;

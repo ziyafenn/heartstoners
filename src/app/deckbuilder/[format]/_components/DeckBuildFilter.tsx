@@ -8,6 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
+  Card,
   CardClass,
   CardType,
   Keyword,
@@ -22,6 +23,16 @@ import { CardSearchOptions } from "blizzard.js/dist/resources/hs";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
+import { CARD_CLASSES } from "@/lib/cardClasses";
+
+type Props = {
+  action: (payload: FormData) => void;
+  minionTypes: MinionTypes[];
+  rarities: Rarity[];
+  keywords: Keyword[];
+  cardTypes: CardType[];
+  touristCard: Card | null;
+};
 
 export function DeckBuilderFilter({
   action,
@@ -29,18 +40,16 @@ export function DeckBuilderFilter({
   rarities,
   keywords,
   cardTypes,
-}: {
-  action: (payload: FormData) => void;
-  minionTypes: MinionTypes[];
-  rarities: Rarity[];
-  keywords: Keyword[];
-  cardTypes: CardType[];
-}) {
+  touristCard,
+}: Props) {
   const formRef = useRef<HTMLFormElement>(null);
   const filterRef = useRef<HTMLDivElement>(null);
   const searchParams = useSearchParams();
   const deckClass = searchParams.get("deckClass") as CardClass["slug"];
   const manaCost = [...Array(10).keys(), "10+"];
+  const touristClass = CARD_CLASSES.find(
+    (cardClass) => cardClass.id === touristCard?.touristClassId,
+  );
 
   const [values, setValues] = useState<
     Partial<Record<keyof CardSearchOptions, string | string[]>>
@@ -99,6 +108,21 @@ export function DeckBuilderFilter({
     };
   }, [filterRef]);
 
+  useEffect(() => {
+    if (!formRef.current || !touristCard) return;
+
+    const form = formRef.current;
+    const formData = new FormData(form);
+    const currentClasses = formData.get("class");
+    const currentClassArray = currentClasses?.toString().split(",")!;
+
+    currentClassArray.push(`tourist:${touristCard.id}`);
+    const formattedValue = currentClassArray.join(",");
+    setValues((state) => ({ ...state, class: formattedValue }));
+    formData.set("class", formattedValue);
+    action(formData);
+  }, [touristCard, formRef]);
+
   return (
     <>
       <div ref={filterRef} className="deckBuilderFilter">
@@ -110,7 +134,6 @@ export function DeckBuilderFilter({
           }}
         >
           <ToggleGroup
-            defaultValue={values.class as string[]}
             type="multiple"
             onValueChange={(value) => onValueChange(value, "class")}
           >
@@ -120,6 +143,14 @@ export function DeckBuilderFilter({
             <ToggleGroupItem value="neutral" className="size-10 p-0">
               <HeroIcon slug="neutral" />
             </ToggleGroupItem>
+            {touristCard && (
+              <ToggleGroupItem
+                value={`tourist:${touristCard.id}`}
+                className="size-10 p-0"
+              >
+                <HeroIcon slug={touristClass!.slug} />
+              </ToggleGroupItem>
+            )}
           </ToggleGroup>
           <ToggleGroup
             type="multiple"

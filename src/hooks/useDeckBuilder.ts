@@ -42,6 +42,7 @@ export function useDeckBuilder({
     frost: 0,
     unholy: 0,
   });
+  const [touristCard, setTouristCard] = useState<Card | null>(null);
 
   const loadNextPage = useCallback(async () => {
     const formData = new FormData();
@@ -121,6 +122,7 @@ export function useDeckBuilder({
     currentSelection.push(card);
 
     if (card.runeCost) createRuneSlots(card.runeCost);
+    if (card.touristClassId) setTouristCard(card);
 
     setSelectedCards(currentSelection);
   }
@@ -142,6 +144,8 @@ export function useDeckBuilder({
     }
 
     if (runeCost) removeRuneSlots(runeCost, updatedSelection);
+    if (card.touristClassId) setTouristCard(null);
+
     setSelectedCards(updatedSelection);
   }
 
@@ -194,6 +198,7 @@ export function useDeckBuilder({
     activeSideboardCard,
     zilliaxCards,
     deathKnightRuneSlots,
+    touristCard,
     actions: {
       addSideboardCard,
       addCard,
