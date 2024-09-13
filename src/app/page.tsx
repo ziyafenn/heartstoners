@@ -50,7 +50,7 @@ export default async function Home() {
       <main className="flex flex-col gap-8">
         <div
           id="hero"
-          className="flex flex-col justify-start gap-4 relative rounded-sm p-10 bg-hero bg-left bg-no-repeat"
+          className="relative flex flex-col justify-start gap-4 rounded-sm bg-hero bg-left bg-no-repeat p-10"
         >
           <h3 className="font-hs text-2xl">
             Craft your winning deck with our Reno-certified deckbuilder for
@@ -62,20 +62,20 @@ export default async function Home() {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <h2 className="text-2xl font-hs outline-2">
+          <h2 className="font-hs text-2xl outline-2">
             Most popular decks of the week
           </h2>
-          <ul className="grid grid-cols-auto-fill-hscard gap-4">
+          <ul className="grid grid-cols-auto-fill-deckcard gap-4">
             {mostPopular?.map((deck) => (
               <DeckUICard data={deck} key={deck.id} />
             ))}
           </ul>
         </div>
         <div className="flex flex-col gap-4">
-          <h2 className="text-2xl font-hs outline-2">
+          <h2 className="font-hs text-2xl outline-2">
             Recent submissions from our users
           </h2>
-          <ul className="grid grid-cols-auto-fill-hscard gap-4">
+          <ul className="grid grid-cols-auto-fill-deckcard gap-4">
             {decks!.slice(0, 6).map((deck) => (
               <DeckUICard data={deck} key={deck.id} />
             ))}

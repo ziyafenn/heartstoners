@@ -16,7 +16,7 @@ const hs = FonsHs({
 });
 const inter = FontSans({
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["400", "700"],
   variable: "--font-sans",
 });
 
@@ -36,7 +36,7 @@ export default async function RootLayout({
     data: { user },
   } = await supabase.auth.getUser();
 
-  const userProfile = await getUserProfile(user.id);
+  // const userProfile = await getUserProfile(user.id)
 
   return (
     <html lang="en">
@@ -48,7 +48,7 @@ export default async function RootLayout({
         )}
       >
         <header>
-          <nav className="flex items-center justify-between py-4 px-8 select-none">
+          <nav className="flex select-none items-center justify-between px-8 py-4">
             <Link href="/">
               <Image
                 src="/img/logo.png"
@@ -57,7 +57,7 @@ export default async function RootLayout({
                 alt="heartstoners logo"
                 className="h-20 w-auto"
               />
-              {userProfile?.username || "no user"}
+              no user
             </Link>
 
             <ul className="flex items-center gap-8">

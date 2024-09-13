@@ -65,15 +65,17 @@ export async function createDeck(
   }
   const { data: initData } = state;
 
-  const text = `${userInput.name}. ${userInput.description}`;
-  const { isProfanity } = await checkProfanity(text);
+  // const text = `${userInput.name}. ${userInput.description}`;
+  // const { isProfanity } = await checkProfanity(text);
 
-  if (isProfanity)
-    return {
-      data: null,
-      error:
-        "It seems your text input contains profanity. If it's not, please contant us on Discord.",
-    };
+  // if (isProfanity)
+  //   return {
+  //     data: null,
+  //     error:
+  //       "It seems your text input contains profanity. If it's not, please contant us on Discord.",
+  //   };
+
+  console.log(initData, "init data");
 
   const { data, error } = await supabase
     .from("user_decks")
@@ -87,7 +89,7 @@ export async function createDeck(
 
   if (error) return { data: null, error: error.message };
 
-  redirect(`/decks/${data.id}`);
+  //redirect(`/decks/${data.id}`);
 }
 
 export async function loadDeckFromCode(formData: FormData) {

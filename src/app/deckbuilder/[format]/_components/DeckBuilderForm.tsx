@@ -31,7 +31,7 @@ import { getMetasByClass } from "@/service/supabase.service";
 import { Enums, Tables } from "@/types/supabase.type";
 import { DeckInitParams } from "@/types/deck.type";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CARD_TYPES } from "@/lib/cardTypes";
 import { CARD_RARITIES } from "@/lib/cardRarities";
 import { AssetIcon } from "@/components/AssetIcon";
@@ -52,6 +52,7 @@ import {
 import { useFormState, useFormStatus } from "react-dom";
 import resolveConfig from "tailwindcss/resolveConfig";
 import tailwindConfig from "tailwind.config";
+import { CARD_CLASSES } from "@/lib/cardClasses";
 
 const fullConfig = resolveConfig(tailwindConfig);
 const {
@@ -115,8 +116,11 @@ export default function DeckBuilderForm({
   const cardClass = searchParams.get("deckClass") as CardClass["slug"];
   const [subArchetype, setSubArchetype] =
     useState<Tables<"meta_sub_archetypes">>();
-  const [deckName, setDeckName] = useState("");
-  const [deckDescription, setDeckDescription] = useState("");
+  // const [deckName, setDeckName] = useState("");
+  // const [deckDescription, setDeckDescription] = useState("");
+
+  const formRef = useRef<HTMLFormElement>(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
 
   const manaCostCountsSum = selectedCards.reduce(
     (acc, card) => {
@@ -220,6 +224,7 @@ export default function DeckBuilderForm({
     sideboard_cards: sideboard_cards.length ? sideboard_cards : null,
     dust_cost_sum,
   };
+
   const cardTypeAllocation = Object.entries(cardTypes);
   const cardRarityAllocation = Object.entries(cardRarities);
 
@@ -268,7 +273,9 @@ export default function DeckBuilderForm({
       >
         <SheetHeader>
           <SheetTitle>Create your deck</SheetTitle>
-          <SheetDescription>Description</SheetDescription>
+          <SheetDescription>
+            Summarize your deck&apos;s strategy and key features
+          </SheetDescription>
         </SheetHeader>
         <div className="flex flex-1 flex-col gap-8">
           <div className="flex flex-col gap-4 text-sm">
@@ -277,42 +284,55 @@ export default function DeckBuilderForm({
               <span>Dust Cost:</span>
               <span className="flex gap-1">
                 <AssetIcon type="asset" name="dust" />
-                {dust_cost_sum}
+                <span className="font-bold">{dust_cost_sum}</span>
               </span>
             </div>
-            <ul className="flex flex-wrap gap-4">
+            <ul className="flex flex-wrap divide-x-2">
               {cardRarityAllocation.map((cardRarity) => {
                 if (cardRarity[1] === 0) return null;
                 return (
-                  <li key={cardRarity[0]} className="flex gap-1">
+                  <li
+                    key={cardRarity[0]}
+                    className="flex gap-1 px-3 first:pl-0"
+                  >
                     <AssetIcon
                       type="rarity"
                       name={cardRarity[0].toLowerCase()}
                     />
-                    {`${cardRarity[0]}: ${cardRarity[1]}`}
+                    {cardRarity[0]}:
+                    <span className="font-bold">{cardRarity[1]}</span>
                   </li>
                 );
               })}
             </ul>
-            <ul className="flex flex-wrap gap-2">
+            <ul className="flex flex-wrap divide-x-2">
               {cardTypeAllocation.map((cardType) => {
                 if (cardType[1] === 0) return null;
                 return (
-                  <li key={cardType[0]} className="flex items-center gap-1">
+                  <li
+                    key={cardType[0]}
+                    className="flex items-center gap-1 px-3 first:pl-0"
+                  >
                     <CardTypeIcon name={cardType[0] as CardType["name"]} />
-                    {`${cardType[0]}s: ${cardType[1]}`}
+                    {cardType[0]}:
+                    <span className="font-bold">{cardType[1]}</span>
                   </li>
                 );
               })}
             </ul>
           </div>
-          <form action={formAction} className="flex flex-1 flex-col gap-8">
+          <form
+            action={formAction}
+            className="flex flex-1 flex-col gap-8"
+            ref={formRef}
+          >
             <div className="flex flex-1 flex-col gap-4">
               <div>
                 <Label htmlFor="name">Deck name</Label>
                 <Input
-                  value={deckName}
-                  onChange={(e) => setDeckName(e.currentTarget.value)}
+                  ///      value={deckName}
+                  ref={nameInputRef}
+                  //    onChange={(e) => setDeckName(e.currentTarget.value)}
                   name="name"
                   key="name"
                   type="text"
@@ -320,14 +340,14 @@ export default function DeckBuilderForm({
                   autoComplete="off"
                   autoFocus
                   spellCheck="true"
-                  placeholder="Name should capture the essence of your Hearthstone deck"
+                  placeholder="Include the class name to capture your Hearthstone deck's essence"
                 />
               </div>
               <div className="flex flex-1 flex-col">
                 <Label htmlFor="description">Description</Label>
                 <Textarea
-                  value={deckDescription}
-                  onChange={(e) => setDeckDescription(e.currentTarget.value)}
+                  //        value={deckDescription}
+                  //      onChange={(e) => setDeckDescription(e.currentTarget.value)}
                   name="description"
                   maxLength={3000}
                   className="flex-1 resize-none"

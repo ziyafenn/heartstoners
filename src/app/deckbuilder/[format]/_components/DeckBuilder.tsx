@@ -26,7 +26,7 @@ import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 
 function Loading() {
-  return <div className="size-full bg-red-500 z-50">Loading</div>;
+  return <div className="z-50 size-full bg-red-500">Loading</div>;
 }
 
 export function DeckBuilder({

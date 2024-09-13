@@ -240,7 +240,10 @@ export function DeckBuilderFilter({
         <ul className="flex h-8 gap-4 pt-4">
           {Array.from(activeFilters.entries()).map(([type, value]) => (
             <li key={type}>
-              <Badge onClick={() => onValueChange("", type, true)}>
+              <Badge
+                onClick={() => onValueChange("", type, true)}
+                className="cursor-pointer"
+              >
                 {value.toUpperCase()} <X className="ml-1 size-4" />
               </Badge>
             </li>
