@@ -28,7 +28,7 @@ export function CurrentDeck({
   toggleSideboard,
   removeCard,
   sideboardCards,
-  deckClass,
+  deckClass: deckClassSlug,
   deathKnightRuneSlots,
 }: Props) {
   const [availHeight, setAvailHeight] = useState<number | string>("100vh");
@@ -36,8 +36,8 @@ export function CurrentDeck({
   const endOfListRef = useRef<HTMLLIElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
-  const cardClass = CARD_CLASSES.find(
-    (cardClass) => cardClass.slug === deckClass,
+  const deckClass = CARD_CLASSES.find(
+    (cardClass) => cardClass.slug === deckClassSlug,
   )!;
 
   function showSelectedCard(cardsToShow: Card[] | undefined) {
@@ -109,9 +109,9 @@ export function CurrentDeck({
           <div className="absolute size-full bg-black/50" />
           <div className="absolute flex size-full items-center justify-between pl-3 pr-2">
             <span className="font-outline-2 font-hs leading-tight drop-shadow-md">
-              {cardClass.name}
+              {deckClass.name}
             </span>
-            {deckClass === "deathknight" && (
+            {deckClassSlug === "deathknight" && (
               <div className="flex min-w-32 items-center justify-end">
                 {showRunes().map((rune, index) => (
                   <AssetIcon type="rune" name={rune} key={index} />
@@ -120,11 +120,11 @@ export function CurrentDeck({
             )}
           </div>
           <Image
-            src={`/heroes/${cardClass.slug}.jpg`}
+            src={`/heroes/${deckClass.slug}.jpg`}
             width={1440}
             height={1440}
             className="h-16 object-cover object-[0px,-64px]"
-            alt={cardClass.name}
+            alt={deckClass.name}
           />
         </div>
         <ScrollArea ref={scrollAreaRef} className="bg-black/20 py-3 ">

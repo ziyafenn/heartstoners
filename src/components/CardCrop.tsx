@@ -1,4 +1,6 @@
-import React, { forwardRef, useState } from "react";
+"use client";
+
+import { forwardRef, useState } from "react";
 import { Card } from "@/types/hs.type";
 import Image from "next/image";
 import { Button } from "./ui/button";

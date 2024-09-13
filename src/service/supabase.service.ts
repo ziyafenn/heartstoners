@@ -54,9 +54,7 @@ export async function getSingleDeck(deckId: number) {
     .eq("id", deckId)
     .single();
 
-  if (error) return null;
-
-  return data;
+  return data!;
 }
 
 export async function getMetasByClass(className: CardClass["slug"]) {
