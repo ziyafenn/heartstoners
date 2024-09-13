@@ -5,7 +5,11 @@ import { UserCollection } from "@/types/hsreplay.type";
 import { Tables } from "@/types/supabase.type";
 import { createClient } from "./supabase.auth.server";
 import { DBFunction } from "@/types/supabase.func.type";
-import { DeckFilters } from "@/types/deck.type";
+import {
+  DeckFilters,
+  DeckInitParams,
+  DeckUserInputParams,
+} from "@/types/deck.type";
 import { QueryResult, QueryData, QueryError } from "@supabase/supabase-js";
 
 const deckQuery = `*, 
@@ -220,4 +224,28 @@ export async function deckInteraction({
   await supabase.rpc(type, {
     id: deckId,
   });
+}
+
+export async function createUserDeck({
+  gameVersion,
+  initParams,
+  userInput,
+}: {
+  initParams: DeckInitParams;
+  userInput: DeckUserInputParams;
+  gameVersion: string;
+}) {
+  const supabase = createClient();
+
+  const result = await supabase
+    .from("user_decks")
+    .insert({
+      ...initParams,
+      ...userInput,
+      game_version: gameVersion,
+    })
+    .select()
+    .single();
+
+  return result;
 }

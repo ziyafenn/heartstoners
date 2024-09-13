@@ -4,7 +4,6 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -120,8 +119,6 @@ export default function DeckBuilderForm({
   const deckClass = searchParams.get("deckClass") as CardClass["slug"];
   const [subArchetype, setSubArchetype] =
     useState<Tables<"meta_sub_archetypes">>();
-  // const [deckName, setDeckName] = useState("");
-  // const [deckDescription, setDeckDescription] = useState("");
 
   const formRef = useRef<HTMLFormElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -328,9 +325,7 @@ export default function DeckBuilderForm({
               <div>
                 <Label htmlFor="name">Deck name</Label>
                 <Input
-                  ///      value={deckName}
                   ref={nameInputRef}
-                  //    onChange={(e) => setDeckName(e.currentTarget.value)}
                   name="name"
                   key="name"
                   type="text"
@@ -344,8 +339,6 @@ export default function DeckBuilderForm({
               <div className="flex flex-1 flex-col">
                 <Label htmlFor="description">Description</Label>
                 <Textarea
-                  //        value={deckDescription}
-                  //      onChange={(e) => setDeckDescription(e.currentTarget.value)}
                   name="description"
                   maxLength={3000}
                   className="flex-1 resize-none"

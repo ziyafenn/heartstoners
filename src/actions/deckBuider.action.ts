@@ -1,8 +1,10 @@
 "use server";
 
 import { searchHsCards } from "@/service/hs.service";
-import { createClient } from "@/service/supabase.auth.server";
-import { getCurrentGameVersion } from "@/service/supabase.service";
+import {
+  createUserDeck,
+  getCurrentGameVersion,
+} from "@/service/supabase.service";
 import { DeckInitParams, DeckUserInputParams } from "@/types/deck.type";
 import { CardSeachParams, CardsPage } from "@/types/hs.type";
 import { redirect } from "next/navigation";
@@ -54,7 +56,6 @@ export async function createDeck(
   state: CreateDeck,
   formData: FormData,
 ): Promise<CreateDeck> {
-  const supabase = createClient();
   let userInput = {} as DeckUserInputParams;
   const gameVersion = await getCurrentGameVersion();
   for (const [key, value] of formData.entries()) {
@@ -63,7 +64,7 @@ export async function createDeck(
       [key]: value,
     };
   }
-  const { data: initData } = state;
+  const { data: initParams } = state;
 
   const text = `${userInput.name}. ${userInput.description}`;
   const { isProfanity } = await checkProfanity(text);
@@ -72,20 +73,14 @@ export async function createDeck(
     return {
       data: null,
       error:
-        "It seems your text input contains profanity. If it's not, please contant us on Discord.",
+        "It seems your text input contains profanity. If it's not, please contact us on Discord.",
     };
 
-  console.log(initData, "init data");
-
-  const { data, error } = await supabase
-    .from("user_decks")
-    .insert({
-      ...(initData as DeckInitParams),
-      ...userInput,
-      game_version: gameVersion,
-    })
-    .select()
-    .single();
+  const { data, error } = await createUserDeck({
+    gameVersion,
+    initParams: initParams!,
+    userInput,
+  });
 
   if (error) return { data: null, error: error.message };
 
