@@ -154,6 +154,7 @@ export function CurrentDeck({
                   onSideboardClick={() => toggleSideboard(card)}
                   cardsInSideboard={cardsInSideboard}
                   key={card.id}
+                  isView={false}
                 />
               );
             })}

@@ -38,7 +38,6 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
 
   const userIp = getUserIp();
   const encryptedUserIp = encrypt(userIp);
-
   const didUserLike = await getDeckLikeByIp({
     deckId: Number(deckId),
     ip: encryptedUserIp,
@@ -71,7 +70,7 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
         <div className="flex items-center justify-between">
           <h1 className="font-hs text-3xl">{name}</h1>
           <div className="flex items-center gap-4">
-            <Button size="icon">
+            <Button size="icon" disabled={!!didUserLike}>
               <Heart />
             </Button>
             <Button>Copy Deck</Button>
@@ -108,7 +107,9 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
               const count =
                 cards?.filter((selectedCard) => selectedCard.id === card.id)
                   .length ?? 0;
-              return <CardCrop card={card} count={count} key={card.id} />;
+              return (
+                <CardCrop card={card} count={count} key={card.id} isView />
+              );
             })}
           </ul>
         </div>
@@ -138,7 +139,7 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
                   {sideboard.cardsInSideboard
                     .sort((a, b) => a.manaCost - b.manaCost)
                     .map((card) => (
-                      <CardCrop card={card} key={card.id} count={1} />
+                      <CardCrop card={card} key={card.id} count={1} isView />
                     ))}
                 </ul>
               </div>
