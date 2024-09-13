@@ -147,6 +147,7 @@ export function DeckBuilder({
                   selectedCards,
                   card,
                   deathKnightRuneSlots,
+                  touristCard,
                 })
               }
             >

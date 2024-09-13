@@ -76,7 +76,7 @@ export function DeckBuilderFilter({
       else updatedFilters.set(type, formattedValue!);
     }
 
-    setValues((state) => ({ ...state, [type]: formattedValue }));
+    setValues((state) => ({ ...state, [type]: value }));
     setActiveFilters(updatedFilters);
 
     const form = formRef.current!;
@@ -109,19 +109,30 @@ export function DeckBuilderFilter({
   }, [filterRef]);
 
   useEffect(() => {
-    if (!formRef.current || !touristCard) return;
+    if (!formRef.current) return;
 
     const form = formRef.current;
     const formData = new FormData(form);
-    const currentClasses = formData.get("class");
-    const currentClassArray = currentClasses?.toString().split(",")!;
+    const deckClasses = values.class as string[];
+    let currentClasses: string[] = [];
+    const hasTouristFilter = deckClasses.some((currentClass) =>
+      currentClass.includes("tourist"),
+    );
 
-    currentClassArray.push(`tourist:${touristCard.id}`);
-    const formattedValue = currentClassArray.join(",");
-    setValues((state) => ({ ...state, class: formattedValue }));
-    formData.set("class", formattedValue);
+    if (touristCard && !hasTouristFilter) {
+      currentClasses = [...deckClasses, `tourist:${touristCard.id}`];
+    } else if (!touristCard && hasTouristFilter) {
+      currentClasses = ["neutral", deckClass];
+    } else {
+      return;
+    }
+
+    setValues((state) => ({ ...state, class: currentClasses }));
+
+    formData.set("class", currentClasses.join(","));
+    formData.set("filter", "true");
     action(formData);
-  }, [touristCard, formRef]);
+  }, [touristCard, formRef, values.class, action, deckClass]);
 
   return (
     <>
@@ -135,7 +146,10 @@ export function DeckBuilderFilter({
         >
           <ToggleGroup
             type="multiple"
-            onValueChange={(value) => onValueChange(value, "class")}
+            value={values.class as string[]}
+            onValueChange={(value) =>
+              value.length && onValueChange(value, "class")
+            }
           >
             <ToggleGroupItem value={deckClass} className="size-10 p-0">
               <HeroIcon slug={deckClass} />
@@ -263,8 +277,18 @@ export function DeckBuilderFilter({
               }}
             />
           </div>
-          <input hidden name="class" type="hidden" value={values.class} />
-          <input hidden type="hidden" name="manaCost" value={values.manaCost} />
+          <input
+            hidden
+            name="class"
+            type="hidden"
+            value={(values.class as string[]).join(",")}
+          />
+          <input
+            hidden
+            type="hidden"
+            name="manaCost"
+            value={(values.manaCost as string[]).join(",")}
+          />
         </form>
       </div>
       {!!activeFilters.size && (

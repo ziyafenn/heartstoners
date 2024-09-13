@@ -7,6 +7,7 @@ type Props = {
   activeSideboardCard: Card | null;
   onAddCard: (card: Card) => void;
   deathKnightRuneSlots: RuneCost;
+  touristCard: Card | null;
 };
 
 export function cardViewerProps({
@@ -16,6 +17,7 @@ export function cardViewerProps({
   activeSideboardCard,
   onAddCard,
   deathKnightRuneSlots,
+  touristCard,
 }: Props) {
   function canDeathKnightCardBeAdded() {
     const { runeCost } = card;
@@ -74,6 +76,7 @@ export function cardViewerProps({
     ).length === 2;
 
   const isAboveRuneSlotLimit = !canDeathKnightCardBeAdded();
+  const isTouristCard = touristCard && card.touristClassId;
 
   const isDisabled =
     isTotalCardCountReached ||
@@ -82,7 +85,8 @@ export function cardViewerProps({
     isUnavailableForSideboard ||
     isCosmeticModulePresent ||
     isFunctionalModuleCountReached ||
-    isAboveRuneSlotLimit;
+    isAboveRuneSlotLimit ||
+    isTouristCard;
 
   return {
     currentCardCount,
