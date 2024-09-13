@@ -30,7 +30,7 @@ import { getMetasByClass } from "@/service/supabase.service";
 import { Enums, Tables } from "@/types/supabase.type";
 import { DeckInitParams } from "@/types/deck.type";
 import { useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { CARD_TYPES } from "@/lib/cardTypes";
 import { CARD_RARITIES } from "@/lib/cardRarities";
 import { AssetIcon } from "@/components/AssetIcon";
@@ -115,13 +115,13 @@ export default function DeckBuilderForm({
   isOpen,
   toggleOpen,
 }: Props) {
+  const formRef = useRef<(() => void) | HTMLFormElement | null>(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
   const searchParams = useSearchParams();
   const deckClass = searchParams.get("deckClass") as CardClass["slug"];
+  const [isFormMounted, setIsFormMounted] = useState(false);
   const [subArchetype, setSubArchetype] =
     useState<Tables<"meta_sub_archetypes">>();
-
-  const formRef = useRef<HTMLFormElement>(null);
-  const nameInputRef = useRef<HTMLInputElement>(null);
 
   const manaCostCountsSum = selectedCards.reduce(
     (acc, card) => {
@@ -251,16 +251,65 @@ export default function DeckBuilderForm({
     data: initParams,
   });
 
-  useEffect(() => {
-    if (state.error) window.alert(state.error);
-  }, [state.error]);
+  function onNameInputChange(event: ChangeEvent<HTMLInputElement>) {
+    const input = event.currentTarget;
+
+    if (!input.checkValidity()) {
+      input.setCustomValidity("");
+    }
+  }
 
   useEffect(() => {
     if (isOpen) getSubArchetype();
   }, [isOpen, getSubArchetype]);
 
+  useEffect(() => {
+    if (!isFormMounted || !formRef) return;
+    const form = formRef.current as HTMLFormElement;
+    const nameInput = nameInputRef.current!;
+
+    function validateForm(event: SubmitEvent) {
+      const cardClassName = CARD_CLASSES.find(
+        (card) => card.slug === deckClass,
+      )!.name;
+
+      // Rule 1: Ensure card class name is a whole word
+      const regexPattern1 = `\\b${cardClassName}\\b`;
+      const regex1 = new RegExp(regexPattern1, "i"); // Case-insensitive regex
+
+      // Rule 2: Ensure card class name is part of a phrase with at least one other word
+      const regexPattern2 = `\\b\\w+\\b\\s+\\b${cardClassName}\\b|\\b${cardClassName}\\b\\s+\\b\\w+\\b`;
+      const regex2 = new RegExp(regexPattern2, "i"); // Case-insensitive regex
+
+      if (!regex1.test(nameInput.value)) {
+        event.preventDefault();
+        nameInput.setCustomValidity(
+          `Deck class should be part of the deck name (${cardClassName})`,
+        );
+        return nameInput.reportValidity();
+      }
+      if (!regex2.test(nameInput.value)) {
+        event.preventDefault();
+        nameInput.setCustomValidity(
+          `Deck name should include at least one word before or after the deck class (${cardClassName})`,
+        );
+        return nameInput.reportValidity();
+      }
+    }
+
+    form.addEventListener("submit", validateForm);
+
+    return () => {
+      form.removeEventListener("submit", validateForm);
+    };
+  }, [isFormMounted, formRef, deckClass, nameInputRef]);
+
+  useEffect(() => {
+    if (state.error) window.alert(state.error);
+  }, [state.error]);
+
   return (
-    <Sheet open={isOpen} onOpenChange={toggleOpen}>
+    <Sheet open={isOpen} defaultOpen onOpenChange={toggleOpen}>
       <SheetContent
         onInteractOutside={(event) => event.preventDefault()}
         side="left"
@@ -319,7 +368,10 @@ export default function DeckBuilderForm({
           <form
             action={formAction}
             className="flex flex-1 flex-col gap-8"
-            ref={formRef}
+            ref={(node) => {
+              formRef.current = node;
+              setIsFormMounted(!!node);
+            }}
           >
             <div className="flex flex-1 flex-col gap-4">
               <div>
@@ -327,6 +379,7 @@ export default function DeckBuilderForm({
                 <Input
                   ref={nameInputRef}
                   name="name"
+                  onChange={onNameInputChange}
                   key="name"
                   type="text"
                   required
