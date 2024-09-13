@@ -72,6 +72,7 @@ export function DeckBuilder({
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   const currentSideboard = sideboardCards.find(
     (sideboard) => sideboard.sideboardCard.id === activeSideboardCard?.id,
@@ -112,71 +113,88 @@ export function DeckBuilder({
   }, [cardsPage]);
 
   return (
-    <div className="flex flex-col gap-4">
-      <DeckBuilderFilter
-        action={updateFilters}
-        rarities={rarities}
-        minionTypes={minionTypes}
-        keywords={keywords}
-        cardTypes={cardTypes}
-      />
-      <main className="grid select-none grid-cols-[1fr,320px] gap-8">
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <CardSearchResult
-            cards={cardsDisplayedOnSearchPage}
-            cardViewerProps={(card) =>
-              cardViewerProps({
-                activeSideboardCard,
-                currentSideboard,
-                onAddCard,
-                selectedCards,
-                card,
-                deathKnightRuneSlots,
-              })
-            }
-          >
-            <div
-              ref={ref}
-              className={cn(
-                "self-center size-24",
-                (!canLoadMore || isActiveSideboardCardZilliax) && "hidden",
-              )}
-            >
-              <Image
-                src="/img/hs-logo.png"
-                width={256}
-                height={256}
-                alt="heartstone-logo"
-                className="animate-spin-slow object-contain delay-1000"
-              />
-            </div>
-          </CardSearchResult>
-        )}
-        <CurrentDeck
-          deckClass={deckClass}
+    <>
+      {isFormOpen && (
+        <DeckBuilderForm
+          isOpen={isFormOpen}
+          toggleOpen={setIsFormOpen}
+          selectedCards={selectedCards}
+          deckSearchParams={cardsPage.params}
           sideboardCards={sideboardCards}
-          toggleSideboard={actions.toggleSideboard}
-          selectedCards={
-            activeSideboardCard ? currentCardsInSideboard : selectedCards
-          }
-          removeCard={onRemovedCard}
-          deathKnightRuneSlots={deathKnightRuneSlots}
-        >
-          {activeSideboardCard ? (
-            <Button onClick={() => actions.toggleSideboard(null)} type="button">
-              {`Close ${activeSideboardCard.name} sideboard`}
-            </Button>
+        />
+      )}
+      <div className="flex flex-col gap-4">
+        <DeckBuilderFilter
+          action={updateFilters}
+          rarities={rarities}
+          minionTypes={minionTypes}
+          keywords={keywords}
+          cardTypes={cardTypes}
+        />
+        <main className="grid select-none grid-cols-[1fr,320px] gap-8">
+          {isLoading ? (
+            <Loading />
           ) : (
-            <DeckBuilderForm
-              selectedCards={selectedCards}
-              deckSearchParams={cardsPage.params}
-              sideboardCards={sideboardCards}
-            />
+            <CardSearchResult
+              cards={cardsDisplayedOnSearchPage}
+              cardViewerProps={(card) =>
+                cardViewerProps({
+                  activeSideboardCard,
+                  currentSideboard,
+                  onAddCard,
+                  selectedCards,
+                  card,
+                  deathKnightRuneSlots,
+                })
+              }
+            >
+              <div
+                ref={ref}
+                className={cn(
+                  "self-center size-24",
+                  (!canLoadMore || isActiveSideboardCardZilliax) && "hidden",
+                )}
+              >
+                <Image
+                  src="/img/hs-logo.png"
+                  width={256}
+                  height={256}
+                  alt="heartstone-logo"
+                  className="animate-spin-slow object-contain delay-1000"
+                />
+              </div>
+            </CardSearchResult>
           )}
-        </CurrentDeck>
-      </main>
-    </div>
+          <CurrentDeck
+            deckClass={deckClass}
+            sideboardCards={sideboardCards}
+            toggleSideboard={actions.toggleSideboard}
+            selectedCards={
+              activeSideboardCard ? currentCardsInSideboard : selectedCards
+            }
+            removeCard={onRemovedCard}
+            deathKnightRuneSlots={deathKnightRuneSlots}
+          >
+            {activeSideboardCard ? (
+              <Button
+                onClick={() => actions.toggleSideboard(null)}
+                type="button"
+              >
+                {`Close ${activeSideboardCard.name} sideboard`}
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                disabled={selectedCards.length < 30}
+                className="rounded-none bg-orange-200"
+                onClick={() => setIsFormOpen(true)}
+              >
+                {`Create Deck (${selectedCards.length}/30)`}
+              </Button>
+            )}
+          </CurrentDeck>
+        </main>
+      </div>
+    </>
   );
 }

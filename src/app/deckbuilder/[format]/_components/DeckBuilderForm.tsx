@@ -31,7 +31,7 @@ import { getMetasByClass } from "@/service/supabase.service";
 import { Enums, Tables } from "@/types/supabase.type";
 import { DeckInitParams } from "@/types/deck.type";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { CARD_TYPES } from "@/lib/cardTypes";
 import { CARD_RARITIES } from "@/lib/cardRarities";
 import { AssetIcon } from "@/components/AssetIcon";
@@ -63,6 +63,8 @@ type Props = {
   deckSearchParams: CardSeachParams;
   selectedCards: Card[];
   sideboardCards: SideboardCards[];
+  isOpen: boolean;
+  toggleOpen: (open: boolean) => void;
 };
 
 function BarChart({
@@ -111,9 +113,11 @@ export default function DeckBuilderForm({
   selectedCards,
   deckSearchParams,
   sideboardCards,
+  isOpen,
+  toggleOpen,
 }: Props) {
   const searchParams = useSearchParams();
-  const cardClass = searchParams.get("deckClass") as CardClass["slug"];
+  const deckClass = searchParams.get("deckClass") as CardClass["slug"];
   const [subArchetype, setSubArchetype] =
     useState<Tables<"meta_sub_archetypes">>();
   // const [deckName, setDeckName] = useState("");
@@ -194,9 +198,8 @@ export default function DeckBuilderForm({
       return "midrange";
     else return "control";
   }
-
-  async function getSubArchetype() {
-    const metas = await getMetasByClass(cardClass);
+  const getSubArchetype = useCallback(async () => {
+    const metas = await getMetasByClass(deckClass);
 
     const bestMatch = metas!.reduce(
       (best, meta) => {
@@ -213,12 +216,12 @@ export default function DeckBuilderForm({
     );
 
     if (bestMatch.matchedCardCount > 2) setSubArchetype(bestMatch.meta);
-  }
+  }, [deckClass, selectedCards]);
 
   const initParams: DeckInitParams = {
     card_ids: card_ids,
     dust_cost_per_card: dust_cost_per_card,
-    deck_class: cardClass as CardClass["slug"],
+    deck_class: deckClass as CardClass["slug"],
     deck_format: deckSearchParams.set as "standard",
     sub_archetype: subArchetype?.id ?? null,
     sideboard_cards: sideboard_cards.length ? sideboard_cards : null,
@@ -255,17 +258,12 @@ export default function DeckBuilderForm({
     if (state.error) window.alert(state.error);
   }, [state.error]);
 
+  useEffect(() => {
+    if (isOpen) getSubArchetype();
+  }, [isOpen, getSubArchetype]);
+
   return (
-    <Sheet>
-      <SheetTrigger asChild onClick={getSubArchetype}>
-        <Button
-          type="button"
-          disabled={selectedCards.length < 30}
-          className="rounded-none bg-orange-200"
-        >
-          {`Create Deck (${selectedCards.length}/30)`}
-        </Button>
-      </SheetTrigger>
+    <Sheet open={isOpen} onOpenChange={toggleOpen}>
       <SheetContent
         onInteractOutside={(event) => event.preventDefault()}
         side="left"
