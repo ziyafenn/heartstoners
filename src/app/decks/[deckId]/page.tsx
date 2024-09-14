@@ -109,7 +109,7 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
         <section className="flex flex-col gap-4 ">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <HeroIcon slug={deck_class} className="size-8" />
+              <HeroIcon slug={deck_class} className="size-7" />
               <h1 className="font-hs text-3xl">{name}</h1>
             </div>
             <div className="flex items-center gap-4">
@@ -120,24 +120,19 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
             </div>
           </div>
           <div className="flex items-center">
-            <ul className="flex items-center gap-2">
+            <div className="flex items-center gap-2">
+              <AssetIcon type="format" name={deck_format} />
               <Badge>{archetype}</Badge>
               {meta_sub_archetypes && <Badge>{meta_sub_archetypes.name}</Badge>}
-            </ul>
-            {/* <div className="flex divide-x items-center">
-              <div id="author" className="flex items-center gap-2 pr-2">
-                <span className="text-sm">by {profiles!.username}</span>
-                <span className="size-6 rounded-full bg-yellow-50" />
-              </div>
-              <span className="pl-2">
+              <Badge className="bg-black/80">
                 <DeckPopularity deck={deck} />
-              </span>
-            </div> */}
+              </Badge>
+            </div>
           </div>
         </section>
         <Separator />
         <section className="grid grid-cols-[1fr,204px] divide-x-2 h-full">
-          <div className="pr-4">
+          <div className="pr-4 flex flex-col gap-4">
             <div className="whitespace-pre-wrap">{description}</div>
             {!!youtube_id && (
               <iframe
@@ -226,7 +221,7 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
         </section>
       </main>
       <aside className="grid grid-cols-2 gap-4">
-        <div className="flex w-[320px] flex-col rounded-md border-4 border-border shadow-lg">
+        <div className="flex w-[320px] h-max flex-col rounded-md border-4 border-border shadow-lg">
           <div className="relative text-xl font-bold">
             <div className="absolute size-full bg-black/50" />
             <div className="absolute flex size-full items-center justify-between pl-3 pr-2">
