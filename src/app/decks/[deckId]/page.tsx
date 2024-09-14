@@ -1,32 +1,43 @@
 import { getDeckByCardList } from "@/service/hs.service";
-import { getDeckLikeByIp, getSingleDeck } from "@/service/supabase.service";
-import { encrypt, getUserIp } from "@/lib/serverUtils";
 import Image from "next/image";
 import { CardCrop } from "@/components/CardCrop";
-import { Card } from "@/types/hs.type";
+import { Card, CardType, Rarity } from "@/types/hs.type";
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
+import { getUserDeck } from "@/actions/deck.action";
+import { DeckPopularity } from "@/components/DeckPopularity";
+import { CARD_TYPES } from "@/lib/cardTypes";
+import { CARD_RARITIES } from "@/lib/cardRarities";
+import { AssetIcon } from "@/components/AssetIcon";
+import { CardTypeIcon } from "@/components/CardTypeIcon";
+import { DeckManaChart } from "@/components/DeckManaChart";
 
 export default async function Deck({ params }: { params: { deckId: number } }) {
   const { deckId } = params;
-
+  const userDeck = await getUserDeck(deckId);
+  const { deck, didUserLike } = userDeck!;
   const {
     archetype,
     card_ids,
-    sideboard_cards,
     created_at,
     deck_class,
     deck_format,
+    deck_interactions,
+    deck_likes,
     description,
+    dust_cost_per_card,
     dust_cost_sum,
     game_mode,
     game_version,
-    name,
     meta_sub_archetypes,
+    name,
+    profiles,
+    sideboard_cards,
     updated_at,
-    youtube_link,
     user_id,
-  } = await getSingleDeck(deckId);
+    youtube_id,
+  } = deck;
+
   const {
     class: deckClass,
     cards,
@@ -36,12 +47,38 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
     sideboardCards: sideboard_cards ?? undefined,
   });
 
-  const userIp = getUserIp();
-  const encryptedUserIp = encrypt(userIp);
-  const didUserLike = await getDeckLikeByIp({
-    deckId: Number(deckId),
-    ip: encryptedUserIp,
+  const cardTypes: Record<CardType["name"], number> = {
+    Hero: 0,
+    Location: 0,
+    Minion: 0,
+    Spell: 0,
+    Weapon: 0,
+    HeroPower: 0,
+    Reward: 0,
+  };
+
+  const cardRarities: Record<Rarity["name"], number> = {
+    Common: 0,
+    Free: 0,
+    Epic: 0,
+    Rare: 0,
+    Legendary: 0,
+  };
+
+  cards.forEach((card) => {
+    card_ids.push(card.id);
+    const cardTypeName = CARD_TYPES.find(
+      (cardType) => cardType.id === card.cardTypeId,
+    )!.name;
+    cardTypes[cardTypeName] = cardTypes[cardTypeName] + 1;
+    const cardRarityName = CARD_RARITIES.find(
+      (cardRarity) => cardRarity.id === card.rarityId,
+    )!.name;
+    cardRarities[cardRarityName] = cardRarities[cardRarityName] + 1;
   });
+
+  const cardTypeAllocation = Object.entries(cardTypes);
+  const cardRarityAllocation = Object.entries(cardRarities);
 
   function showSelectedCard(cardsToShow: Card[] | undefined) {
     if (!cardsToShow) return [];
@@ -51,7 +88,7 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
       seen.add(el.id);
       return !duplicate;
     });
-    return uniqueCards;
+    return uniqueCards.sort((a, b) => a.manaCost - b.manaCost);
   }
 
   // function showRunes() {
@@ -65,20 +102,70 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
   // }
 
   return (
-    <div className="grid grid-cols-[1fr,auto] gap-8">
-      <main>
-        <div className="flex items-center justify-between">
-          <h1 className="font-hs text-3xl">{name}</h1>
-          <div className="flex items-center gap-4">
-            <Button size="icon" disabled={!!didUserLike}>
-              <Heart />
-            </Button>
-            <Button>Copy Deck</Button>
+    <div className="grid grid-cols-[1fr,auto] justify-between gap-8">
+      <main className="flex flex-col gap-4">
+        <div>
+          <div className="flex items-center justify-between">
+            <h1 className="font-hs text-3xl">{name}</h1>
+            <div className="flex items-center gap-4">
+              <Button size="icon" disabled={didUserLike}>
+                <Heart />
+              </Button>
+              <Button>Copy Deck</Button>
+            </div>
+          </div>
+          <div>
+            <span>
+              <DeckPopularity deck={deck} />
+            </span>
+            <ul className="flex flex-wrap divide-x-2">
+              {cardRarityAllocation.map((cardRarity) => {
+                if (cardRarity[1] === 0) return null;
+                return (
+                  <li
+                    key={cardRarity[0]}
+                    className="flex gap-1 px-3 first:pl-0"
+                  >
+                    <AssetIcon
+                      type="rarity"
+                      name={cardRarity[0].toLowerCase()}
+                    />
+                    {cardRarity[0]}:
+                    <span className="font-bold">{cardRarity[1]}</span>
+                  </li>
+                );
+              })}
+            </ul>
+            <ul className="flex flex-wrap divide-x-2">
+              {cardTypeAllocation.map((cardType) => {
+                if (cardType[1] === 0) return null;
+                return (
+                  <li
+                    key={cardType[0]}
+                    className="flex items-center gap-1 px-3 first:pl-0"
+                  >
+                    <CardTypeIcon name={cardType[0] as CardType["name"]} />
+                    {cardType[0]}:
+                    <span className="font-bold">{cardType[1]}</span>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         </div>
-        <div>{description}</div>
+        <div className="flex flex-col gap-4">
+          <div className="whitespace-pre-wrap">{description}</div>
+          {!!youtube_id && (
+            <iframe
+              id="ytplayer"
+              width="640"
+              height="360"
+              src={`https://www.youtube.com/embed/${youtube_id}`}
+            />
+          )}
+        </div>
       </main>
-      <aside className="deckColumn">
+      <aside className="grid grid-cols-2 gap-4">
         <div className="flex w-[320px] flex-col rounded-md border-4 border-border shadow-lg">
           <div className="relative text-xl font-bold">
             <div className="absolute size-full bg-black/50" />
@@ -144,6 +231,7 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
                 </ul>
               </div>
             ))}
+          <DeckManaChart selectedCards={cards} />
         </div>
       </aside>
     </div>

@@ -1,6 +1,11 @@
 "use server";
 import { encrypt, getUserIp } from "@/lib/serverUtils";
-import { deckInteraction, deckLiked } from "@/service/supabase.service";
+import {
+  deckInteraction,
+  deckLiked,
+  getDeckLikeByIp,
+  getSingleDeck,
+} from "@/service/supabase.service";
 import { Tables } from "@/types/supabase.type";
 import { cookies } from "next/headers";
 
@@ -33,5 +38,30 @@ export async function copyDeck(deckId: number) {
       deckId,
       type: "increment_copies",
     });
+  }
+}
+
+export async function getUserDeck(deckId: number) {
+  try {
+    const userIp = getUserIp();
+    const encryptedUserIp = encrypt(userIp);
+    const getDeck = getSingleDeck(deckId);
+    const getDeckLikes = getDeckLikeByIp({
+      deckId: Number(deckId),
+      ip: encryptedUserIp,
+    });
+
+    const { "0": userDeck, "1": didUserLike } = await Promise.all([
+      getDeck,
+      getDeckLikes,
+    ]);
+
+    const { data, error } = userDeck;
+
+    if (error) throw error;
+
+    return { deck: data, didUserLike: !!didUserLike };
+  } catch (error) {
+    throw new Error(error as string);
   }
 }

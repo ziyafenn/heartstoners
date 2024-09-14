@@ -10,7 +10,7 @@ export function DeckPopularity({ deck }: { deck: UserDecks[number] }) {
   const ratings = Array.from({ length: score }, (_, index) => index + 1);
 
   return (
-    <ul className="flex items-center gap-1 justify-end">
+    <ul className="flex items-center justify-end gap-1">
       {ratings.map((rating) => (
         <span className="text-xs" key={rating}>
           ⭐

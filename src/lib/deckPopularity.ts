@@ -1,6 +1,7 @@
 import { Tables } from "@/types/supabase.type";
 
 // Define the average metrics
+// TODO: get average metrics from database
 const averageMetrics = {
   likes: 1,
   copies: 1,

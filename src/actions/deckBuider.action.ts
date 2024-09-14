@@ -11,7 +11,8 @@ import { redirect } from "next/navigation";
 import { decode } from "deckstrings";
 import { CARD_CLASSES } from "@/lib/cardClasses";
 import { Enums } from "@/types/supabase.type";
-import { checkProfanity } from "@/service/profanity.service";
+// import { checkProfanity } from "@/service/profanity.service";
+import { getYouTubeVideoID } from "@/lib/utils";
 
 type Params = CardsPage & { params: CardSeachParams; loading?: boolean };
 
@@ -59,22 +60,29 @@ export async function createDeck(
   let userInput = {} as DeckUserInputParams;
   const gameVersion = await getCurrentGameVersion();
   for (const [key, value] of formData.entries()) {
-    userInput = {
-      ...userInput,
-      [key]: value,
-    };
+    if (key === "youtube_link") {
+      userInput = {
+        ...userInput,
+        youtube_id: getYouTubeVideoID(value.toString()),
+      };
+    } else {
+      userInput = {
+        ...userInput,
+        [key]: value,
+      };
+    }
   }
   const { data: initParams } = state;
 
-  const text = `${userInput.name}. ${userInput.description}`;
-  const { isProfanity } = await checkProfanity(text);
+  // const text = `${userInput.name}. ${userInput.description}`;
+  // const { isProfanity } = await checkProfanity(text);
 
-  if (isProfanity)
-    return {
-      data: null,
-      error:
-        "It seems your text input contains profanity. If it's not, please contact us on Discord.",
-    };
+  // if (isProfanity)
+  //   return {
+  //     data: null,
+  //     error:
+  //       "It seems your text input contains profanity. If it's not, please contact us on Discord.",
+  //   };
 
   const { data, error } = await createUserDeck({
     gameVersion,

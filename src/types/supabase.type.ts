@@ -245,7 +245,7 @@ export type Database = {
           sub_archetype: number | null
           updated_at: string
           user_id: string
-          youtube_link: string | null
+          youtube_id: string | null
         }
         Insert: {
           archetype: Database["public"]["Enums"]["archetypes"]
@@ -264,7 +264,7 @@ export type Database = {
           sub_archetype?: number | null
           updated_at?: string
           user_id?: string
-          youtube_link?: string | null
+          youtube_id?: string | null
         }
         Update: {
           archetype?: Database["public"]["Enums"]["archetypes"]
@@ -283,7 +283,7 @@ export type Database = {
           sub_archetype?: number | null
           updated_at?: string
           user_id?: string
-          youtube_link?: string | null
+          youtube_id?: string | null
         }
         Relationships: [
           {

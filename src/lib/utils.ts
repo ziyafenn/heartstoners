@@ -18,3 +18,22 @@ export function getDustCost(id: number | null) {
       return 0;
   }
 }
+
+export function getYouTubeVideoID(url: string) {
+  try {
+    const urlObj = new URL(url);
+    if (
+      urlObj.hostname === "www.youtube.com" ||
+      urlObj.hostname === "youtube.com"
+    ) {
+      return urlObj.searchParams.get("v");
+    } else if (urlObj.hostname === "youtu.be") {
+      return urlObj.pathname.substring(1); // Skip the leading "/"
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Invalid URL", error);
+    return null;
+  }
+}

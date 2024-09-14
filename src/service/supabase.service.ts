@@ -48,13 +48,13 @@ export async function getDecks() {
 export async function getSingleDeck(deckId: number) {
   const supabase = createClient();
 
-  const { data, error } = await supabase
+  const result = await supabase
     .from("user_decks")
     .select(deckQuery)
     .eq("id", deckId)
     .single();
 
-  return data!;
+  return result;
 }
 
 export async function getMetasByClass(className: CardClass["slug"]) {

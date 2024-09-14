@@ -60,7 +60,7 @@ export const CardCrop = forwardRef<HTMLLIElement, CardCropProps>(
                     <div className="font-outline-2 flex size-8 items-center justify-center bg-[url(/assets/mana.png)] bg-contain bg-no-repeat text-center text-[16px]">
                       {card.manaCost}
                     </div>
-                    <span className="font-outline-2 w-4/5 leading-none">
+                    <span className="font-outline-2 leading-none">
                       {card.name}
                     </span>
                   </div>
@@ -102,7 +102,7 @@ export const CardCrop = forwardRef<HTMLLIElement, CardCropProps>(
               </>
             </li>
           </TooltipTrigger>
-          <TooltipContent>
+          <TooltipContent side="left">
             <Image
               className="w-[320px]"
               draggable={false}

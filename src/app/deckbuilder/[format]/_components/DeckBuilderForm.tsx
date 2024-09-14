@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createDeck } from "@/actions/deckBuider.action";
 import { Button } from "@/components/ui/button";
-import { ResponsiveBar } from "@nivo/bar";
 import {
   Card,
   CardClass,
@@ -40,23 +39,11 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import {
-  InfoIcon,
-  MapIcon,
-  Sparkles,
-  SquareUserRound,
-  SwordsIcon,
-  VenetianMask,
-} from "lucide-react";
+import { InfoIcon } from "lucide-react";
 import { useFormState, useFormStatus } from "react-dom";
-import resolveConfig from "tailwindcss/resolveConfig";
-import tailwindConfig from "tailwind.config";
 import { CARD_CLASSES } from "@/lib/cardClasses";
-
-const fullConfig = resolveConfig(tailwindConfig);
-const {
-  theme: { colors },
-} = fullConfig;
+import { CardTypeIcon } from "@/components/CardTypeIcon";
+import { DeckManaChart } from "@/components/DeckManaChart";
 
 type Props = {
   deckSearchParams: CardSeachParams;
@@ -65,38 +52,6 @@ type Props = {
   isOpen: boolean;
   toggleOpen: (open: boolean) => void;
 };
-
-function BarChart({
-  manaCostCounts,
-}: {
-  manaCostCounts: { name: string; count: number }[];
-}) {
-  return (
-    <div className="h-40">
-      <ResponsiveBar
-        axisLeft={null}
-        data={manaCostCounts}
-        keys={["count"]}
-        borderRadius={3}
-        indexBy="name"
-        margin={{ top: 0, right: 0, bottom: 40, left: 0 }}
-        padding={0.4}
-        colors={[colors.blue[300]]}
-        isInteractive={false}
-        theme={{
-          grid: { line: { stroke: colors.border } },
-          axis: { legend: { text: { fill: "#FFFFFF" } } },
-          labels: { text: { fill: "red" } },
-          text: { fill: "white" },
-        }}
-        axisBottom={{
-          tickSize: 0,
-          tickPadding: 16,
-        }}
-      />
-    </div>
-  );
-}
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -123,22 +78,12 @@ export default function DeckBuilderForm({
   const [subArchetype, setSubArchetype] =
     useState<Tables<"meta_sub_archetypes">>();
 
-  const manaCostCountsSum = selectedCards.reduce(
-    (acc, card) => {
-      acc[card.manaCost] = (acc[card.manaCost] || 0) + 1;
-      return acc;
-    },
-    { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0 } as {
-      [key: number]: number;
-    },
-  );
   let aggroCount = 0;
   let midrangeCount = 0;
   let controlCount = 0;
   let dust_cost_sum = 0;
   const dust_cost_per_card: number[] = [];
   const card_ids: number[] = [];
-  const manaCostCounts: { name: string; count: number }[] = [];
   const cardTypes: Record<CardType["name"], number> = {
     Hero: 0,
     Location: 0,
@@ -175,26 +120,23 @@ export default function DeckBuilderForm({
     return sideboard.cardsInSideboard.map((card) => `${card.id}:${primaryId}`);
   });
 
-  for (const [name, count] of Object.entries(manaCostCountsSum)) {
-    const key = name === "7" ? "7+" : name;
-    manaCostCounts.push({ name: key, count: Number(count) });
+  // for (const [name, count] of Object.entries(manaCostCountsSum)) {
+  //   const manaCost = parseInt(name);
+  //   if (manaCost <= 3) {
+  //     aggroCount += Number(count);
+  //   } else if (manaCost <= 5) {
+  //     midrangeCount += Number(count);
+  //   } else {
+  //     controlCount += Number(count);
+  //   }
+  // }
 
-    const manaCost = parseInt(name);
-    if (manaCost <= 3) {
-      aggroCount += Number(count);
-    } else if (manaCost <= 5) {
-      midrangeCount += Number(count);
-    } else {
-      controlCount += Number(count);
-    }
-  }
-
-  function getArchetype(): Enums<"archetypes"> {
-    if (aggroCount > midrangeCount && aggroCount > controlCount) return "aggro";
-    if (midrangeCount > aggroCount && midrangeCount > controlCount)
-      return "midrange";
-    else return "control";
-  }
+  // function getArchetype(): Enums<"archetypes"> {
+  //   if (aggroCount > midrangeCount && aggroCount > controlCount) return "aggro";
+  //   if (midrangeCount > aggroCount && midrangeCount > controlCount)
+  //     return "midrange";
+  //   else return "control";
+  // }
   const getSubArchetype = useCallback(async () => {
     const metas = await getMetasByClass(deckClass);
 
@@ -227,25 +169,6 @@ export default function DeckBuilderForm({
 
   const cardTypeAllocation = Object.entries(cardTypes);
   const cardRarityAllocation = Object.entries(cardRarities);
-
-  function CardTypeIcon({ name }: { name: CardType["name"] }) {
-    switch (name) {
-      case "Weapon":
-        return <SwordsIcon className="size-5" />;
-
-      case "Hero":
-        return <SquareUserRound className="size-5" />;
-
-      case "Spell":
-        return <Sparkles className="size-5" />;
-
-      case "Location":
-        return <MapIcon className="size-5" />;
-
-      default:
-        return <VenetianMask className="size-5" />;
-    }
-  }
 
   const [state, formAction] = useFormState(createDeck, {
     data: initParams,
@@ -323,7 +246,7 @@ export default function DeckBuilderForm({
         </SheetHeader>
         <div className="flex flex-1 flex-col gap-8">
           <div className="flex flex-col gap-4 text-sm">
-            <BarChart manaCostCounts={manaCostCounts} />
+            <DeckManaChart selectedCards={selectedCards} />
             <div className="flex items-center gap-2">
               <span>Dust Cost:</span>
               <span className="flex gap-1">
@@ -386,6 +309,7 @@ export default function DeckBuilderForm({
                   autoComplete="off"
                   autoFocus
                   spellCheck="true"
+                  maxLength={50}
                   placeholder="Include the class name to capture your Hearthstone deck's essence"
                 />
               </div>
@@ -416,7 +340,7 @@ export default function DeckBuilderForm({
             <div className="flex items-start gap-8">
               <div>
                 <Label>Archetype</Label>
-                <Select defaultValue={getArchetype()} name="archetype" required>
+                <Select defaultValue="aggro" name="archetype" required>
                   <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder="Archetype" />
                   </SelectTrigger>
