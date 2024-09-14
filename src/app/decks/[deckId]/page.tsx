@@ -3,9 +3,8 @@ import Image from "next/image";
 import { CardCrop } from "@/components/CardCrop";
 import { Card, CardType, Rarity } from "@/types/hs.type";
 import { Button } from "@/components/ui/button";
-import { Heart } from "lucide-react";
+import { Calendar, Heart, HistoryIcon } from "lucide-react";
 import { getUserDeck } from "@/actions/deck.action";
-import { DeckPopularity } from "@/components/DeckPopularity";
 import { CARD_TYPES } from "@/lib/cardTypes";
 import { CARD_RARITIES } from "@/lib/cardRarities";
 import { AssetIcon } from "@/components/AssetIcon";
@@ -16,6 +15,7 @@ import { Separator } from "@/components/ui/separator";
 import { DustCost } from "@/components/DustCost";
 import { searchForCraftableDecks } from "@/actions/deckSearch.action";
 import { Badge } from "@/components/ui/badge";
+import { DeckPopularity } from "@/components/DeckPopularity";
 
 export default async function Deck({ params }: { params: { deckId: number } }) {
   const { deckId } = params;
@@ -124,65 +124,105 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
               <Badge>{archetype}</Badge>
               {meta_sub_archetypes && <Badge>{meta_sub_archetypes.name}</Badge>}
             </ul>
-            {/* <div className="flex gap-1">
-              <AssetIcon type="asset" name="dust" />
-              <DustCost
-                availableDust={availableDust}
-                dustCostSum={dust_cost_sum}
-                craftableDeck={craftableDeck?.craftableDecks[0]}
-              />
-            </div>
-            <div>
-              <DeckPopularity deck={deck} />
+            {/* <div className="flex divide-x items-center">
+              <div id="author" className="flex items-center gap-2 pr-2">
+                <span className="text-sm">by {profiles!.username}</span>
+                <span className="size-6 rounded-full bg-yellow-50" />
+              </div>
+              <span className="pl-2">
+                <DeckPopularity deck={deck} />
+              </span>
             </div> */}
           </div>
         </section>
         <Separator />
-        <section className="flex flex-col gap-8">
-          {/* <div className="flex justify-between items-center">
-            <ul className="flex flex-wrap divide-x-2">
+        <section className="grid grid-cols-[1fr,204px] divide-x-2 h-full">
+          <div className="pr-4">
+            <div className="whitespace-pre-wrap">{description}</div>
+            {!!youtube_id && (
+              <iframe
+                id="ytplayer"
+                width="640"
+                height="360"
+                src={`https://www.youtube.com/embed/${youtube_id}`}
+              />
+            )}
+          </div>
+          <div className="flex flex-col divide-y pl-4">
+            <ul className="flex flex-col divide-y">
+              <li className="flex pb-2 justify-between gap-1">
+                <span className="flex gap-1">
+                  <AssetIcon type="asset" name="dust" />
+                  Cost
+                </span>
+                <DustCost
+                  availableDust={availableDust}
+                  dustCostSum={dust_cost_sum}
+                  craftableDeck={craftableDeck?.craftableDecks[0]}
+                />
+              </li>
               {cardRarityAllocation.map((cardRarity) => {
                 if (cardRarity[1] === 0) return null;
                 return (
                   <li
                     key={cardRarity[0]}
-                    className="flex gap-1 px-3 first:pl-0 last:pr-0"
+                    className="flex py-2 justify-between items-center"
                   >
-                    <AssetIcon
-                      type="rarity"
-                      name={cardRarity[0].toLowerCase()}
-                    />
-                    {cardRarity[0]}:
+                    <span className="flex gap-1 items-baseline">
+                      <AssetIcon
+                        type="rarity"
+                        name={cardRarity[0].toLowerCase()}
+                      />
+                      {cardRarity[0]}
+                    </span>
                     <span className="font-bold">{cardRarity[1]}</span>
                   </li>
                 );
               })}
-            </ul>
-            <ul className="flex flex-wrap divide-x-2">
               {cardTypeAllocation.map((cardType) => {
                 if (cardType[1] === 0) return null;
                 return (
                   <li
                     key={cardType[0]}
-                    className="flex items-center gap-1 px-3 first:pl-0 last:pr-0"
+                    className="flex py-2 justify-between items-center"
                   >
-                    <CardTypeIcon name={cardType[0] as CardType["name"]} />
-                    {cardType[0]}:
+                    <span className="flex gap-1 items-center">
+                      <CardTypeIcon name={cardType[0] as CardType["name"]} />
+                      {cardType[0]}
+                    </span>
                     <span className="font-bold">{cardType[1]}</span>
                   </li>
                 );
               })}
+              <li className="flex py-2 justify-between items-center">
+                <span className="flex gap-1 items-center">
+                  <Calendar className="size-5" />
+                  Created
+                </span>
+                <span className="font-bold">
+                  {new Date(created_at).toLocaleDateString()}
+                </span>
+              </li>
+              {updated_at > created_at && (
+                <li className="flex py-2 justify-between items-center">
+                  <span className="flex gap-1 items-center">
+                    <Calendar className="size-5" />
+                    Updated
+                  </span>
+                  <span className="font-bold">
+                    {new Date(updated_at).toLocaleDateString()}
+                  </span>
+                </li>
+              )}
+              <li className="flex py-2 justify-between items-center">
+                <span className="flex gap-1 items-center">
+                  <HistoryIcon className="size-5" />
+                  Version
+                </span>
+                <span className="font-bold">{game_version}</span>
+              </li>
             </ul>
-          </div> */}
-          <div className="whitespace-pre-wrap">{description}</div>
-          {!!youtube_id && (
-            <iframe
-              id="ytplayer"
-              width="640"
-              height="360"
-              src={`https://www.youtube.com/embed/${youtube_id}`}
-            />
-          )}
+          </div>
         </section>
       </main>
       <aside className="grid grid-cols-2 gap-4">
