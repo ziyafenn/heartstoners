@@ -3,20 +3,10 @@ import Link from "next/link";
 import { DeckPopularity } from "@/components/DeckPopularity";
 import { UserDecks } from "@/types/deck.type";
 import Image from "next/image";
+import { AssetIcon } from "@/components/AssetIcon";
+import { Badge } from "@/components/ui/badge";
 
 type Props = UserDecks[number];
-
-function Tag({
-  label,
-  type,
-}: {
-  label: string;
-  type: "archetype" | "sub_archetype";
-}) {
-  return (
-    <li className="rounded bg-blue-900/80 px-1 py-0.5 text-xs">{label}</li>
-  );
-}
 
 export function DeckUICard({ data: deck }: { data: Props }) {
   const {
@@ -41,20 +31,14 @@ export function DeckUICard({ data: deck }: { data: Props }) {
                 slug={deck_class}
                 className="box-content size-5 rounded-full border border-border"
               />
-              <Image
-                src={`/format/${deck_format}.svg`}
-                width={25}
-                height={25}
-                className="box-content size-5 rounded-full border border-border"
-                alt={deck_format}
-              />
+              <AssetIcon type="format" name={deck_format} />
             </div>
             <div className="flex flex-col justify-between">
               <h3 className="font-hs text-xl outline-2">{name}</h3>
               <ul className="flex items-center gap-2">
-                <Tag label={archetype} type="archetype" />
+                <Badge>{archetype}</Badge>
                 {meta_sub_archetypes && (
-                  <Tag label={meta_sub_archetypes.name} type="sub_archetype" />
+                  <Badge>{meta_sub_archetypes.name}</Badge>
                 )}
               </ul>
             </div>

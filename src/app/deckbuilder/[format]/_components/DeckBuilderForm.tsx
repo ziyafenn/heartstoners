@@ -51,6 +51,7 @@ type Props = {
   sideboardCards: SideboardCards[];
   isOpen: boolean;
   toggleOpen: (open: boolean) => void;
+  subArchetype: Tables<"meta_sub_archetypes"> | null;
 };
 
 function SubmitButton() {
@@ -69,14 +70,13 @@ export default function DeckBuilderForm({
   sideboardCards,
   isOpen,
   toggleOpen,
+  subArchetype,
 }: Props) {
   const formRef = useRef<(() => void) | HTMLFormElement | null>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const searchParams = useSearchParams();
   const deckClass = searchParams.get("deckClass") as CardClass["slug"];
   const [isFormMounted, setIsFormMounted] = useState(false);
-  const [subArchetype, setSubArchetype] =
-    useState<Tables<"meta_sub_archetypes">>();
 
   let aggroCount = 0;
   let midrangeCount = 0;
@@ -137,25 +137,6 @@ export default function DeckBuilderForm({
   //     return "midrange";
   //   else return "control";
   // }
-  const getSubArchetype = useCallback(async () => {
-    const metas = await getMetasByClass(deckClass);
-
-    const bestMatch = metas!.reduce(
-      (best, meta) => {
-        const metaMatches = meta!.core_cards!.filter((coreCard) =>
-          selectedCards
-            .map((selectedCard) => selectedCard.id)
-            .includes(coreCard),
-        ).length;
-        return metaMatches > best.matchedCardCount
-          ? { matchedCardCount: metaMatches, meta }
-          : best;
-      },
-      { matchedCardCount: 0, meta: {} as Tables<"meta_sub_archetypes"> },
-    );
-
-    if (bestMatch.matchedCardCount > 2) setSubArchetype(bestMatch.meta);
-  }, [deckClass, selectedCards]);
 
   const initParams: DeckInitParams = {
     card_ids: card_ids,
@@ -181,10 +162,6 @@ export default function DeckBuilderForm({
       input.setCustomValidity("");
     }
   }
-
-  useEffect(() => {
-    if (isOpen) getSubArchetype();
-  }, [isOpen, getSubArchetype]);
 
   useEffect(() => {
     if (!isFormMounted || !formRef) return;

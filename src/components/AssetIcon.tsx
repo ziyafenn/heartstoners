@@ -6,7 +6,7 @@ export function AssetIcon({
   className,
 }: {
   name: string;
-  type: "rarity" | "asset" | "rune";
+  type: "rarity" | "asset" | "rune" | "format";
   className?: string;
 }) {
   if (type === "asset")
@@ -33,6 +33,13 @@ export function AssetIcon({
     return (
       <div className="size-10">
         <Image src={`/runes/${name}.png`} alt={name} height={120} width={120} />
+      </div>
+    );
+
+  if (type === "format")
+    return (
+      <div className="box-content size-5 rounded-full border border-border">
+        <Image src={`/format/${name}.svg`} width={25} height={25} alt={name} />
       </div>
     );
 }

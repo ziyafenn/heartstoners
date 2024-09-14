@@ -4,13 +4,14 @@ import { searchHsCards } from "@/service/hs.service";
 import {
   createUserDeck,
   getCurrentGameVersion,
+  getMetasByClass,
 } from "@/service/supabase.service";
 import { DeckInitParams, DeckUserInputParams } from "@/types/deck.type";
-import { CardSeachParams, CardsPage } from "@/types/hs.type";
+import { Card, CardClass, CardSeachParams, CardsPage } from "@/types/hs.type";
 import { redirect } from "next/navigation";
 import { decode } from "deckstrings";
 import { CARD_CLASSES } from "@/lib/cardClasses";
-import { Enums } from "@/types/supabase.type";
+import { Enums, Tables } from "@/types/supabase.type";
 // import { checkProfanity } from "@/service/profanity.service";
 import { getYouTubeVideoID } from "@/lib/utils";
 
@@ -105,4 +106,27 @@ export async function loadDeckFromCode(formData: FormData) {
   const format: Enums<"deck_format"> = deck.format === 1 ? "wild" : "standard";
 
   redirect(`/deckbuilder/${format}?deckClass=${slug}&deckCode=${deckCode}`);
+}
+
+export async function getSubArchetype(
+  deckClass: CardClass["slug"],
+  selectedCards: Card[],
+) {
+  const metas = await getMetasByClass(deckClass);
+
+  const bestMatch = metas!.reduce(
+    (best, meta) => {
+      const metaMatches = meta!.core_cards!.filter((coreCard) =>
+        selectedCards.map((selectedCard) => selectedCard.id).includes(coreCard),
+      ).length;
+      return metaMatches > best.matchedCardCount
+        ? { matchedCardCount: metaMatches, meta }
+        : best;
+    },
+    { matchedCardCount: 0, meta: {} as Tables<"meta_sub_archetypes"> },
+  );
+
+  if (bestMatch.matchedCardCount > 2) return bestMatch.meta;
+
+  return null;
 }

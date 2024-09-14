@@ -15,6 +15,7 @@ import { HeroIcon } from "@/components/HeroIcon";
 import { Separator } from "@/components/ui/separator";
 import { DustCost } from "@/components/DustCost";
 import { searchForCraftableDecks } from "@/actions/deckSearch.action";
+import { Badge } from "@/components/ui/badge";
 
 export default async function Deck({ params }: { params: { deckId: number } }) {
   const { deckId } = params;
@@ -26,19 +27,14 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
     created_at,
     deck_class,
     deck_format,
-    deck_interactions,
-    deck_likes,
     description,
-    dust_cost_per_card,
     dust_cost_sum,
-    game_mode,
     game_version,
     meta_sub_archetypes,
     name,
     profiles,
     sideboard_cards,
     updated_at,
-    user_id,
     youtube_id,
   } = deck;
 
@@ -110,7 +106,7 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
   return (
     <div className="grid grid-cols-[1fr,auto] justify-between gap-8">
       <main className="flex flex-col gap-8">
-        <div className="flex flex-col gap-4">
+        <section className="flex flex-col gap-4 ">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <HeroIcon slug={deck_class} className="size-8" />
@@ -123,18 +119,27 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
               <Button>Copy Deck</Button>
             </div>
           </div>
-          <div className="flex gap-1">
-            <AssetIcon type="asset" name="dust" />
-            <DustCost
-              availableDust={availableDust}
-              dustCostSum={dust_cost_sum}
-              craftableDeck={craftableDeck?.craftableDecks[0]}
-            />
+          <div className="flex items-center">
+            <ul className="flex items-center gap-2">
+              <Badge>{archetype}</Badge>
+              {meta_sub_archetypes && <Badge>{meta_sub_archetypes.name}</Badge>}
+            </ul>
+            {/* <div className="flex gap-1">
+              <AssetIcon type="asset" name="dust" />
+              <DustCost
+                availableDust={availableDust}
+                dustCostSum={dust_cost_sum}
+                craftableDeck={craftableDeck?.craftableDecks[0]}
+              />
+            </div>
+            <div>
+              <DeckPopularity deck={deck} />
+            </div> */}
           </div>
-        </div>
+        </section>
         <Separator />
-        <div className="flex flex-col gap-8">
-          <div className="flex justify-between items-center">
+        <section className="flex flex-col gap-8">
+          {/* <div className="flex justify-between items-center">
             <ul className="flex flex-wrap divide-x-2">
               {cardRarityAllocation.map((cardRarity) => {
                 if (cardRarity[1] === 0) return null;
@@ -168,7 +173,7 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
                 );
               })}
             </ul>
-          </div>
+          </div> */}
           <div className="whitespace-pre-wrap">{description}</div>
           {!!youtube_id && (
             <iframe
@@ -178,7 +183,7 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
               src={`https://www.youtube.com/embed/${youtube_id}`}
             />
           )}
-        </div>
+        </section>
       </main>
       <aside className="grid grid-cols-2 gap-4">
         <div className="flex w-[320px] flex-col rounded-md border-4 border-border shadow-lg">
@@ -251,10 +256,4 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
       </aside>
     </div>
   );
-}
-
-{
-  /* <span>
-<DeckPopularity deck={deck} />
-</span> */
 }

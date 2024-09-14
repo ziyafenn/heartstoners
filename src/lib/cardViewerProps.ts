@@ -76,7 +76,7 @@ export function cardViewerProps({
     ).length === 2;
 
   const isAboveRuneSlotLimit = !canDeathKnightCardBeAdded();
-  const isTouristCard = touristCard && card.touristClassId;
+  const isTouristCard = !!touristCard && !!card.touristClassId;
 
   const isDisabled =
     isTotalCardCountReached ||

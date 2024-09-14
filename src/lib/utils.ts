@@ -33,7 +33,6 @@ export function getYouTubeVideoID(url: string) {
       return null;
     }
   } catch (error) {
-    console.error("Invalid URL", error);
     return null;
   }
 }

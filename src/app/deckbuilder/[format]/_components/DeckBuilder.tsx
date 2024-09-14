@@ -5,6 +5,7 @@ import { DeckBuilderFilter } from "./DeckBuildFilter";
 import { Button } from "@/components/ui/button";
 import DeckBuilderForm from "./DeckBuilderForm";
 import {
+  Card,
   CardClass,
   CardType,
   CardsPage,
@@ -24,6 +25,8 @@ import { ZILLIAX_ID } from "@/lib/constants";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
+import { getSubArchetype } from "@/actions/deckBuider.action";
+import { Tables } from "@/types/supabase.type";
 
 function Loading() {
   return <div className="z-50 size-full bg-red-500">Loading</div>;
@@ -74,6 +77,8 @@ export function DeckBuilder({
 
   const [isLoading, setIsLoading] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [subArchetype, setSubArchetype] =
+    useState<Tables<"meta_sub_archetypes"> | null>(null);
 
   const currentSideboard = sideboardCards.find(
     (sideboard) => sideboard.sideboardCard.id === activeSideboardCard?.id,
@@ -103,6 +108,12 @@ export function DeckBuilder({
     window.scroll({ top: 0 });
   }
 
+  async function onFormOpen() {
+    const subArchetype = await getSubArchetype(deckClass, selectedCards);
+    if (subArchetype) setSubArchetype(subArchetype);
+    setIsFormOpen(true);
+  }
+
   useEffect(() => {
     window.scroll({ top: 0 });
   }, []);
@@ -122,6 +133,7 @@ export function DeckBuilder({
           selectedCards={selectedCards}
           deckSearchParams={cardsPage.params}
           sideboardCards={sideboardCards}
+          subArchetype={subArchetype}
         />
       )}
       <div className="flex flex-col gap-4">
@@ -190,7 +202,7 @@ export function DeckBuilder({
                 type="button"
                 disabled={selectedCards.length < 30}
                 className="rounded-none bg-orange-200"
-                onClick={() => setIsFormOpen(true)}
+                onClick={onFormOpen}
               >
                 {`Create Deck (${selectedCards.length}/30)`}
               </Button>
