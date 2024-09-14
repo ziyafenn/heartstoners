@@ -309,7 +309,7 @@ export default function DeckBuilderForm({
                   autoComplete="off"
                   autoFocus
                   spellCheck="true"
-                  maxLength={50}
+                  maxLength={40}
                   placeholder="Include the class name to capture your Hearthstone deck's essence"
                 />
               </div>

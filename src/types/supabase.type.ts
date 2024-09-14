@@ -318,6 +318,7 @@ export type Database = {
         Args: {
           p_card_collection: Json
           p_available_dust: number
+          p_deck_id?: number
         }
         Returns: {
           user_deck_id: number

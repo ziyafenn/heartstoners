@@ -24,39 +24,21 @@ import { DBFunction } from "@/types/supabase.func.type";
 import { AssetIcon } from "@/components/AssetIcon";
 import { DeckPopularity } from "@/components/DeckPopularity";
 import { UserDecks } from "@/types/deck.type";
+import { DustCost } from "@/components/DustCost";
 
 type Props = {
   decks: UserDecks;
-  craftableDecks: DBFunction<"get_craftable_decks", "Returns"> | null;
-  availableDust: number | null;
+  craftableDecks: DBFunction<"get_craftable_decks", "Returns">;
+  availableDust: number;
 };
-
-function DustCost({
-  isCraftable,
-  dustCostSum,
-  availableDust,
-}: {
-  isCraftable: boolean;
-  dustCostSum: number;
-  availableDust: number | null;
-}) {
-  if (isCraftable)
-    return <span className="font-bold text-green-500">Craftable</span>;
-  if (availableDust) return <span>{dustCostSum - availableDust}</span>;
-  return <span>{dustCostSum}</span>;
-}
 
 export function DeckSearch({ decks, availableDust, craftableDecks }: Props) {
   const [currentDecks, setCurrentDecks] = useState(() => decks);
 
-  function checkIsCraftable(deck: UserDecks[number]) {
-    const craftableDeck = craftableDecks?.find(
-      (craftableDeck) => craftableDeck.user_deck_id === deck.id,
+  function getCraftableDeck(id: number) {
+    return craftableDecks?.find(
+      (craftableDeck) => craftableDeck.user_deck_id === id,
     );
-    const canBeCrafted =
-      !!craftableDeck && craftableDeck.required_dust_cost <= availableDust;
-    if (canBeCrafted) return true;
-    return false;
   }
 
   async function updateFilters(activeFilters: FormData) {
@@ -90,7 +72,7 @@ export function DeckSearch({ decks, availableDust, craftableDecks }: Props) {
                       <DustCost
                         availableDust={availableDust}
                         dustCostSum={deck.dust_cost_sum}
-                        isCraftable={checkIsCraftable(deck)}
+                        craftableDeck={getCraftableDeck(deck.id)}
                       />
                     </div>
                   </span>

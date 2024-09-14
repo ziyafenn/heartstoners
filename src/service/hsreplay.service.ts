@@ -21,7 +21,11 @@ export async function getUserCollection() {
     data: { user },
   } = await supabase.auth.getUser();
 
+  if (!user) return null;
+
   const userProfile = await getUserProfile(user.id);
+
+  if (!userProfile?.hsreplay_id) return null;
 
   const res: UserCollection = await api
     .url("/api/v1/collection/")

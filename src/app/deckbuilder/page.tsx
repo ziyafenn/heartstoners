@@ -9,20 +9,20 @@ import { loadDeckFromCode } from "@/actions/deckBuider.action";
 
 export default async function DeckBuilderMode() {
   return (
-    <div className="m-auto flex max-w-screen-lg flex-col items-center justify-center">
-      <div className="flex flex-col items-center gap-4">
-        <form action={loadDeckFromCode} className="flex gap-4">
-          <Input name="deckCode" type="text" required />
-          <Button type="submit">Find</Button>
-        </form>
-        <Tabs defaultValue="standard">
+    <div className="m-auto flex max-w-screen-lg flex-col gap-8">
+      <div className="flex items-center justify-between">
+        <Tabs defaultValue="standard" orientation="horizontal">
           <TabsList>
             <TabsTrigger value="standard">Standard</TabsTrigger>
             <TabsTrigger value="wild">Wild</TabsTrigger>
           </TabsList>
         </Tabs>
+        <form action={loadDeckFromCode} className="flex gap-4">
+          <Input name="deckCode" type="text" required />
+          <Button type="submit">Find</Button>
+        </form>
       </div>
-      <ul className="grid grid-cols-3 gap-8 p-8">
+      <ul className="grid grid-cols-3 gap-8">
         {CARD_CLASSES.map((cardClass) => {
           if (cardClass.slug === "neutral") return null;
           return (

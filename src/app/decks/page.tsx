@@ -4,16 +4,13 @@ import { DeckSearch } from "./_components/DeckSearch";
 
 export default async function Decks() {
   const decks = await getRequestedDecks({ deck_format: "standard" });
-  const {
-    userCollection: { dust },
-    craftableDecks,
-  } = await searchForCraftableDecks();
+  const craftableDecks = await searchForCraftableDecks();
 
   return (
     <DeckSearch
       decks={decks}
-      craftableDecks={craftableDecks}
-      availableDust={dust}
+      craftableDecks={craftableDecks?.craftableDecks ?? []}
+      availableDust={craftableDecks?.userCollection.dust ?? 0}
     />
   );
 }

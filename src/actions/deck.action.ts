@@ -1,5 +1,6 @@
 "use server";
 import { encrypt, getUserIp } from "@/lib/serverUtils";
+import { getUserCollection } from "@/service/hsreplay.service";
 import {
   deckInteraction,
   deckLiked,
@@ -50,17 +51,23 @@ export async function getUserDeck(deckId: number) {
       deckId: Number(deckId),
       ip: encryptedUserIp,
     });
+    const getAvailableDust = await getUserCollection();
 
-    const { "0": userDeck, "1": didUserLike } = await Promise.all([
-      getDeck,
-      getDeckLikes,
-    ]);
+    const {
+      "0": userDeck,
+      "1": didUserLike,
+      "2": userCollection,
+    } = await Promise.all([getDeck, getDeckLikes, getAvailableDust]);
 
     const { data, error } = userDeck;
 
     if (error) throw error;
 
-    return { deck: data, didUserLike: !!didUserLike };
+    return {
+      deck: data,
+      didUserLike: !!didUserLike,
+      availableDust: userCollection?.dust ?? 0,
+    };
   } catch (error) {
     throw new Error(error as string);
   }

@@ -11,11 +11,15 @@ import { CARD_RARITIES } from "@/lib/cardRarities";
 import { AssetIcon } from "@/components/AssetIcon";
 import { CardTypeIcon } from "@/components/CardTypeIcon";
 import { DeckManaChart } from "@/components/DeckManaChart";
+import { HeroIcon } from "@/components/HeroIcon";
+import { Separator } from "@/components/ui/separator";
+import { DustCost } from "@/components/DustCost";
+import { searchForCraftableDecks } from "@/actions/deckSearch.action";
 
 export default async function Deck({ params }: { params: { deckId: number } }) {
   const { deckId } = params;
   const userDeck = await getUserDeck(deckId);
-  const { deck, didUserLike } = userDeck!;
+  const { deck, didUserLike, availableDust } = userDeck!;
   const {
     archetype,
     card_ids,
@@ -46,6 +50,8 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
     cardIds: card_ids,
     sideboardCards: sideboard_cards ?? undefined,
   });
+
+  const craftableDeck = await searchForCraftableDecks({ deckId });
 
   const cardTypes: Record<CardType["name"], number> = {
     Hero: 0,
@@ -103,10 +109,13 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
 
   return (
     <div className="grid grid-cols-[1fr,auto] justify-between gap-8">
-      <main className="flex flex-col gap-4">
-        <div>
+      <main className="flex flex-col gap-8">
+        <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
-            <h1 className="font-hs text-3xl">{name}</h1>
+            <div className="flex items-center gap-2">
+              <HeroIcon slug={deck_class} className="size-8" />
+              <h1 className="font-hs text-3xl">{name}</h1>
+            </div>
             <div className="flex items-center gap-4">
               <Button size="icon" disabled={didUserLike}>
                 <Heart />
@@ -114,17 +123,25 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
               <Button>Copy Deck</Button>
             </div>
           </div>
-          <div>
-            <span>
-              <DeckPopularity deck={deck} />
-            </span>
+          <div className="flex gap-1">
+            <AssetIcon type="asset" name="dust" />
+            <DustCost
+              availableDust={availableDust}
+              dustCostSum={dust_cost_sum}
+              craftableDeck={craftableDeck?.craftableDecks[0]}
+            />
+          </div>
+        </div>
+        <Separator />
+        <div className="flex flex-col gap-8">
+          <div className="flex justify-between items-center">
             <ul className="flex flex-wrap divide-x-2">
               {cardRarityAllocation.map((cardRarity) => {
                 if (cardRarity[1] === 0) return null;
                 return (
                   <li
                     key={cardRarity[0]}
-                    className="flex gap-1 px-3 first:pl-0"
+                    className="flex gap-1 px-3 first:pl-0 last:pr-0"
                   >
                     <AssetIcon
                       type="rarity"
@@ -142,7 +159,7 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
                 return (
                   <li
                     key={cardType[0]}
-                    className="flex items-center gap-1 px-3 first:pl-0"
+                    className="flex items-center gap-1 px-3 first:pl-0 last:pr-0"
                   >
                     <CardTypeIcon name={cardType[0] as CardType["name"]} />
                     {cardType[0]}:
@@ -152,8 +169,6 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
               })}
             </ul>
           </div>
-        </div>
-        <div className="flex flex-col gap-4">
           <div className="whitespace-pre-wrap">{description}</div>
           {!!youtube_id && (
             <iframe
@@ -236,4 +251,10 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
       </aside>
     </div>
   );
+}
+
+{
+  /* <span>
+<DeckPopularity deck={deck} />
+</span> */
 }

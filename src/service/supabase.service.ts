@@ -94,14 +94,16 @@ export async function getCurrentGameVersion() {
 export async function getCraftableDecks(
   userCollection: UserCollection["collection"],
   availableDust: number,
+  deckId?: number,
 ) {
   const supabase = createClient();
 
   const { data, error } = await supabase.rpc("get_craftable_decks", {
     p_available_dust: availableDust,
     p_card_collection: userCollection,
+    p_deck_id: deckId,
   });
-  return data;
+  return data ?? [];
 }
 
 export async function getRequestedDecks(
