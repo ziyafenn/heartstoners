@@ -91,7 +91,10 @@ export default async function Home() {
           <h3>Top creators</h3>
           <ul className="flex flex-col gap-2 divide-y">
             {topAuthors?.map((author, index) => (
-              <SidebarCardItem name={author.profiles!.username} key={index} />
+              <SidebarCardItem
+                name={author.profiles!.username}
+                key={author.profiles?.username}
+              />
             ))}
           </ul>
         </div>
@@ -114,7 +117,7 @@ export default async function Home() {
                 name={
                   CARD_CLASSES.find(
                     (cardClass) => cardClass.slug === deckClass.deck_class,
-                  )?.name
+                  )!.name
                 }
                 key={index}
               />

@@ -12,6 +12,7 @@ export function DeckDescription({ description, youtube_id }: Props) {
           width="640"
           height="360"
           src={`https://www.youtube.com/embed/${youtube_id}`}
+          title="youtube"
         />
       )}
     </div>

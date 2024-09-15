@@ -82,8 +82,7 @@ export function DeckBuilder({
   const currentSideboard = sideboardCards.find(
     (sideboard) => sideboard.sideboardCard.id === activeSideboardCard?.id,
   );
-  const currentCardsInSideboard =
-    currentSideboard && currentSideboard.cardsInSideboard;
+  const currentCardsInSideboard = currentSideboard?.cardsInSideboard;
 
   const onAddCard = activeSideboardCard
     ? actions.addSideboardCard

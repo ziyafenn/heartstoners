@@ -66,36 +66,38 @@ export function DeckCards({ deckClass, cards, sideboardCards }: Props) {
         </ul>
       </div>
       <div className="flex w-[320px] flex-col gap-4">
-        {sideboardCards &&
-          sideboardCards.map((sideboard) => (
-            <div
-              key={sideboard.sideboardCard.id}
-              className="flex w-[320px] flex-col rounded-md border-4 border-border shadow-lg"
-            >
-              <div className="relative text-lg font-bold">
-                <div className="absolute size-full bg-gradient-to-r from-black from-30% via-transparent via-70%" />
-                <div className="absolute flex size-full items-center justify-between pl-3 pr-2">
-                  <span className="font-outline-2 font-hs leading-tight drop-shadow-md">
-                    {sideboard.sideboardCard.name}
-                  </span>
-                </div>
-                <Image
-                  src={sideboard.sideboardCard.cropImage!}
-                  width={243}
-                  height={64}
-                  className="h-12 w-full object-cover"
-                  alt={deckClass.name}
-                />
+        {sideboardCards?.map((sideboard) => (
+          <div
+            key={sideboard.sideboardCard.id}
+            className="flex w-[320px] flex-col rounded-md border-4 border-border shadow-lg"
+          >
+            <div className="relative text-lg font-bold">
+              <div className="absolute size-full bg-gradient-to-r from-black from-30% via-transparent via-70%" />
+              <div className="absolute flex size-full items-center justify-between pl-3 pr-2">
+                <span className="font-outline-2 font-hs leading-tight drop-shadow-md">
+                  {sideboard.sideboardCard.name}
+                </span>
               </div>
-              <ul className="flex flex-col gap-1 bg-black/20 p-3">
-                {sideboard.cardsInSideboard
-                  .sort((a, b) => a.manaCost - b.manaCost)
-                  .map((card) => (
-                    <CardCrop card={card} key={card.id} count={1} isView />
-                  ))}
-              </ul>
+              <Image
+                src={
+                  sideboard.sideboardCard.cropImage ??
+                  sideboard.sideboardCard.image
+                }
+                width={243}
+                height={64}
+                className="h-12 w-full object-cover"
+                alt={deckClass.name}
+              />
             </div>
-          ))}
+            <ul className="flex flex-col gap-1 bg-black/20 p-3">
+              {sideboard.cardsInSideboard
+                .sort((a, b) => a.manaCost - b.manaCost)
+                .map((card) => (
+                  <CardCrop card={card} key={card.id} count={1} isView />
+                ))}
+            </ul>
+          </div>
+        ))}
         <DeckManaChart selectedCards={cards} />
       </div>
     </aside>
