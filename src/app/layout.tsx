@@ -83,7 +83,6 @@ export default async function RootLayout({
             Hearthstone is a registered trademark of Blizzard Entertainment,
             Inc. in the U.S. and/or other countries.
           </div>
-          <div></div>
         </footer>
       </body>
     </html>

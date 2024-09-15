@@ -3,7 +3,7 @@
 import type { Card, CardSeachParams, CardsPage, Deck } from "@/types/hs.type";
 import { hs } from "blizzard.js";
 import type { CardMetaDataType } from "blizzard.js/dist/resources/hs";
-import { promises as fs } from "fs";
+import { promises as fs } from "node:fs";
 import { cache } from "react";
 
 async function createHsClient() {
@@ -143,7 +143,7 @@ export async function getZilliaxSideboardCards() {
   // return { cosmeticCards, functionalCards };
 
   const file = await fs.readFile(
-    process.cwd() + "/public/zilliax.json",
+    `${process.cwd()}/public/zilliax.json`,
     "utf8",
   );
 

@@ -80,7 +80,7 @@ export function DeckBuilder({
     useState<Tables<"meta_sub_archetypes"> | null>(null);
 
   const currentSideboard = sideboardCards.find(
-    (sideboard) => sideboard.sideboardCard.id === activeSideboardCard?.id
+    (sideboard) => sideboard.sideboardCard.id === activeSideboardCard?.id,
   );
   const currentCardsInSideboard =
     currentSideboard && currentSideboard.cardsInSideboard;
@@ -166,7 +166,7 @@ export function DeckBuilder({
                 ref={ref}
                 className={cn(
                   "self-center size-24",
-                  (!canLoadMore || isActiveSideboardCardZilliax) && "hidden"
+                  (!canLoadMore || isActiveSideboardCardZilliax) && "hidden",
                 )}
               >
                 <Image

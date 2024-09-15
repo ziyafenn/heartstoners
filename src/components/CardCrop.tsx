@@ -64,7 +64,7 @@ export const CardCrop = forwardRef<HTMLLIElement, CardCropProps>(
                 </div>
                 <div className="flex size-8 w-4 items-center justify-center rounded-l-lg bg-black/80 pl-1 text-center text-[gold]">
                   {hovered === card.id && !isView ? (
-                    <button onClick={() => onRemove!(card)}>
+                    <button onClick={() => onRemove!(card)} type="button">
                       {count === 2 ? (
                         <MinusIcon className="size-4" />
                       ) : (

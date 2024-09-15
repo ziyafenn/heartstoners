@@ -1,5 +1,5 @@
 import { headers } from "next/headers";
-import crypto from "crypto";
+import crypto from "node:crypto";
 
 export function getUserIp() {
   const FALLBACK_IP_ADDRESS = "0.0.0.0";
@@ -14,8 +14,8 @@ export function getUserIp() {
 }
 
 const algorithm = "aes-256-cbc";
-const hexKey = process.env.CRYPTO_HEX_KEY!;
-const hexIv = process.env.CRYPTO_HEX_IV!;
+const hexKey = process.env.CRYPTO_HEX_KEY;
+const hexIv = process.env.CRYPTO_HEX_IV;
 
 export function encrypt(text: string) {
   const cipher = crypto.createCipheriv(

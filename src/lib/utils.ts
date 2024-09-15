@@ -27,11 +27,11 @@ export function getYouTubeVideoID(url: string) {
       urlObj.hostname === "youtube.com"
     ) {
       return urlObj.searchParams.get("v");
-    } else if (urlObj.hostname === "youtu.be") {
-      return urlObj.pathname.substring(1); // Skip the leading "/"
-    } else {
-      return null;
     }
+    if (urlObj.hostname === "youtu.be") {
+      return urlObj.pathname.substring(1); // Skip the leading "/"
+    }
+    return null;
   } catch (error) {
     return null;
   }

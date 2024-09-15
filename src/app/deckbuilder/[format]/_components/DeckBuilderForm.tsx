@@ -29,7 +29,13 @@ import { getMetasByClass } from "@/service/supabase.service";
 import { Enums, type Tables } from "@/types/supabase.type";
 import type { DeckInitParams } from "@/types/deck.type";
 import { useSearchParams } from "next/navigation";
-import { type ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
+import {
+  type ChangeEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { CARD_TYPES } from "@/lib/cardTypes";
 import { CARD_RARITIES } from "@/lib/cardRarities";
 import { AssetIcon } from "@/components/AssetIcon";

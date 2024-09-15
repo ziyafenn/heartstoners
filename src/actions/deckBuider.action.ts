@@ -7,7 +7,12 @@ import {
   getMetasByClass,
 } from "@/service/supabase.service";
 import type { DeckInitParams, DeckUserInputParams } from "@/types/deck.type";
-import type { Card, CardClass, CardSeachParams, CardsPage } from "@/types/hs.type";
+import type {
+  Card,
+  CardClass,
+  CardSeachParams,
+  CardsPage,
+} from "@/types/hs.type";
 import { redirect } from "next/navigation";
 import { decode } from "deckstrings";
 import { CARD_CLASSES } from "@/lib/cardClasses";

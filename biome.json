@@ -8,7 +8,7 @@
   "files": {
     "ignoreUnknown": false,
     "ignore": ["supabase.type.ts"],
-    "include": ["*/src/**"]
+    "include": ["*/src/**/*.ts", "*/src/**/*.tsx"]
   },
   "formatter": {
     "enabled": true,
@@ -22,14 +22,13 @@
     "rules": {
       "recommended": true,
       "complexity": {
-        "noForEach": "error"
+        "noForEach": "off"
       }
     }
   },
   "javascript": {
     "formatter": {
       "quoteStyle": "double",
-      "enabled": true,
       "semicolons": "always"
     }
   }
