@@ -10,7 +10,6 @@ import { CARD_RARITIES } from "@/lib/cardRarities";
 import { AssetIcon } from "@/components/AssetIcon";
 import { CardTypeIcon } from "@/components/CardTypeIcon";
 import { DeckManaChart } from "@/components/DeckManaChart";
-import { HeroIcon } from "@/components/HeroIcon";
 import { Separator } from "@/components/ui/separator";
 import { DustCost } from "@/components/DustCost";
 import { searchForCraftableDecks } from "@/actions/deckSearch.action";
@@ -109,7 +108,7 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
         <section className="flex flex-col gap-4 ">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <HeroIcon slug={deck_class} className="size-7" />
+              <AssetIcon type="hero" name={deck_class} className="size-7" />
               <h1 className="font-hs text-3xl">{name}</h1>
             </div>
             <div className="flex items-center gap-4">
@@ -131,8 +130,8 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
           </div>
         </section>
         <Separator />
-        <section className="grid grid-cols-[1fr,204px] divide-x-2 h-full">
-          <div className="pr-4 flex flex-col gap-4">
+        <section className="grid h-full grid-cols-[1fr,204px] divide-x-2">
+          <div className="flex flex-col gap-4 pr-4">
             <div className="whitespace-pre-wrap">{description}</div>
             {!!youtube_id && (
               <iframe
@@ -145,7 +144,7 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
           </div>
           <div className="flex flex-col divide-y pl-4">
             <ul className="flex flex-col divide-y">
-              <li className="flex pb-2 justify-between gap-1">
+              <li className="flex justify-between gap-1 pb-2">
                 <span className="flex gap-1">
                   <AssetIcon type="asset" name="dust" />
                   Cost
@@ -161,9 +160,9 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
                 return (
                   <li
                     key={cardRarity[0]}
-                    className="flex py-2 justify-between items-center"
+                    className="flex items-center justify-between py-2"
                   >
-                    <span className="flex gap-1 items-baseline">
+                    <span className="flex items-baseline gap-1">
                       <AssetIcon
                         type="rarity"
                         name={cardRarity[0].toLowerCase()}
@@ -179,9 +178,9 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
                 return (
                   <li
                     key={cardType[0]}
-                    className="flex py-2 justify-between items-center"
+                    className="flex items-center justify-between py-2"
                   >
-                    <span className="flex gap-1 items-center">
+                    <span className="flex items-center gap-1">
                       <CardTypeIcon name={cardType[0] as CardType["name"]} />
                       {cardType[0]}
                     </span>
@@ -189,8 +188,8 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
                   </li>
                 );
               })}
-              <li className="flex py-2 justify-between items-center">
-                <span className="flex gap-1 items-center">
+              <li className="flex items-center justify-between py-2">
+                <span className="flex items-center gap-1">
                   <Calendar className="size-5" />
                   Created
                 </span>
@@ -199,8 +198,8 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
                 </span>
               </li>
               {updated_at > created_at && (
-                <li className="flex py-2 justify-between items-center">
-                  <span className="flex gap-1 items-center">
+                <li className="flex items-center justify-between py-2">
+                  <span className="flex items-center gap-1">
                     <Calendar className="size-5" />
                     Updated
                   </span>
@@ -209,8 +208,8 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
                   </span>
                 </li>
               )}
-              <li className="flex py-2 justify-between items-center">
-                <span className="flex gap-1 items-center">
+              <li className="flex items-center justify-between py-2">
+                <span className="flex items-center gap-1">
                   <HistoryIcon className="size-5" />
                   Version
                 </span>
@@ -221,7 +220,7 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
         </section>
       </main>
       <aside className="grid grid-cols-2 gap-4">
-        <div className="flex w-[320px] h-max flex-col rounded-md border-4 border-border shadow-lg">
+        <div className="flex h-max w-[320px] flex-col rounded-md border-4 border-border shadow-lg">
           <div className="relative text-xl font-bold">
             <div className="absolute size-full bg-black/50" />
             <div className="absolute flex size-full items-center justify-between pl-3 pr-2">

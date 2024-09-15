@@ -5,7 +5,7 @@ import { Toggle } from "@/components/ui/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useRef, useState } from "react";
 import { CARD_CLASSES } from "@/lib/cardClasses";
-import { HeroIcon } from "@/components/HeroIcon";
+import { AssetIcon } from "@/components/AssetIcon";
 
 type Props = {
   onUpdateFilters: (activeFilters: FormData) => Promise<unknown>;
@@ -71,7 +71,11 @@ export function Filters({ onUpdateFilters }: Props) {
                 key={cardClass.id}
                 className="flex gap-1"
               >
-                <HeroIcon slug={cardClass.slug} className="size-6" />
+                <AssetIcon
+                  type="hero"
+                  name={cardClass.slug}
+                  className="size-6"
+                />
                 {cardClass.name}
               </ToggleGroupItem>
             );

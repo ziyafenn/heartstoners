@@ -16,7 +16,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { HeroIcon } from "@/components/HeroIcon";
 import { Filters } from "./Filters";
 import { useState } from "react";
 import { filterDecks } from "@/actions/deckSearch.action";
@@ -63,8 +62,8 @@ export function DeckSearch({ decks, availableDust, craftableDecks }: Props) {
           <TableBody>
             {currentDecks.map((deck) => (
               <TableRow key={deck.id}>
-                <TableCell className="flex gap-4 items-center">
-                  <HeroIcon slug={deck.deck_class} className="size-10" />
+                <TableCell className="flex items-center gap-4">
+                  <AssetIcon name={deck.deck_class} className="size-10" />
                   <span className="flex flex-col gap-1">
                     <div className="text-base font-bold">{deck.name}</div>
                     <div className="flex gap-1">

@@ -1,4 +1,3 @@
-import { HeroIcon } from "@/components/HeroIcon";
 import Link from "next/link";
 import { DeckPopularity } from "@/components/DeckPopularity";
 import { UserDecks } from "@/types/deck.type";
@@ -27,8 +26,9 @@ export function DeckUICard({ data: deck }: { data: Props }) {
         <div className="absolute z-20 flex size-full items-center justify-between p-4 bg-blend-overlay">
           <div className="flex gap-4 ">
             <div className="flex flex-col gap-2">
-              <HeroIcon
-                slug={deck_class}
+              <AssetIcon
+                type="hero"
+                name={deck_class}
                 className="box-content size-5 rounded-full border border-border"
               />
               <AssetIcon type="format" name={deck_format} />

@@ -2,10 +2,10 @@ import Link from "next/link";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
 import { CARD_CLASSES } from "@/lib/cardClasses";
-import { HeroIcon } from "@/components/HeroIcon";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { loadDeckFromCode } from "@/actions/deckBuider.action";
+import { AssetIcon } from "@/components/AssetIcon";
 
 export default async function DeckBuilderMode() {
   return (
@@ -36,7 +36,7 @@ export default async function DeckBuilderMode() {
                 <div className="relative rounded-sm border-8 border-double border-orange-400">
                   <div className="absolute bottom-8 flex h-12 w-full items-center gap-4 border border-orange-500 bg-black/80 px-4">
                     <div className="size-16 drop-shadow-[1px_0_0_orange]">
-                      <HeroIcon slug={cardClass.slug} />
+                      <AssetIcon type="hero" name={cardClass.slug} />
                     </div>
                     <div className="text-xl">{cardClass.name}</div>
                   </div>

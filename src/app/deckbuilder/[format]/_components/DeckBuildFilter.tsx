@@ -18,12 +18,12 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useSearchParams } from "next/navigation";
-import { HeroIcon } from "@/components/HeroIcon";
 import { CardSearchOptions } from "blizzard.js/dist/resources/hs";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
 import { CARD_CLASSES } from "@/lib/cardClasses";
+import { AssetIcon } from "@/components/AssetIcon";
 
 type Props = {
   action: (payload: FormData) => void;
@@ -152,17 +152,17 @@ export function DeckBuilderFilter({
             }
           >
             <ToggleGroupItem value={deckClass} className="size-10 p-0">
-              <HeroIcon slug={deckClass} />
+              <AssetIcon type="hero" name={deckClass} />
             </ToggleGroupItem>
             <ToggleGroupItem value="neutral" className="size-10 p-0">
-              <HeroIcon slug="neutral" />
+              <AssetIcon type="hero" name="neutral" />
             </ToggleGroupItem>
             {touristCard && (
               <ToggleGroupItem
                 value={`tourist:${touristCard.id}`}
                 className="size-10 p-0"
               >
-                <HeroIcon slug={touristClass!.slug} />
+                <AssetIcon type="hero" name={touristClass!.slug} />
               </ToggleGroupItem>
             )}
           </ToggleGroup>
