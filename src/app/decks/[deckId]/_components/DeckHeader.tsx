@@ -1,7 +1,7 @@
 import { AssetIcon } from "@/components/AssetIcon";
 import { DeckPopularity } from "@/components/DeckPopularity";
 import { toCapital } from "@/lib/utils";
-import { UserDeck } from "@/types/deck.type";
+import type { UserDeck } from "@/types/deck.type";
 import { DeckHeaderActions } from "./DeckHeaderActions";
 import { Badge } from "@/components/ui/badge";
 

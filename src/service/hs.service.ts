@@ -1,8 +1,8 @@
 "use server";
 
-import { Card, CardSeachParams, CardsPage, Deck } from "@/types/hs.type";
+import type { Card, CardSeachParams, CardsPage, Deck } from "@/types/hs.type";
 import { hs } from "blizzard.js";
-import { CardMetaDataType } from "blizzard.js/dist/resources/hs";
+import type { CardMetaDataType } from "blizzard.js/dist/resources/hs";
 import { promises as fs } from "fs";
 import { cache } from "react";
 

@@ -1,6 +1,6 @@
-import { ResourceOptions } from "blizzard.js/dist/resources";
-import { Enums } from "./supabase.type";
-import { CardSearchOptions } from "blizzard.js/dist/resources/hs";
+import type { ResourceOptions } from "blizzard.js/dist/resources";
+import type { Enums } from "./supabase.type";
+import type { CardSearchOptions } from "blizzard.js/dist/resources/hs";
 
 export type Card = {
   id: number;

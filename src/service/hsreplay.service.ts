@@ -1,4 +1,4 @@
-import { UserCollection } from "@/types/hsreplay.type";
+import type { UserCollection } from "@/types/hsreplay.type";
 import wretch from "wretch";
 import QueryStringAddon from "wretch/addons/queryString";
 import { createClient } from "./supabase.auth.server";

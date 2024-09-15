@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { Tooltip, TooltipTrigger, TooltipContent } from "./ui/tooltip";
-import { Rarity, SetGroups, CardClass, Card } from "@/types/hs.type";
+import type { Rarity, SetGroups, CardClass, Card } from "@/types/hs.type";
 import { cn } from "@/lib/utils";
-import { HTMLAttributes } from "react";
+import type { HTMLAttributes } from "react";
 
 type NameTypeMap = {
   rarity: Rarity["slug"];

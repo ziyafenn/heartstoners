@@ -1,4 +1,4 @@
-import { Rarity } from "@/types/hs.type";
+import type { Rarity } from "@/types/hs.type";
 
 export const CARD_RARITIES: Rarity[] = [
   {

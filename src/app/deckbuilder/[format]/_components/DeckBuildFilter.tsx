@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
+import type {
   Card,
   CardClass,
   CardType,
@@ -18,7 +18,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useSearchParams } from "next/navigation";
-import { CardSearchOptions } from "blizzard.js/dist/resources/hs";
+import type { CardSearchOptions } from "blizzard.js/dist/resources/hs";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";

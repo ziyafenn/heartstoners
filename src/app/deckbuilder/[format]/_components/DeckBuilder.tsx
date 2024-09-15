@@ -4,8 +4,7 @@ import { DeckBuilderFilter } from "./DeckBuildFilter";
 
 import { Button } from "@/components/ui/button";
 import DeckBuilderForm from "./DeckBuilderForm";
-import {
-  Card,
+import type {
   CardClass,
   CardType,
   CardsPage,
@@ -26,7 +25,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { getSubArchetype } from "@/actions/deckBuider.action";
-import { Tables } from "@/types/supabase.type";
+import type { Tables } from "@/types/supabase.type";
 
 function Loading() {
   return <div className="z-50 size-full bg-red-500">Loading</div>;
@@ -81,7 +80,7 @@ export function DeckBuilder({
     useState<Tables<"meta_sub_archetypes"> | null>(null);
 
   const currentSideboard = sideboardCards.find(
-    (sideboard) => sideboard.sideboardCard.id === activeSideboardCard?.id,
+    (sideboard) => sideboard.sideboardCard.id === activeSideboardCard?.id
   );
   const currentCardsInSideboard =
     currentSideboard && currentSideboard.cardsInSideboard;
@@ -167,7 +166,7 @@ export function DeckBuilder({
                 ref={ref}
                 className={cn(
                   "self-center size-24",
-                  (!canLoadMore || isActiveSideboardCardZilliax) && "hidden",
+                  (!canLoadMore || isActiveSideboardCardZilliax) && "hidden"
                 )}
               >
                 <Image

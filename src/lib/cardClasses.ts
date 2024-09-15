@@ -1,4 +1,4 @@
-import { CardClass } from "@/types/hs.type";
+import type { CardClass } from "@/types/hs.type";
 
 export const CARD_CLASSES: CardClass[] = [
   {

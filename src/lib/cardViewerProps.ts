@@ -1,4 +1,4 @@
-import { Card, Rune, RuneCost, SideboardCards } from "@/types/hs.type";
+import type { Card, Rune, RuneCost, SideboardCards } from "@/types/hs.type";
 
 type Props = {
   card: Card;

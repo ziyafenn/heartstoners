@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createDeck } from "@/actions/deckBuider.action";
 import { Button } from "@/components/ui/button";
-import {
+import type {
   Card,
   CardClass,
   CardSeachParams,
@@ -26,10 +26,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { getMetasByClass } from "@/service/supabase.service";
-import { Enums, Tables } from "@/types/supabase.type";
-import { DeckInitParams } from "@/types/deck.type";
+import { Enums, type Tables } from "@/types/supabase.type";
+import type { DeckInitParams } from "@/types/deck.type";
 import { useSearchParams } from "next/navigation";
-import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
+import { type ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { CARD_TYPES } from "@/lib/cardTypes";
 import { CARD_RARITIES } from "@/lib/cardRarities";
 import { AssetIcon } from "@/components/AssetIcon";
@@ -78,9 +78,9 @@ export default function DeckBuilderForm({
   const deckClass = searchParams.get("deckClass") as CardClass["slug"];
   const [isFormMounted, setIsFormMounted] = useState(false);
 
-  let aggroCount = 0;
-  let midrangeCount = 0;
-  let controlCount = 0;
+  const aggroCount = 0;
+  const midrangeCount = 0;
+  const controlCount = 0;
   let dust_cost_sum = 0;
   const dust_cost_per_card: number[] = [];
   const card_ids: number[] = [];

@@ -1,4 +1,4 @@
-import { Enums } from "./supabase.type";
+import type { Enums } from "./supabase.type";
 
 export type UserCollection = {
   dust: number;

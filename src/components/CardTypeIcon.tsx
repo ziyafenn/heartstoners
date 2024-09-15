@@ -1,4 +1,4 @@
-import { CardType } from "@/types/hs.type";
+import type { CardType } from "@/types/hs.type";
 import {
   MapIcon,
   Sparkles,

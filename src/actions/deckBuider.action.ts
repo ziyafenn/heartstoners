@@ -6,12 +6,12 @@ import {
   getCurrentGameVersion,
   getMetasByClass,
 } from "@/service/supabase.service";
-import { DeckInitParams, DeckUserInputParams } from "@/types/deck.type";
-import { Card, CardClass, CardSeachParams, CardsPage } from "@/types/hs.type";
+import type { DeckInitParams, DeckUserInputParams } from "@/types/deck.type";
+import type { Card, CardClass, CardSeachParams, CardsPage } from "@/types/hs.type";
 import { redirect } from "next/navigation";
 import { decode } from "deckstrings";
 import { CARD_CLASSES } from "@/lib/cardClasses";
-import { Enums, Tables } from "@/types/supabase.type";
+import type { Enums, Tables } from "@/types/supabase.type";
 // import { checkProfanity } from "@/service/profanity.service";
 import { getYouTubeVideoID } from "@/lib/utils";
 

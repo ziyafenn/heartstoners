@@ -1,4 +1,4 @@
-import { DBFunction } from "@/types/supabase.func.type";
+import type { DBFunction } from "@/types/supabase.func.type";
 
 export function DustCost({
   dustCostSum,

@@ -1,4 +1,4 @@
-import { cardViewerProps } from "@/lib/cardViewerProps";
+import type { cardViewerProps } from "@/lib/cardViewerProps";
 
 import type { Card } from "@/types/hs.type";
 import { HsCard } from "@/components/HsCard";

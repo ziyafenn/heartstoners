@@ -4,7 +4,7 @@ import {
   getHsMetadata,
   getDeckByCode,
 } from "@/service/hs.service";
-import {
+import type {
   CardType,
   Deck,
   Keyword,
@@ -12,7 +12,7 @@ import {
   Rarity,
   SetGroups,
 } from "@/types/hs.type";
-import { CardClass } from "blizzard.js/dist/resources/hs";
+import type { CardClass } from "blizzard.js/dist/resources/hs";
 
 export default async function ClassDeckBuilder({
   params,

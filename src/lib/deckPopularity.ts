@@ -1,4 +1,4 @@
-import { Tables } from "@/types/supabase.type";
+import type { Tables } from "@/types/supabase.type";
 
 // Define the average metrics
 // TODO: get average metrics from database

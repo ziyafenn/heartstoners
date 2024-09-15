@@ -1,5 +1,5 @@
 import { getDeckPopularity } from "@/lib/deckPopularity";
-import { UserDeck } from "@/types/deck.type";
+import type { UserDeck } from "@/types/deck.type";
 
 export function DeckPopularity({ deck }: { deck: UserDeck }) {
   const score = getDeckPopularity({

@@ -1,12 +1,12 @@
 import { AssetIcon } from "@/components/AssetIcon";
-import { Card, CardType, Rarity } from "@/types/hs.type";
+import type { Card, CardType, Rarity } from "@/types/hs.type";
 import { Calendar, HistoryIcon } from "lucide-react";
 import { CARD_TYPES } from "@/lib/cardTypes";
 import { CARD_RARITIES } from "@/lib/cardRarities";
 import { CardTypeIcon } from "@/components/CardTypeIcon";
 import { DustCost } from "@/components/DustCost";
 import { searchForCraftableDecks } from "@/actions/deckSearch.action";
-import { UserDeck } from "@/types/deck.type";
+import type { UserDeck } from "@/types/deck.type";
 
 type Props = {
   cards: Card[];

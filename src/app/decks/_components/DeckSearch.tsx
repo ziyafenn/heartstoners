@@ -19,10 +19,10 @@ import {
 import { Filters } from "./Filters";
 import { useState } from "react";
 import { filterDecks } from "@/actions/deckSearch.action";
-import { DBFunction } from "@/types/supabase.func.type";
+import type { DBFunction } from "@/types/supabase.func.type";
 import { AssetIcon } from "@/components/AssetIcon";
 import { DeckPopularity } from "@/components/DeckPopularity";
-import { UserDeck } from "@/types/deck.type";
+import type { UserDeck } from "@/types/deck.type";
 import { DustCost } from "@/components/DustCost";
 
 type Props = {

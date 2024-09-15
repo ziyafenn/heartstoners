@@ -1,7 +1,7 @@
-import { FormEvent, useCallback, useEffect, useState } from "react";
+import { type FormEvent, useCallback, useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { loadPageWithFilters } from "@/actions/deckBuider.action";
-import {
+import type {
   Card,
   CardSeachParams,
   CardsPage,

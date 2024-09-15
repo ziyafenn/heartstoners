@@ -1,16 +1,16 @@
 "use server";
 
-import { CardClass } from "@/types/hs.type";
-import { UserCollection } from "@/types/hsreplay.type";
-import { Tables } from "@/types/supabase.type";
+import type { CardClass } from "@/types/hs.type";
+import type { UserCollection } from "@/types/hsreplay.type";
+import type { Tables } from "@/types/supabase.type";
 import { createClient } from "./supabase.auth.server";
-import { DBFunction } from "@/types/supabase.func.type";
-import {
+import type { DBFunction } from "@/types/supabase.func.type";
+import type {
   DeckFilters,
   DeckInitParams,
   DeckUserInputParams,
 } from "@/types/deck.type";
-import { QueryResult, QueryData, QueryError } from "@supabase/supabase-js";
+import { QueryResult, type QueryData, QueryError } from "@supabase/supabase-js";
 
 const deckQuery = `*, 
     profiles (*),

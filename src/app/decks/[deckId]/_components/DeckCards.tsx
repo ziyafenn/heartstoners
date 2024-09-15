@@ -1,6 +1,6 @@
 import { CardCrop } from "@/components/CardCrop";
 import { DeckManaChart } from "@/components/DeckManaChart";
-import { Card, Deck, SideboardCards } from "@/types/hs.type";
+import type { Card, Deck, SideboardCards } from "@/types/hs.type";
 import Image from "next/image";
 
 type Props = {

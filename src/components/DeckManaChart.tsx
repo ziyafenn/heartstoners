@@ -3,7 +3,7 @@
 import { ResponsiveBar } from "@nivo/bar";
 import resolveConfig from "tailwindcss/resolveConfig";
 import tailwindConfig from "tailwind.config";
-import { Card } from "@/types/hs.type";
+import type { Card } from "@/types/hs.type";
 
 const fullConfig = resolveConfig(tailwindConfig);
 const {

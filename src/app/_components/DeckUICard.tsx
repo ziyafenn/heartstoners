@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { DeckPopularity } from "@/components/DeckPopularity";
-import { UserDeck } from "@/types/deck.type";
+import type { UserDeck } from "@/types/deck.type";
 import Image from "next/image";
 import { AssetIcon } from "@/components/AssetIcon";
 import { Badge } from "@/components/ui/badge";

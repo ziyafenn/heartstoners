@@ -7,7 +7,7 @@ import {
   getDeckLikeByIp,
   getSingleDeck,
 } from "@/service/supabase.service";
-import { Tables } from "@/types/supabase.type";
+import type { Tables } from "@/types/supabase.type";
 import { cookies } from "next/headers";
 
 export async function likeDeck({
