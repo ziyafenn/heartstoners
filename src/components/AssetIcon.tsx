@@ -18,7 +18,7 @@ type Props<T extends keyof NameTypeMap> = {
   className?: HTMLAttributes<HTMLDivElement>["className"];
 };
 
-function AssetIconTrigger<T extends keyof NameTypeMap>({
+export function AssetIcon<T extends keyof NameTypeMap>({
   name,
   type,
   className,
@@ -69,13 +69,13 @@ function AssetIconTrigger<T extends keyof NameTypeMap>({
     );
 }
 
-export function AssetIcon<T extends keyof NameTypeMap>(props: Props<T>) {
-  return (
-    <Tooltip>
-      <TooltipTrigger>
-        <AssetIconTrigger {...props} />
-      </TooltipTrigger>
-      <TooltipContent>{props.name}</TooltipContent>
-    </Tooltip>
-  );
-}
+// export function AssetIcon<T extends keyof NameTypeMap>(props: Props<T>) {
+//   return (
+//     <Tooltip>
+//       <TooltipTrigger>
+//         <AssetIconTrigger {...props} />
+//       </TooltipTrigger>
+//       <TooltipContent>{props.name}</TooltipContent>
+//     </Tooltip>
+//   );
+// }

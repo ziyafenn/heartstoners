@@ -92,14 +92,10 @@ export async function getDeckByCardList({
 export async function getDeckByCode(deckCode: string) {
   const hsClient = await createHsClient();
 
-  const getDeck = cache(async (code: string) => {
-    return await hsClient.deck({
-      locale: "en_US",
-      code,
-    });
+  const res = await hsClient.deck({
+    locale: "en_US",
+    code: deckCode,
   });
-
-  const res = await getDeck(deckCode);
 
   const { data }: { data: Deck } = res;
 

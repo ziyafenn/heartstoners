@@ -1,6 +1,6 @@
 "use client";
 
-import { DeckBuilderFilter } from "./DeckBuildFilter";
+import { DeckBuilderFilter } from "./DeckBuilderFilter";
 
 import { Button } from "@/components/ui/button";
 import DeckBuilderForm from "./DeckBuilderForm";

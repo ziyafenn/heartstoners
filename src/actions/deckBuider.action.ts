@@ -102,11 +102,11 @@ export async function createDeck(
 }
 
 export async function loadDeckFromCode(formData: FormData) {
-  const deckCode = formData.get("deckCode")!.toString();
+  const deckCode = formData.get("deckCode");
 
-  // const deck = await getDeckByCode(deckCode);
-  const deck = decode(deckCode);
+  if (!deckCode) return;
 
+  const deck = decode(deckCode.toString());
   const slug = CARD_CLASSES.find((c) => c.cardId === deck.heroes[0])?.slug;
   const format: Enums<"deck_format"> = deck.format === 1 ? "wild" : "standard";
 
