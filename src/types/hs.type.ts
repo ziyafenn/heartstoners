@@ -128,9 +128,9 @@ export type Deck = {
   heroPower: Card;
   cards: Card[];
   class: {
-    slug: string;
+    slug: CardClass["slug"];
     id: number;
-    name: string;
+    name: CardClass["name"];
   };
   cardCount: number;
   invalidCardIds: string[];

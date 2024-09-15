@@ -1,4 +1,4 @@
-import { getDecks } from "@/service/supabase.service";
+import { getSingleDeck } from "@/service/supabase.service";
 import { Tables } from "./supabase.type";
 
 export type DeckUserInputParams = Pick<
@@ -23,4 +23,6 @@ export type DeckFilters = Partial<
   }
 >;
 
-export type UserDecks = Awaited<ReturnType<typeof getDecks>>;
+export type UserDeck = NonNullable<
+  Awaited<ReturnType<typeof getSingleDeck>>["data"]
+>;

@@ -22,11 +22,11 @@ import { filterDecks } from "@/actions/deckSearch.action";
 import { DBFunction } from "@/types/supabase.func.type";
 import { AssetIcon } from "@/components/AssetIcon";
 import { DeckPopularity } from "@/components/DeckPopularity";
-import { UserDecks } from "@/types/deck.type";
+import { UserDeck } from "@/types/deck.type";
 import { DustCost } from "@/components/DustCost";
 
 type Props = {
-  decks: UserDecks;
+  decks: UserDeck[];
   craftableDecks: DBFunction<"get_craftable_decks", "Returns">;
   availableDust: number;
 };

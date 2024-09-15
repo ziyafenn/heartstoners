@@ -1,7 +1,7 @@
 import { getDeckPopularity } from "@/lib/deckPopularity";
-import { UserDecks } from "@/types/deck.type";
+import { UserDeck } from "@/types/deck.type";
 
-export function DeckPopularity({ deck }: { deck: UserDecks[number] }) {
+export function DeckPopularity({ deck }: { deck: UserDeck }) {
   const score = getDeckPopularity({
     copies: deck.deck_interactions?.copies,
     views: deck.deck_interactions?.views,
