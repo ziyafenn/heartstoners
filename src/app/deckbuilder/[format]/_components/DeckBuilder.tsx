@@ -164,7 +164,7 @@ export function DeckBuilder({
               <div
                 ref={ref}
                 className={cn(
-                  "self-center size-24",
+                  "size-24 self-center",
                   (!canLoadMore || isActiveSideboardCardZilliax) && "hidden",
                 )}
               >
