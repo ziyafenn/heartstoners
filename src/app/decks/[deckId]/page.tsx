@@ -1,6 +1,5 @@
 import { getDeckByCardList } from "@/service/hs.service";
 import { getUserDeck } from "@/actions/deck.action";
-import { Separator } from "@/components/ui/separator";
 import { DeckCards } from "./_components/DeckCards";
 import { DeckHeader } from "./_components/DeckHeader";
 import { DeckStats } from "./_components/DeckStats";
@@ -16,6 +15,7 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
     class: deckClass,
     cards,
     sideboardCards,
+    deckCode,
   } = await getDeckByCardList({
     cardIds: card_ids,
     sideboardCards: sideboard_cards ?? undefined,
@@ -24,8 +24,7 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
   return (
     <div className="grid grid-cols-[1fr,auto] justify-between gap-8">
       <main className="flex flex-col gap-8">
-        <DeckHeader deck={deck} didUserLike={didUserLike} />
-        <Separator />
+        <DeckHeader deck={deck} didUserLike={didUserLike} deckCode={deckCode} />
         <section className="grid h-full grid-cols-[1fr,204px] divide-x-2">
           <DeckDescription description={description} youtube_id={youtube_id} />
           <DeckStats deck={deck} availableDust={availableDust} cards={cards} />

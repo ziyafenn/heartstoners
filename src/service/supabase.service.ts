@@ -14,8 +14,7 @@ import { QueryResult, QueryData, QueryError } from "@supabase/supabase-js";
 
 const deckQuery = `*, 
     profiles (*),
-    deck_likes (*),
-    deck_interactions (views, copies),
+    deck_interactions (views, copies, likes),
     meta_sub_archetypes (name)
     `;
 
@@ -192,6 +191,7 @@ export async function deckLiked({
   const { data } = await supabase
     .from("deck_likes")
     .insert({ deck_id, author_id, ip });
+
   return data;
 }
 
@@ -218,7 +218,7 @@ export async function deckInteraction({
   type,
 }: {
   deckId: number;
-  type: "increment_views" | "increment_copies"; // | "increment_likes";
+  type: "increment_views" | "increment_copies";
 }) {
   const supabase = createClient();
   await supabase.rpc(type, {

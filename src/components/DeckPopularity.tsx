@@ -5,7 +5,7 @@ export function DeckPopularity({ deck }: { deck: UserDeck }) {
   const score = getDeckPopularity({
     copies: deck.deck_interactions?.copies,
     views: deck.deck_interactions?.views,
-    likes: deck.deck_likes.length,
+    likes: deck.deck_interactions?.likes,
   });
   const ratings = Array.from({ length: score }, (_, index) => index + 1);
 

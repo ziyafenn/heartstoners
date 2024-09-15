@@ -40,6 +40,7 @@ export type Database = {
           copies: number
           deck_id: number
           game_version: string
+          likes: number
           updated_at: string
           views: number
         }
@@ -48,6 +49,7 @@ export type Database = {
           copies?: number
           deck_id?: number
           game_version: string
+          likes?: number
           updated_at?: string
           views?: number
         }
@@ -56,6 +58,7 @@ export type Database = {
           copies?: number
           deck_id?: number
           game_version?: string
+          likes?: number
           updated_at?: string
           views?: number
         }

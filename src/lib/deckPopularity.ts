@@ -15,9 +15,10 @@ const weights = {
   views: 1,
 };
 
-type DeckInteraction = Pick<Tables<"deck_interactions">, "copies" | "views"> & {
-  likes: number;
-};
+type DeckInteraction = Pick<
+  Tables<"deck_interactions">,
+  "copies" | "views" | "likes"
+>;
 
 function calculatePopularityScore(
   deck: DeckInteraction,
@@ -45,8 +46,12 @@ function getPopularityRating(score: number) {
   return 1;
 }
 
-export function getDeckPopularity(deck: DeckInteraction) {
-  const score = calculatePopularityScore(deck);
+export function getDeckPopularity({
+  copies = 0,
+  likes = 0,
+  views = 0,
+}: Partial<DeckInteraction>) {
+  const score = calculatePopularityScore({ copies, likes, views });
   const rating = getPopularityRating(score);
 
   return rating;

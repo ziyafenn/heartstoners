@@ -22,6 +22,10 @@ export function DustCost({
     return <span className="font-bold text-green-500">Craftable</span>;
   }
   if (availableDust)
-    return <span className="text-red-500">{dustCostSum - availableDust}</span>;
+    return (
+      <span className="font-bold text-red-500">
+        {dustCostSum - availableDust}
+      </span>
+    );
   return <span>{dustCostSum}</span>;
 }

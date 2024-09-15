@@ -63,7 +63,11 @@ export function DeckSearch({ decks, availableDust, craftableDecks }: Props) {
             {currentDecks.map((deck) => (
               <TableRow key={deck.id}>
                 <TableCell className="flex items-center gap-4">
-                  <AssetIcon name={deck.deck_class} className="size-10" />
+                  <AssetIcon
+                    type="hero"
+                    name={deck.deck_class}
+                    className="size-10"
+                  />
                   <span className="flex flex-col gap-1">
                     <div className="text-base font-bold">{deck.name}</div>
                     <div className="flex gap-1">

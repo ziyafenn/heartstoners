@@ -33,13 +33,13 @@ export default async function Home() {
       const popularityA = getDeckPopularity({
         copies: a.deck_interactions?.copies,
         views: a.deck_interactions?.views,
-        likes: a.deck_likes.length,
+        likes: a.deck_interactions?.likes,
       });
 
       const popularityB = getDeckPopularity({
         copies: b.deck_interactions?.copies,
         views: b.deck_interactions?.views,
-        likes: b.deck_likes.length,
+        likes: b.deck_interactions?.likes,
       });
 
       return popularityB - popularityA;
