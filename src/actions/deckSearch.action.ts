@@ -43,7 +43,6 @@ export async function filterDecks(
   }
 
   for (const [key, value] of formData.entries()) {
-    if (key === "craftable_decks" || key === "dustCost") continue;
     filters = {
       ...filters,
       [key]: value,

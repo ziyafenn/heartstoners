@@ -112,8 +112,8 @@ export async function getRequestedDecks(
   const supabase = createClient();
   let query = supabase.from("user_decks").select(deckQuery);
 
-  if (filters.craftable_decks === "true") {
-    const deckIds = craftableDecks!.map((deck) => deck.user_deck_id);
+  if (filters.craftable_decks === "true" && craftableDecks) {
+    const deckIds = craftableDecks.map((deck) => deck.user_deck_id);
     query = query.in("id", deckIds);
   }
   if (filters.archetype) {

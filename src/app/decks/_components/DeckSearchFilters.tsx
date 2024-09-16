@@ -1,9 +1,12 @@
 "use client";
-
-import { Input } from "@/components/ui/input";
 import { Toggle } from "@/components/ui/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { type HTMLAttributes, useRef, useState } from "react";
+import {
+  type HTMLAttributes,
+  type KeyboardEvent,
+  useRef,
+  useState,
+} from "react";
 import { CARD_CLASSES } from "@/lib/cardClasses";
 import { AssetIcon } from "@/components/AssetIcon";
 import type { DeckFilters } from "@/types/deck.type";
@@ -18,10 +21,12 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
 
 type Props = {
   onUpdateFilters: (payload: FormData) => void;
   subArchetypes: Tables<"meta_sub_archetypes">[];
+  availableDust: number;
 };
 
 function Filter({
@@ -43,7 +48,11 @@ function Filter({
   );
 }
 
-export function Filters({ onUpdateFilters, subArchetypes }: Props) {
+export function Filters({
+  onUpdateFilters,
+  subArchetypes,
+  availableDust,
+}: Props) {
   const [values, setValues] = useState<DeckFilters>({
     craftable_decks: "false",
     deck_format: "standard",
@@ -51,7 +60,7 @@ export function Filters({ onUpdateFilters, subArchetypes }: Props) {
     sub_archetype: "",
   });
   const formRef = useRef<HTMLFormElement>(null);
-
+  const [dustCostValue, setDustCostValue] = useState(String(availableDust));
   const subs = subArchetypes.map((subArch) => ({
     id: subArch.id,
     label: subArch.name,
@@ -84,6 +93,12 @@ export function Filters({ onUpdateFilters, subArchetypes }: Props) {
     else formData.set(key, String(value));
 
     onUpdateFilters(formData);
+  }
+
+  function onDustCostChange(e: KeyboardEvent<HTMLInputElement>) {
+    const { value } = e.currentTarget;
+    if (value === dustCostValue) e.preventDefault();
+    else setDustCostValue(value);
   }
 
   return (
@@ -139,15 +154,23 @@ export function Filters({ onUpdateFilters, subArchetypes }: Props) {
             Show Craftable
           </Toggle>
           {values.craftable_decks === "true" && (
-            <span className="flex items-center justify-between p-4">
-              <Label>Max dust cost</Label>
-              <Input
-                type="number"
-                className="w-24"
-                name="dustCost"
-                defaultValue={0}
-              />
-            </span>
+            <div className="flex flex-col gap-4 p-4">
+              <div className="flex items-center justify-between">
+                <Label>Max dust cost</Label>
+                <Input
+                  type="number"
+                  defaultValue={availableDust}
+                  className="w-24"
+                  name="dustCost"
+                  onKeyDown={(e) => e.key === "Enter" && onDustCostChange(e)}
+                />
+              </div>
+              <span className="flex items-baseline text-sm">
+                Available dust:
+                <AssetIcon type="asset" name="dust" className="mr-1 ml-2" />
+                <span className="font-bold">{availableDust}</span>
+              </span>
+            </div>
           )}
         </Filter>
         <Filter name="Archetypes" className="flex flex-col">
@@ -233,6 +256,7 @@ export function Filters({ onUpdateFilters, subArchetypes }: Props) {
           hidden
           name="sub_archetype"
         />
+        <input type="submit" hidden />
       </form>
     </div>
   );

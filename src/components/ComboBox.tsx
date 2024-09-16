@@ -7,7 +7,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { useState } from "react";
+import { type KeyboardEvent, useState } from "react";
 
 type Data = { id: number; label: string };
 type Props = {
@@ -32,17 +32,24 @@ export function Combobox({ data, value, selectItem }: Props) {
     setOpen(!!value);
   }
 
+  function closePopover(e: KeyboardEvent<HTMLInputElement>) {
+    setOpen(false);
+    setInputValue("");
+    e.currentTarget.blur();
+  }
+
   return (
     <Command>
       <CommandInput
         placeholder="Search sub-archetype..."
         onValueChange={onInputValueChange}
         value={inputValue}
+        onKeyDown={(e) => e.key === "Escape" && closePopover(e)}
       />
       <div>
         <CommandList
           hidden={!open}
-          className="absolute bg-popover text-popover-foreground"
+          className="absolute w-[220px] bg-popover text-popover-foreground"
         >
           <CommandEmpty>No sub-archetype found</CommandEmpty>
           {data.map((subArchetype) => (
