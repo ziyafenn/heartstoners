@@ -18,6 +18,14 @@ const deckQuery = `*,
     meta_sub_archetypes (name)
     `;
 
+export async function getUser() {
+  const supabase = createClient();
+
+  const { data, error } = await supabase.auth.getUser();
+
+  return data;
+}
+
 export async function getUserProfile(id: string) {
   const supabase = createClient();
   const { data } = await supabase

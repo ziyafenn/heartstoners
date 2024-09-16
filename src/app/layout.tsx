@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
 import { Patua_One as FonsHs, Inter as FontSans } from "next/font/google";
 import "./globals.css";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { createClient } from "@/service/supabase.auth.server";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
+import { Header } from "./_components/Header";
 
 const hs = FonsHs({
   subsets: ["latin"],
@@ -30,14 +27,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  // const userProfile = await getUserProfile(user.id)
-
   return (
     <html lang="en">
       <body
@@ -45,36 +34,11 @@ export default async function RootLayout({
           inter.variable,
           hs.variable,
           // biome-ignore lint/nursery/useSortedClasses: <explanation>
-          "dark min-h-svh font-sans bg-gradient-to-r from-[hsl(246,55%,10%)] via-[hsl(243,40%,19%)] to-[hsl(240,27%, 19%)]",
+          "dark min-h-svh flex flex-col font-sans bg-gradient-to-r from-[hsl(246,55%,10%)] via-[hsl(243,40%,19%)] to-[hsl(240,27%, 19%)]",
         )}
       >
-        <header>
-          <nav className="flex select-none items-center justify-between px-8 py-4">
-            <Link href="/">
-              <Image
-                src="/img/logo.png"
-                width={676}
-                height={362}
-                alt="heartstoners logo"
-                className="h-20 w-auto"
-              />
-              no user
-            </Link>
-
-            <ul className="flex items-center gap-8">
-              <li>
-                <Link href="/decks">Decks</Link>
-              </li>
-              <li>Profile</li>
-              <li>
-                <Button asChild>
-                  <Link href="/deckbuilder">Create a deck</Link>
-                </Button>
-              </li>
-            </ul>
-          </nav>
-        </header>
-        <div className="flex flex-col p-8">
+        <Header />
+        <div className="flex flex-1 flex-col p-8">
           <TooltipProvider delayDuration={100}>{children}</TooltipProvider>
         </div>
         <footer className="border-t p-4">

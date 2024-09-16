@@ -1,24 +1,23 @@
-import { login, signup } from "@/actions/login.action";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { TabContent } from "./_components/TabContent";
 
-export default function LoginPage() {
+export default function Auth() {
   return (
-    <form>
-      <label htmlFor="email">Email:</label>
-      <input id="email" name="email" type="email" required />
-      <label htmlFor="password">Password:</label>
-      <input
-        id="password"
-        name="password"
-        type="password"
-        required
-        className="text-black"
-      />
-      {/* <button formAction={login} type="button">
-        Log in
-      </button> */}
-      <button formAction={signup} type="submit">
-        Sign up
-      </button>
-    </form>
+    <div className="flex items-center justify-center">
+      <Card className="w-full max-w-sm shadow-2xl">
+        <CardHeader>
+          <CardTitle>Sign In</CardTitle>
+          <CardDescription>
+            Choose your preferred sign-in method
+          </CardDescription>
+        </CardHeader>
+        <TabContent />
+      </Card>
+    </div>
   );
 }
