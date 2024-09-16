@@ -39,7 +39,7 @@ export function DeckSearch({
   }
 
   return (
-    <div className="grid grid-cols-[256px_1fr] gap-12">
+    <div className="grid grid-cols-[256px,1fr] gap-12">
       <Filters onUpdateFilters={action} subArchetypes={subArchetypes} />
       <div>
         <Table>

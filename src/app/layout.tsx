@@ -7,16 +7,16 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { createClient } from "@/service/supabase.auth.server";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { getUserProfile } from "@/service/supabase.service";
 
 const hs = FonsHs({
   subsets: ["latin"],
   weight: ["400"],
+  display: "swap",
   variable: "--font-hs",
 });
 const inter = FontSans({
   subsets: ["latin"],
-  weight: ["400", "700"],
+  display: "swap",
   variable: "--font-sans",
 });
 
@@ -44,6 +44,7 @@ export default async function RootLayout({
         className={cn(
           inter.variable,
           hs.variable,
+          // biome-ignore lint/nursery/useSortedClasses: <explanation>
           "dark min-h-svh font-sans bg-gradient-to-r from-[hsl(246,55%,10%)] via-[hsl(243,40%,19%)] to-[hsl(240,27%, 19%)]",
         )}
       >

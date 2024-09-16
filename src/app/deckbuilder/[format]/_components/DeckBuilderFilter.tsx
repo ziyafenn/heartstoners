@@ -151,16 +151,17 @@ export function DeckBuilderFilter({
               value.length && onValueChange(value, "class")
             }
           >
-            <ToggleGroupItem value={deckClass} className="size-10 p-0">
+            <ToggleGroupItem value={deckClass} size="asset" variant="asset">
               <AssetIcon type="hero" name={deckClass} />
             </ToggleGroupItem>
-            <ToggleGroupItem value="neutral" className="size-10 p-0">
+            <ToggleGroupItem value="neutral" size="asset" variant="asset">
               <AssetIcon type="hero" name="neutral" />
             </ToggleGroupItem>
             {touristClass && (
               <ToggleGroupItem
                 value={`tourist:${touristCard.id}`}
-                className="size-10 p-0"
+                size="asset"
+                variant="asset"
               >
                 <AssetIcon type="hero" name={touristClass.slug} />
               </ToggleGroupItem>
@@ -174,7 +175,9 @@ export function DeckBuilderFilter({
               <ToggleGroupItem
                 value={index === 10 ? "10^" : mana.toString()}
                 key={mana}
-                className="size-10 bg-[url(/assets/mana.png)] bg-contain bg-no-repeat p-0 font-outline-2 text-[16px]"
+                size="asset"
+                variant="asset"
+                className="bg-[url(/assets/mana.png)] bg-contain bg-no-repeat font-outline-2 text-[16px]"
               >
                 {mana}
               </ToggleGroupItem>

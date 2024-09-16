@@ -94,7 +94,7 @@ export default async function Home() {
             {topAuthors?.map((author, index) => (
               <SidebarCardItem
                 name={author.profiles!.username}
-                key={author.profiles?.username}
+                key={author.profiles!.username}
               />
             ))}
           </ul>

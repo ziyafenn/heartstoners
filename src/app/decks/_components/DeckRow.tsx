@@ -37,7 +37,9 @@ export function DeckRow({ deck, availableDust, craftableDeck }: Props) {
       <TableCell>
         <ul className="flex gap-1">
           <Badge>{deck.archetype}</Badge>
-          <Badge>{deck.meta_sub_archetypes?.name}</Badge>
+          {deck.meta_sub_archetypes && (
+            <Badge>{deck.meta_sub_archetypes.name}</Badge>
+          )}
         </ul>
       </TableCell>
       <TableCell className="text-right">

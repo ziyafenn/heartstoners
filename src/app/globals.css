@@ -76,7 +76,7 @@
 }
 
 @layer components {
-  .toggle {
+  .assetToggle {
     --shadow-color: 122deg 91% 20%;
     &:hover,
     &[data-state="on"] {
