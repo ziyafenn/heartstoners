@@ -28,7 +28,7 @@ export async function Header() {
             {userProfile ? (
               <ProfileMenu username={userProfile.username} />
             ) : (
-              <Link href="/login">Sign in</Link>
+              <Link href="/auth">Sign in</Link>
             )}
           </li>
           <li>

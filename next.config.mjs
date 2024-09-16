@@ -9,6 +9,11 @@ const nextConfig = {
         destination: "/deckbuilder",
         permanent: true,
       },
+      {
+        source: "/auth/login",
+        destination: "/auth",
+        permanent: true,
+      },
     ];
   },
   images: {

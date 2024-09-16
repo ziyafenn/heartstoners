@@ -5,7 +5,12 @@ import { redirect } from "next/navigation";
 
 import { createClient } from "@/service/supabase.auth.server";
 
-export async function login(formData: FormData) {
+type Result = { error?: string };
+
+export async function login(
+  state: { error?: string },
+  formData: FormData,
+): Promise<Result> {
   const supabase = createClient();
 
   // type-casting here for convenience
@@ -19,16 +24,19 @@ export async function login(formData: FormData) {
     await supabase.auth.signInWithPassword(data);
 
   if (error) {
-    redirect("/error");
+    return {
+      error: "E-mail or password is incorrect",
+    };
   }
-
-  console.log(loginData, "login data");
 
   revalidatePath("/", "layout");
   redirect("/");
 }
 
-export async function signup(formData: FormData) {
+export async function signup(
+  state: Result,
+  formData: FormData,
+): Promise<Result> {
   const supabase = createClient();
 
   // type-casting here for convenience
@@ -41,7 +49,9 @@ export async function signup(formData: FormData) {
   const { data: signup, error } = await supabase.auth.signUp(data);
 
   if (error) {
-    console.log(error, "error");
+    return {
+      error: error.message,
+    };
   }
 
   revalidatePath("/", "layout");
@@ -52,4 +62,19 @@ export async function signout() {
   const supabase = createClient();
 
   await supabase.auth.signOut();
+}
+
+type ForgotPassword = Result & { message?: string };
+
+export async function forgotPassword(
+  state: ForgotPassword,
+  formData: FormData,
+): Promise<ForgotPassword> {
+  const supabase = createClient();
+  const email = formData.get("email") as string;
+  await supabase.auth.resetPasswordForEmail(email);
+
+  return {
+    message: "Link to reset password was sent to the email",
+  };
 }
