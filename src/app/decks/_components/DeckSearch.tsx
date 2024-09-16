@@ -15,14 +15,21 @@ import type { CraftableDeck, UserDeck } from "@/types/deck.type";
 import { DeckRow } from "./DeckRow";
 import { DeckSearchTableHeader } from "./DeckSearchTableHeader";
 import { useFormState } from "react-dom";
+import type { Tables } from "@/types/supabase.type";
 
 type Props = {
   decks: UserDeck[];
   craftableDecks: CraftableDeck[];
   availableDust: number;
+  subArchetypes: Tables<"meta_sub_archetypes">[];
 };
 
-export function DeckSearch({ decks, availableDust, craftableDecks }: Props) {
+export function DeckSearch({
+  decks,
+  availableDust,
+  craftableDecks,
+  subArchetypes,
+}: Props) {
   const [currentDecks, action] = useFormState(filterDecks, decks);
 
   function getCraftableDeck(id: number) {
@@ -33,7 +40,7 @@ export function DeckSearch({ decks, availableDust, craftableDecks }: Props) {
 
   return (
     <div className="grid grid-cols-[256px_1fr] gap-12">
-      <Filters onUpdateFilters={action} />
+      <Filters onUpdateFilters={action} subArchetypes={subArchetypes} />
       <div>
         <Table>
           <DeckSearchTableHeader />

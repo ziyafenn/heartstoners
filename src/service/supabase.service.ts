@@ -106,13 +106,13 @@ export async function getCraftableDecks(
 }
 
 export async function getRequestedDecks(
-  filters?: DeckFilters,
+  filters: DeckFilters,
   craftableDecks?: CraftableDeck[] | null,
 ) {
   const supabase = createClient();
   let query = supabase.from("user_decks").select(deckQuery);
 
-  if (filters?.craftable_decks === "true") {
+  if (filters.craftable_decks === "true") {
     const deckIds = craftableDecks!.map((deck) => deck.user_deck_id);
     query = query.in("id", deckIds);
   }
@@ -120,10 +120,10 @@ export async function getRequestedDecks(
   //   query = query.eq("archetype", filters.archetype);
   // }
   // if (card_ids)   { query = query.eq('card_ids', card_ids) }
-  if (filters?.deck_class) {
+  if (filters.deck_class) {
     query = query.eq("deck_class", filters.deck_class);
   }
-  if (filters?.deck_format) {
+  if (filters.deck_format) {
     query = query.eq("deck_format", filters.deck_format);
   }
   // if (dust_cost) {
@@ -132,9 +132,9 @@ export async function getRequestedDecks(
   // if (filters?.game_mode) {
   //   query = query.eq("game_mode", game_mode);
   // }
-  // if (filters?.sub_archetype) {
-  //   query = query.eq("sub_archetype", filters.sub_archetype);
-  // }
+  if (filters.sub_archetype) {
+    query = query.eq("sub_archetype", filters.sub_archetype);
+  }
   // if (filters?.user_id) {
   //   query = query.eq("user_id", filters.user_id);
   // }

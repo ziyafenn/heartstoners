@@ -139,18 +139,21 @@ export type Database = {
         Row: {
           created_at: string
           id: number
+          is_expansion: boolean
           url: string | null
           version_name: string
         }
         Insert: {
           created_at?: string
           id?: number
+          is_expansion?: boolean
           url?: string | null
           version_name: string
         }
         Update: {
           created_at?: string
           id?: number
+          is_expansion?: boolean
           url?: string | null
           version_name?: string
         }
@@ -158,6 +161,7 @@ export type Database = {
       }
       meta_sub_archetypes: {
         Row: {
+          as_of: string | null
           card_class: Database["public"]["Enums"]["card_class"]
           core_cards: number[] | null
           created_at: string
@@ -170,9 +174,10 @@ export type Database = {
           win_rate: number | null
         }
         Insert: {
+          as_of?: string | null
           card_class: Database["public"]["Enums"]["card_class"]
           core_cards?: number[] | null
-          created_at: string
+          created_at?: string
           deck_class_id: number
           id?: number
           name: string
@@ -182,6 +187,7 @@ export type Database = {
           win_rate?: number | null
         }
         Update: {
+          as_of?: string | null
           card_class?: Database["public"]["Enums"]["card_class"]
           core_cards?: number[] | null
           created_at?: string
