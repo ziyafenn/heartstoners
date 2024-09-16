@@ -25,7 +25,7 @@ export async function login(
 
   if (error) {
     return {
-      error: "E-mail or password is incorrect",
+      error: error.message,
     };
   }
 
@@ -41,16 +41,27 @@ export async function signup(
 
   // type-casting here for convenience
   // in practice, you should validate your inputs
-  const data = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
-  };
 
-  const { data: signup, error } = await supabase.auth.signUp(data);
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+  const username = formData.get("username") as string;
+
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.signUp({
+    email,
+    password,
+    options: { data: { username } },
+  });
 
   if (error) {
+    const message =
+      error.code === "unexpected_failure"
+        ? "Username already taken"
+        : error.message;
     return {
-      error: error.message,
+      error: message,
     };
   }
 

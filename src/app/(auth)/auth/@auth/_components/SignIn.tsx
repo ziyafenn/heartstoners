@@ -32,6 +32,7 @@ export function SignIn() {
               variant="link"
               size="sm"
               className="text-blue-500"
+              asChild
             >
               <Link href="/resetPassword">Forgot password?</Link>
             </Button>
