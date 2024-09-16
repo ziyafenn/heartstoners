@@ -1,5 +1,6 @@
 import type { getSingleDeck } from "@/service/supabase.service";
 import type { Tables } from "./supabase.type";
+import type { DBFunction } from "./supabase.func.type";
 
 export type DeckUserInputParams = Pick<
   Tables<"user_decks">,
@@ -27,3 +28,8 @@ export type DeckFilters = Partial<
 export type UserDeck = NonNullable<
   Awaited<ReturnType<typeof getSingleDeck>>["data"]
 >;
+
+export type CraftableDeck = DBFunction<
+  "get_craftable_decks",
+  "Returns"
+>[number];

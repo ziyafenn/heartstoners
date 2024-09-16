@@ -3,8 +3,12 @@ import { getRequestedDecks } from "@/service/supabase.service";
 import { DeckSearch } from "./_components/DeckSearch";
 
 export default async function Decks() {
-  const decks = await getRequestedDecks({ deck_format: "standard" });
-  const craftableDecks = await searchForCraftableDecks();
+  const getDecks = getRequestedDecks({ deck_format: "standard" }); // by default
+  const getCraftableDecks = searchForCraftableDecks();
+  const { "0": decks, "1": craftableDecks } = await Promise.all([
+    getDecks,
+    getCraftableDecks,
+  ]);
 
   return (
     <DeckSearch

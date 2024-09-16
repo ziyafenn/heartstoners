@@ -4,13 +4,13 @@ import type { CardClass } from "@/types/hs.type";
 import type { UserCollection } from "@/types/hsreplay.type";
 import type { Tables } from "@/types/supabase.type";
 import { createClient } from "./supabase.auth.server";
-import type { DBFunction } from "@/types/supabase.func.type";
 import type {
+  CraftableDeck,
   DeckFilters,
   DeckInitParams,
   DeckUserInputParams,
 } from "@/types/deck.type";
-import { QueryResult, type QueryData, QueryError } from "@supabase/supabase-js";
+import type { QueryData } from "@supabase/supabase-js";
 
 const deckQuery = `*, 
     profiles (*),
@@ -107,7 +107,7 @@ export async function getCraftableDecks(
 
 export async function getRequestedDecks(
   filters?: DeckFilters,
-  craftableDecks?: DBFunction<"get_craftable_decks", "Returns"> | null,
+  craftableDecks?: CraftableDeck[] | null,
 ) {
   const supabase = createClient();
   let query = supabase.from("user_decks").select(deckQuery);

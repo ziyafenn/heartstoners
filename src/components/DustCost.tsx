@@ -1,4 +1,4 @@
-import type { DBFunction } from "@/types/supabase.func.type";
+import type { CraftableDeck } from "@/types/deck.type";
 
 export function DustCost({
   dustCostSum,
@@ -7,9 +7,7 @@ export function DustCost({
 }: {
   dustCostSum: number;
   availableDust: number;
-  craftableDeck:
-    | DBFunction<"get_craftable_decks", "Returns">[number]
-    | undefined;
+  craftableDeck: CraftableDeck | undefined;
 }) {
   function checkIsCraftable() {
     const canBeCrafted =
