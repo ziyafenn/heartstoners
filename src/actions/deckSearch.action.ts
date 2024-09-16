@@ -5,6 +5,7 @@ import {
   getCraftableDecks,
   getRequestedDecks,
 } from "@/service/supabase.service";
+import type { DeckFilters, UserDeck } from "@/types/deck.type";
 
 export async function searchForCraftableDecks(props?: {
   maxDust?: number;
@@ -27,9 +28,12 @@ type CraftableDecks = NonNullable<
   Awaited<ReturnType<typeof searchForCraftableDecks>>
 >["craftableDecks"];
 
-export async function filterDecks(formData: FormData) {
+export async function filterDecks(
+  state: UserDeck[],
+  formData: FormData,
+): Promise<UserDeck[]> {
   let craftableDecks: CraftableDecks = [];
-  const filters: Record<string, string> = {};
+  let filters: DeckFilters = {};
   const isCraftable = formData.get("craftable_decks");
 
   if (isCraftable === "true") {
@@ -38,11 +42,14 @@ export async function filterDecks(formData: FormData) {
     craftableDecks = decks?.craftableDecks ?? [];
   }
 
-  formData.forEach((value, key) => {
-    filters[key] = value as string;
-  });
+  for (const [key, value] of formData.entries()) {
+    if (key === "craftable_decks" || key === "dustCost") continue;
+    filters = {
+      ...filters,
+      [key]: value,
+    };
+  }
 
   const decks = await getRequestedDecks(filters, craftableDecks);
-
   return decks;
 }

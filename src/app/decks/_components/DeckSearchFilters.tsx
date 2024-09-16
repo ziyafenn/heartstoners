@@ -6,43 +6,43 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useRef, useState } from "react";
 import { CARD_CLASSES } from "@/lib/cardClasses";
 import { AssetIcon } from "@/components/AssetIcon";
+import type { DeckFilters } from "@/types/deck.type";
 
 type Props = {
-  onUpdateFilters: (activeFilters: FormData) => Promise<unknown>;
+  onUpdateFilters: (payload: FormData) => void;
 };
 
 export function Filters({ onUpdateFilters }: Props) {
-  const [isCraftableToggled, setIsCraftableToggled] = useState(false);
-  const [deckFormat, setDeckFormat] = useState("standard");
+  const [values, setValues] = useState<DeckFilters>({
+    craftable_decks: "false",
+    deck_format: "standard",
+  });
   const formRef = useRef<HTMLFormElement>(null);
 
   async function onValueChange(key: string, value: unknown) {
-    const formData = new FormData(formRef.current!);
+    setValues((state) => ({ ...state, [key]: value }));
 
-    if (key === "craftable_decks") setIsCraftableToggled(value as boolean);
-    if (key === "deck_format") setDeckFormat(value as string);
-
+    const form = formRef.current;
+    if (!form) return;
+    const formData = new FormData(form);
     formData.set(key, String(value));
     onUpdateFilters(formData);
   }
 
-  async function onSubmit(formData: FormData) {
-    formData.set("craftable_decks", String(isCraftableToggled));
-    onUpdateFilters(formData);
-  }
   return (
     <div className="flex flex-col items-start">
       <Toggle
         onPressedChange={(value) => onValueChange("craftable_decks", value)}
+        pressed={values.craftable_decks === "true"}
       >
         Show Craftable
       </Toggle>
       <form
         ref={formRef}
-        action={onSubmit}
+        action={onUpdateFilters}
         className="flex flex-1 flex-col gap-16"
       >
-        {isCraftableToggled && (
+        {values.craftable_decks === "true" && (
           <Input type="number" name="dustCost" defaultValue={0} />
         )}
         <ToggleGroup
@@ -52,7 +52,7 @@ export function Filters({ onUpdateFilters }: Props) {
           onValueChange={(value) =>
             value && onValueChange("deck_format", value)
           }
-          value={deckFormat}
+          value={values.deck_format}
         >
           <ToggleGroupItem value="standard">Standard</ToggleGroupItem>
           <ToggleGroupItem value="wild">Wild</ToggleGroupItem>
@@ -81,6 +81,24 @@ export function Filters({ onUpdateFilters }: Props) {
             );
           })}
         </ToggleGroup>
+        <input
+          type="hidden"
+          value={values.deck_format}
+          hidden
+          name="deck_format"
+        />
+        <input
+          type="hidden"
+          value={values.craftable_decks}
+          hidden
+          name="craftable_decks"
+        />
+        <input
+          type="hidden"
+          value={values.deck_class}
+          hidden
+          name="deck_class"
+        />
       </form>
     </div>
   );

@@ -9,12 +9,12 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Table, TableBody } from "@/components/ui/table";
-import { Filters } from "./Filters";
-import { useState } from "react";
+import { Filters } from "./DeckSearchFilters";
 import { filterDecks } from "@/actions/deckSearch.action";
 import type { CraftableDeck, UserDeck } from "@/types/deck.type";
 import { DeckRow } from "./DeckRow";
 import { DeckSearchTableHeader } from "./DeckSearchTableHeader";
+import { useFormState } from "react-dom";
 
 type Props = {
   decks: UserDeck[];
@@ -23,7 +23,7 @@ type Props = {
 };
 
 export function DeckSearch({ decks, availableDust, craftableDecks }: Props) {
-  const [currentDecks, setCurrentDecks] = useState(() => decks);
+  const [currentDecks, action] = useFormState(filterDecks, decks);
 
   function getCraftableDeck(id: number) {
     return craftableDecks?.find(
@@ -31,14 +31,9 @@ export function DeckSearch({ decks, availableDust, craftableDecks }: Props) {
     );
   }
 
-  async function updateFilters(activeFilters: FormData) {
-    const updatedDecks = await filterDecks(activeFilters);
-    setCurrentDecks(updatedDecks);
-  }
-
   return (
     <div className="grid grid-cols-[256px_1fr] gap-12">
-      <Filters onUpdateFilters={updateFilters} />
+      <Filters onUpdateFilters={action} />
       <div>
         <Table>
           <DeckSearchTableHeader />

@@ -48,9 +48,7 @@ export function DeckRow({ deck, availableDust, craftableDeck }: Props) {
         <span>{deck.profiles!.username}</span>
       </TableCell>
       <TableCell>
-        <span>
-          <DeckPopularity deck={deck} />
-        </span>
+        <DeckPopularity deck={deck} />
       </TableCell>
     </TableRow>
   );
