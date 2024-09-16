@@ -24,6 +24,7 @@ import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
 import { CARD_CLASSES } from "@/lib/cardClasses";
 import { AssetIcon } from "@/components/AssetIcon";
+import { findData } from "@/lib/utils";
 
 type Props = {
   action: (payload: FormData) => void;
@@ -47,9 +48,8 @@ export function DeckBuilderFilter({
   const searchParams = useSearchParams();
   const deckClass = searchParams.get("deckClass") as CardClass["slug"];
   const manaCost = [...Array(10).keys(), "10+"];
-  const touristClass = CARD_CLASSES.find(
-    (cardClass) => cardClass.id === touristCard?.touristClassId,
-  );
+  const touristClass =
+    touristCard && findData(CARD_CLASSES, "id", touristCard.touristClassId);
 
   const [values, setValues] = useState<
     Partial<Record<keyof CardSearchOptions, string | string[]>>
@@ -157,12 +157,12 @@ export function DeckBuilderFilter({
             <ToggleGroupItem value="neutral" className="size-10 p-0">
               <AssetIcon type="hero" name="neutral" />
             </ToggleGroupItem>
-            {touristCard && (
+            {touristClass && (
               <ToggleGroupItem
                 value={`tourist:${touristCard.id}`}
                 className="size-10 p-0"
               >
-                <AssetIcon type="hero" name={touristClass!.slug} />
+                <AssetIcon type="hero" name={touristClass.slug} />
               </ToggleGroupItem>
             )}
           </ToggleGroup>
@@ -174,7 +174,7 @@ export function DeckBuilderFilter({
               <ToggleGroupItem
                 value={index === 10 ? "10^" : mana.toString()}
                 key={mana}
-                className="font-outline-2 size-10 bg-[url(/assets/mana.png)] bg-contain bg-no-repeat p-0 text-[16px]"
+                className="size-10 bg-[url(/assets/mana.png)] bg-contain bg-no-repeat p-0 font-outline-2 text-[16px]"
               >
                 {mana}
               </ToggleGroupItem>

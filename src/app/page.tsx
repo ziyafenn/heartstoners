@@ -9,6 +9,7 @@ import { DeckUICard } from "./_components/DeckUICard";
 import { SidebarCardItem } from "./_components/SidebarCardItem";
 import { getDeckPopularity } from "@/lib/deckPopularity";
 import { CARD_CLASSES } from "@/lib/cardClasses";
+import { findData } from "@/lib/utils";
 
 export default async function Home() {
   const fetchDecks = getDecks();
@@ -104,7 +105,7 @@ export default async function Home() {
             {topMetas?.map((meta, index) => (
               <SidebarCardItem
                 name={meta.meta_sub_archetypes?.name}
-                key={index}
+                key={meta.meta_sub_archetypes?.id}
               />
             ))}
           </ul>
@@ -112,14 +113,10 @@ export default async function Home() {
         <div className="border border-border p-4">
           <h3>Top classes</h3>
           <ul className="flex flex-col gap-2 divide-y">
-            {topClasses?.map((deckClass, index) => (
+            {topClasses?.map((deckClass) => (
               <SidebarCardItem
-                name={
-                  CARD_CLASSES.find(
-                    (cardClass) => cardClass.slug === deckClass.deck_class,
-                  )!.name
-                }
-                key={index}
+                name={findData(CARD_CLASSES, "slug", deckClass.deck_class).name}
+                key={findData(CARD_CLASSES, "slug", deckClass.deck_class).id}
               />
             ))}
           </ul>

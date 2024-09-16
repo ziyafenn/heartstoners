@@ -11,6 +11,7 @@ import { CardCrop } from "@/components/CardCrop";
 import { CARD_CLASSES } from "@/lib/cardClasses";
 import { AssetIcon } from "@/components/AssetIcon";
 import Image from "next/image";
+import { findData } from "@/lib/utils";
 
 type Props = {
   children: React.ReactNode;
@@ -36,9 +37,7 @@ export function CurrentDeck({
   const endOfListRef = useRef<HTMLLIElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
-  const deckClass = CARD_CLASSES.find(
-    (cardClass) => cardClass.slug === deckClassSlug,
-  )!;
+  const deckClass = findData(CARD_CLASSES, "slug", deckClassSlug);
 
   function showSelectedCard(cardsToShow: Card[] | undefined) {
     if (!cardsToShow) return [];
@@ -105,15 +104,16 @@ export function CurrentDeck({
             <Button>Paste</Button>
           </form>
         )} */}
-        <div className="relative text-xl font-bold">
+        <div className="relative font-bold text-xl">
           <div className="absolute size-full bg-black/50" />
-          <div className="absolute flex size-full items-center justify-between pl-3 pr-2">
-            <span className="font-outline-2 font-hs leading-tight drop-shadow-md">
+          <div className="absolute flex size-full items-center justify-between pr-2 pl-3">
+            <span className="font-hs font-outline-2 leading-tight drop-shadow-md">
               {deckClass.name}
             </span>
             {deckClassSlug === "deathknight" && (
               <div className="flex min-w-32 items-center justify-end">
                 {showRunes().map((rune, index) => (
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                   <AssetIcon type="rune" name={rune} key={index} />
                 ))}
               </div>

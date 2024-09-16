@@ -41,3 +41,16 @@ export function toCapital(value: string) {
   if (!value) return value;
   return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
 }
+
+export function findData<T, K extends keyof T>(
+  array: T[],
+  key: K,
+  value: T[K] | undefined | null,
+) {
+  const item = array.find((item) => item[key] === value);
+  if (!item) {
+    throw new Error(`Item with ${String(key)}=${value} not found`);
+  }
+
+  return item;
+}

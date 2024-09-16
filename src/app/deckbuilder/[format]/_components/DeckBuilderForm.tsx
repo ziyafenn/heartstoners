@@ -17,7 +17,7 @@ import type {
   Rarity,
   SideboardCards,
 } from "@/types/hs.type";
-import { getDustCost } from "@/lib/utils";
+import { findData, getDustCost } from "@/lib/utils";
 import {
   Select,
   SelectContent,
@@ -114,13 +114,9 @@ export default function DeckBuilderForm({
     dust_cost_per_card.push(getDustCost(card.rarityId));
     dust_cost_sum += getDustCost(card.rarityId);
     card_ids.push(card.id);
-    const cardTypeName = CARD_TYPES.find(
-      (cardType) => cardType.id === card.cardTypeId,
-    )!.name;
+    const cardTypeName = findData(CARD_TYPES, "id", card.cardTypeId).name;
     cardTypes[cardTypeName] = cardTypes[cardTypeName] + 1;
-    const cardRarityName = CARD_RARITIES.find(
-      (cardRarity) => cardRarity.id === card.rarityId,
-    )!.name;
+    const cardRarityName = findData(CARD_RARITIES, "id", card.rarityId).name;
     cardRarities[cardRarityName] = cardRarities[cardRarityName] + 1;
   });
 
@@ -178,9 +174,7 @@ export default function DeckBuilderForm({
     const nameInput = nameInputRef.current!;
 
     function validateForm(event: SubmitEvent) {
-      const cardClassName = CARD_CLASSES.find(
-        (card) => card.slug === deckClass,
-      )!.name;
+      const cardClassName = findData(CARD_CLASSES, "slug", deckClass).name;
 
       // Rule 1: Ensure card class name is a whole word
       const regexPattern1 = `\\b${cardClassName}\\b`;

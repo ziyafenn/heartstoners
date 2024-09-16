@@ -7,6 +7,7 @@ import { CardTypeIcon } from "@/components/CardTypeIcon";
 import { DustCost } from "@/components/DustCost";
 import { searchForCraftableDecks } from "@/actions/deckSearch.action";
 import type { UserDeck } from "@/types/deck.type";
+import { findData } from "@/lib/utils";
 
 type Props = {
   cards: Card[];
@@ -39,13 +40,9 @@ export async function DeckStats({ cards, deck, availableDust }: Props) {
 
   cards.forEach((card) => {
     card_ids.push(card.id);
-    const cardTypeName = CARD_TYPES.find(
-      (cardType) => cardType.id === card.cardTypeId,
-    )!.name;
+    const cardTypeName = findData(CARD_TYPES, "id", card.cardTypeId).name;
     cardTypes[cardTypeName] = cardTypes[cardTypeName] + 1;
-    const cardRarityName = CARD_RARITIES.find(
-      (cardRarity) => cardRarity.id === card.rarityId,
-    )!.name;
+    const cardRarityName = findData(CARD_RARITIES, "id", card.rarityId).name;
     cardRarities[cardRarityName] = cardRarities[cardRarityName] + 1;
   });
 

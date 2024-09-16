@@ -24,7 +24,7 @@ import {
 import { CARD_CLASSES } from "@/lib/cardClasses";
 import type { Enums, Tables } from "@/types/supabase.type";
 // import { checkProfanity } from "@/service/profanity.service";
-import { getYouTubeVideoID } from "@/lib/utils";
+import { findData, getYouTubeVideoID } from "@/lib/utils";
 
 type Params = CardsPage & { params: CardSeachParams; loading?: boolean };
 
@@ -127,7 +127,7 @@ export async function decodeDeck(formData: FormData) {
   if (!deckCode) return;
 
   const deck = decode(deckCode.toString());
-  const slug = CARD_CLASSES.find((c) => c.cardId === deck.heroes[0])?.slug;
+  const slug = findData(CARD_CLASSES, "cardId", deck.heroes[0]).slug;
   const format: Enums<"deck_format"> = deck.format === 1 ? "wild" : "standard";
 
   redirect(`/deckbuilder/${format}?deckClass=${slug}&deckCode=${deckCode}`);
@@ -175,9 +175,7 @@ export async function encodeDeck({
     });
   }
 
-  const heroCardId = CARD_CLASSES.find(
-    (cardClass) => cardClass.slug === deck_class,
-  )?.cardId!;
+  const heroCardId = findData(CARD_CLASSES, "slug", deck_class).cardId;
 
   const deck: DeckDefinition = {
     cards: convertCards(card_ids), // [dbfId, count] pairs
