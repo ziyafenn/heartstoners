@@ -116,9 +116,9 @@ export async function getRequestedDecks(
     const deckIds = craftableDecks!.map((deck) => deck.user_deck_id);
     query = query.in("id", deckIds);
   }
-  // if (filters?.archetype) {
-  //   query = query.eq("archetype", filters.archetype);
-  // }
+  if (filters.archetype) {
+    query = query.eq("archetype", filters.archetype);
+  }
   // if (card_ids)   { query = query.eq('card_ids', card_ids) }
   if (filters.deck_class) {
     query = query.eq("deck_class", filters.deck_class);

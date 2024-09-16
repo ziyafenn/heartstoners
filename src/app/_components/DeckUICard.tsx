@@ -22,14 +22,14 @@ export function DeckUICard({ data: deck }: { data: Props }) {
   return (
     <li className="relative select-none overflow-hidden rounded-xl border border-border hover:translate-y-[-4px] hover:border-orange-900 hover:shadow-xl">
       <Link href={`/decks/${id}`}>
-        <div className="absolute z-10 size-full bg-indigo-950	mix-blend-multiply " />
+        <div className="absolute z-10 size-full bg-indigo-950 mix-blend-multiply " />
         <div className="absolute z-20 flex size-full items-center justify-between p-4 bg-blend-overlay">
           <div className="flex gap-4 ">
             <div className="flex flex-col gap-2">
               <AssetIcon
                 type="hero"
                 name={deck_class}
-                className="box-content size-5 rounded-full border border-border"
+                className="box-content size-5 rounded-full border border-amber-900"
               />
               <AssetIcon type="format" name={deck_format} />
             </div>

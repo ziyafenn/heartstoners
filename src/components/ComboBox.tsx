@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/command";
 import { useState } from "react";
 
-type Data = { value: number; label: string };
+type Data = { id: number; label: string };
 type Props = {
   data: Data[];
   value: number | null | undefined;
@@ -21,7 +21,7 @@ export function Combobox({ data, value, selectItem }: Props) {
   const [inputValue, setInputValue] = useState("");
 
   function onSelect(currentValue: string) {
-    const id = data.find((item) => item.label === currentValue)?.value;
+    const id = data.find((item) => item.label === currentValue)?.id;
     id && selectItem(id);
     setOpen(false);
     setInputValue("");
@@ -47,7 +47,7 @@ export function Combobox({ data, value, selectItem }: Props) {
           <CommandEmpty>No sub-archetype found</CommandEmpty>
           {data.map((subArchetype) => (
             <CommandItem
-              key={subArchetype.value}
+              key={subArchetype.id}
               value={subArchetype.label}
               onSelect={onSelect}
             >

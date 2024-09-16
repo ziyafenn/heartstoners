@@ -17,6 +17,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 
 type Props = {
   onUpdateFilters: (payload: FormData) => void;
@@ -51,13 +52,27 @@ export function Filters({ onUpdateFilters, subArchetypes }: Props) {
   });
   const formRef = useRef<HTMLFormElement>(null);
 
+  const subs = subArchetypes.map((subArch) => ({
+    id: subArch.id,
+    label: subArch.name,
+    cardClass: subArch.card_class,
+  }));
+
+  const filteredSubArches = values.deck_class
+    ? subs.filter((subArch) => subArch.cardClass === values.deck_class)
+    : subs;
+
   async function onValueChange(
     key: keyof DeckFilters,
     value: unknown,
     isReset?: boolean,
   ) {
+    const subArchCardClass = filteredSubArches.find(
+      (subArch) => subArch.id === values.sub_archetype,
+    )?.cardClass;
+
     setValues((state) => ({ ...state, [key]: value }));
-    if (key === "deck_class" && values.sub_archetype) {
+    if (key === "deck_class" && subArchCardClass !== value) {
       setValues((state) => ({ ...state, sub_archetype: null }));
     }
 
@@ -70,16 +85,6 @@ export function Filters({ onUpdateFilters, subArchetypes }: Props) {
 
     onUpdateFilters(formData);
   }
-
-  const subs = subArchetypes.map((subArch) => ({
-    value: subArch.id,
-    label: subArch.name,
-    cardClass: subArch.card_class,
-  }));
-
-  const filteredSubArches = values.deck_class
-    ? subs.filter((subArch) => subArch.cardClass === values.deck_class)
-    : subs;
 
   return (
     <div className="flex flex-col items-start">
@@ -112,7 +117,7 @@ export function Filters({ onUpdateFilters, subArchetypes }: Props) {
                         <AssetIcon
                           type="hero"
                           name={cardClass.slug}
-                          className="size-10"
+                          className="size-10 rounded-full border border-amber-900"
                         />
                       </ToggleGroupItem>
                     </span>
@@ -145,25 +150,45 @@ export function Filters({ onUpdateFilters, subArchetypes }: Props) {
             </span>
           )}
         </Filter>
-        <Filter name="Sub Archetypes" className="flex flex-col gap-4 p-4">
-          <Combobox
-            data={filteredSubArches}
-            value={values.sub_archetype}
-            selectItem={(value) => onValueChange("sub_archetype", value)}
-          />
-          {values.sub_archetype && (
-            <Badge
-              className="w-max cursor-pointer"
-              onClick={() => onValueChange("sub_archetype", "", true)}
-            >
-              {
-                filteredSubArches.find(
-                  (sub) => sub.value === values.sub_archetype,
-                )?.label
-              }
-              <X className="ml-1 size-4" />
-            </Badge>
-          )}
+        <Filter name="Archetypes" className="flex flex-col">
+          <div className="flex flex-col gap-4 p-4">
+            <Combobox
+              data={filteredSubArches}
+              value={values.sub_archetype}
+              selectItem={(value) => onValueChange("sub_archetype", value)}
+            />
+            {values.sub_archetype && (
+              <Badge
+                className="w-max cursor-pointer"
+                onClick={() => onValueChange("sub_archetype", "", true)}
+              >
+                {
+                  filteredSubArches.find(
+                    (sub) => sub.id === values.sub_archetype,
+                  )?.label
+                }
+                <X className="ml-1 size-4" />
+              </Badge>
+            )}
+          </div>
+          <Separator />
+          <ToggleGroup
+            type="single"
+            orientation="vertical"
+            className="flex-col items-start"
+            onValueChange={(value) => onValueChange("archetype", value)}
+            value={values.archetype}
+          >
+            <ToggleGroupItem value="aggro" size="lg">
+              Aggro
+            </ToggleGroupItem>
+            <ToggleGroupItem value="midrange" size="lg">
+              Midrange
+            </ToggleGroupItem>
+            <ToggleGroupItem value="control" size="lg">
+              Control
+            </ToggleGroupItem>
+          </ToggleGroup>
         </Filter>
         <Filter name="Game format">
           <ToggleGroup
