@@ -14,7 +14,13 @@ import type {
   CardsPage,
 } from "@/types/hs.type";
 import { redirect } from "next/navigation";
-import { decode } from "deckstrings";
+import {
+  type DeckCard,
+  type DeckDefinition,
+  decode,
+  encode,
+  type SideboardCard,
+} from "deckstrings";
 import { CARD_CLASSES } from "@/lib/cardClasses";
 import type { Enums, Tables } from "@/types/supabase.type";
 // import { checkProfanity } from "@/service/profanity.service";
@@ -90,18 +96,32 @@ export async function createDeck(
   //       "It seems your text input contains profanity. If it's not, please contact us on Discord.",
   //   };
 
+  const deckCode = await encodeDeck({
+    card_ids: initParams?.card_ids,
+    deck_class: initParams?.deck_class,
+    deck_format: initParams?.deck_format,
+    sideboard_cards: initParams?.sideboard_cards ?? null,
+  });
+
   const { data, error } = await createUserDeck({
     gameVersion,
     initParams: initParams!,
     userInput,
+    deckCode,
   });
 
-  if (error) return { data: null, error: error.message };
+  if (error) {
+    const message =
+      error.code === "PGRST116"
+        ? "It appears that this deck has already been created by you. If you believe this is an error, please contact us on our Discord to report the issue."
+        : error.message;
+    return { data: null, error: message };
+  }
 
   redirect(`/decks/${data.id}`);
 }
 
-export async function loadDeckFromCode(formData: FormData) {
+export async function decodeDeck(formData: FormData) {
   const deckCode = formData.get("deckCode");
 
   if (!deckCode) return;
@@ -111,6 +131,65 @@ export async function loadDeckFromCode(formData: FormData) {
   const format: Enums<"deck_format"> = deck.format === 1 ? "wild" : "standard";
 
   redirect(`/deckbuilder/${format}?deckClass=${slug}&deckCode=${deckCode}`);
+}
+
+export async function encodeDeck({
+  card_ids,
+  sideboard_cards,
+  deck_class,
+  deck_format,
+}: Pick<
+  DeckInitParams,
+  "card_ids" | "sideboard_cards" | "deck_class" | "deck_format"
+>) {
+  function convertCards(ids: number[]): DeckCard[] {
+    const counts: Record<number, number> = {};
+
+    for (const id of ids) {
+      counts[id] = (counts[id] || 0) + 1;
+    }
+
+    return Object.entries(counts).map(([id, count]) => [Number(id), count]);
+  }
+
+  function convertSideboardCards(idPairs: string[]): SideboardCard[] {
+    const counts: Record<number, number> = {};
+    const parents: Record<number, number> = {};
+
+    for (const pair of idPairs) {
+      const [childIdStr, parentIdStr] = pair.split(":");
+      const childId = Number.parseInt(childIdStr, 10);
+      const parentId = Number.parseInt(parentIdStr, 10);
+
+      if (!counts[childId]) {
+        counts[childId] = 0;
+        parents[childId] = parentId;
+      }
+
+      counts[childId]++;
+    }
+
+    return Object.entries(counts).map(([childIdStr, count]) => {
+      const childId = Number.parseInt(childIdStr, 10);
+      return [childId, count, parents[childId]];
+    });
+  }
+
+  const heroCardId = CARD_CLASSES.find(
+    (cardClass) => cardClass.slug === deck_class,
+  )?.cardId!;
+
+  const deck: DeckDefinition = {
+    cards: convertCards(card_ids), // [dbfId, count] pairs
+    sideboardCards: sideboard_cards
+      ? convertSideboardCards(sideboard_cards)
+      : [], // [dbfId, count, sideboardOwnerDbfId] triplets
+    heroes: [heroCardId], // Garrosh Hellscream
+    format: deck_format === "standard" ? 2 : 1,
+  };
+
+  const deckCode = encode(deck);
+  return deckCode;
 }
 
 export async function getSubArchetype(

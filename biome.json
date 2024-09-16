@@ -24,6 +24,9 @@
       "complexity": {
         "noForEach": "off"
       },
+      "correctness": {
+        "noUnusedImports": "warn"
+      },
       "nursery": {
         "useSortedClasses": {
           "fix": "safe",

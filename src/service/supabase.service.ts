@@ -230,20 +230,26 @@ export async function createUserDeck({
   gameVersion,
   initParams,
   userInput,
+  deckCode,
 }: {
   initParams: DeckInitParams;
   userInput: DeckUserInputParams;
   gameVersion: string;
+  deckCode: string;
 }) {
   const supabase = createClient();
 
   const result = await supabase
     .from("user_decks")
-    .insert({
-      ...initParams,
-      ...userInput,
-      game_version: gameVersion,
-    })
+    .upsert(
+      {
+        ...initParams,
+        ...userInput,
+        game_version: gameVersion,
+        deck_code: deckCode,
+      },
+      { onConflict: "deck_code, user_id", ignoreDuplicates: true },
+    )
     .select()
     .single();
 

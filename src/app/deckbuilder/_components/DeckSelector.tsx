@@ -6,7 +6,7 @@ import Image from "next/image";
 import { CARD_CLASSES } from "@/lib/cardClasses";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { loadDeckFromCode } from "@/actions/deckBuider.action";
+import { decodeDeck } from "@/actions/deckBuider.action";
 import { AssetIcon } from "@/components/AssetIcon";
 import { useState } from "react";
 
@@ -22,7 +22,7 @@ export function DeckSelector() {
             <TabsTrigger value="wild">Wild</TabsTrigger>
           </TabsList>
         </Tabs>
-        <form action={loadDeckFromCode} className="flex gap-4">
+        <form action={decodeDeck} className="flex gap-4">
           <Input name="deckCode" type="text" required />
           <Button type="submit">Find</Button>
         </form>

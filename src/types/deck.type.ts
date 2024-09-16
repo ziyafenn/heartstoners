@@ -15,6 +15,7 @@ export type DeckInitParams = Omit<
   | "user_id"
   | "game_version"
   | "game_mode"
+  | "deck_code"
 >;
 
 export type DeckFilters = Partial<

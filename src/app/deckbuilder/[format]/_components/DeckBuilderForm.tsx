@@ -25,17 +25,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getMetasByClass } from "@/service/supabase.service";
-import { Enums, type Tables } from "@/types/supabase.type";
+import type { Tables } from "@/types/supabase.type";
 import type { DeckInitParams } from "@/types/deck.type";
 import { useSearchParams } from "next/navigation";
-import {
-  type ChangeEvent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { type ChangeEvent, useEffect, useRef, useState } from "react";
 import { CARD_TYPES } from "@/lib/cardTypes";
 import { CARD_RARITIES } from "@/lib/cardRarities";
 import { AssetIcon } from "@/components/AssetIcon";
@@ -50,6 +43,15 @@ import { useFormState, useFormStatus } from "react-dom";
 import { CARD_CLASSES } from "@/lib/cardClasses";
 import { CardTypeIcon } from "@/components/CardTypeIcon";
 import { DeckManaChart } from "@/components/DeckManaChart";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 type Props = {
   deckSearchParams: CardSeachParams;
@@ -83,6 +85,7 @@ export default function DeckBuilderForm({
   const searchParams = useSearchParams();
   const deckClass = searchParams.get("deckClass") as CardClass["slug"];
   const [isFormMounted, setIsFormMounted] = useState(false);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
 
   const aggroCount = 0;
   const midrangeCount = 0;
@@ -211,151 +214,164 @@ export default function DeckBuilderForm({
   }, [isFormMounted, formRef, deckClass, nameInputRef]);
 
   useEffect(() => {
-    if (state.error) window.alert(state.error);
-  }, [state.error]);
+    if (state.error) setIsAlertOpen(true);
+  }, [state]);
 
   return (
-    <Sheet open={isOpen} defaultOpen onOpenChange={toggleOpen}>
-      <SheetContent
-        onInteractOutside={(event) => event.preventDefault()}
-        side="left"
-        className="flex flex-col"
-      >
-        <SheetHeader>
-          <SheetTitle>Create your deck</SheetTitle>
-          <SheetDescription>
-            Summarize your deck&apos;s strategy and key features
-          </SheetDescription>
-        </SheetHeader>
-        <div className="flex flex-1 flex-col gap-8">
-          <div className="flex flex-col gap-4 text-sm">
-            <DeckManaChart selectedCards={selectedCards} />
-            <div className="flex items-center gap-2">
-              <span>Dust Cost:</span>
-              <span className="flex gap-1">
-                <AssetIcon type="asset" name="dust" />
-                <span className="font-bold">{dust_cost_sum}</span>
-              </span>
+    <>
+      <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>There was an issue</AlertDialogTitle>
+            <AlertDialogDescription>{state.error}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Close</AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      <Sheet open={isOpen} defaultOpen onOpenChange={toggleOpen}>
+        <SheetContent
+          onInteractOutside={(event) => event.preventDefault()}
+          side="left"
+          className="flex flex-col"
+        >
+          <SheetHeader>
+            <SheetTitle>Create your deck</SheetTitle>
+            <SheetDescription>
+              Summarize your deck&apos;s strategy and key features
+            </SheetDescription>
+          </SheetHeader>
+          <div className="flex flex-1 flex-col gap-8">
+            <div className="flex flex-col gap-4 text-sm">
+              <DeckManaChart selectedCards={selectedCards} />
+              <div className="flex items-center gap-2">
+                <span>Dust Cost:</span>
+                <span className="flex gap-1">
+                  <AssetIcon type="asset" name="dust" />
+                  <span className="font-bold">{dust_cost_sum}</span>
+                </span>
+              </div>
+              <ul className="flex flex-wrap divide-x-2">
+                {cardRarityAllocation.map((cardRarity) => {
+                  if (cardRarity[1] === 0) return null;
+                  return (
+                    <li
+                      key={cardRarity[0]}
+                      className="flex gap-1 px-3 first:pl-0"
+                    >
+                      <AssetIcon
+                        type="rarity"
+                        name={cardRarity[0].toLowerCase()}
+                      />
+                      {cardRarity[0]}:
+                      <span className="font-bold">{cardRarity[1]}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+              <ul className="flex flex-wrap divide-x-2">
+                {cardTypeAllocation.map((cardType) => {
+                  if (cardType[1] === 0) return null;
+                  return (
+                    <li
+                      key={cardType[0]}
+                      className="flex items-center gap-1 px-3 first:pl-0"
+                    >
+                      <CardTypeIcon name={cardType[0] as CardType["name"]} />
+                      {cardType[0]}:
+                      <span className="font-bold">{cardType[1]}</span>
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
-            <ul className="flex flex-wrap divide-x-2">
-              {cardRarityAllocation.map((cardRarity) => {
-                if (cardRarity[1] === 0) return null;
-                return (
-                  <li
-                    key={cardRarity[0]}
-                    className="flex gap-1 px-3 first:pl-0"
-                  >
-                    <AssetIcon
-                      type="rarity"
-                      name={cardRarity[0].toLowerCase()}
-                    />
-                    {cardRarity[0]}:
-                    <span className="font-bold">{cardRarity[1]}</span>
-                  </li>
-                );
-              })}
-            </ul>
-            <ul className="flex flex-wrap divide-x-2">
-              {cardTypeAllocation.map((cardType) => {
-                if (cardType[1] === 0) return null;
-                return (
-                  <li
-                    key={cardType[0]}
-                    className="flex items-center gap-1 px-3 first:pl-0"
-                  >
-                    <CardTypeIcon name={cardType[0] as CardType["name"]} />
-                    {cardType[0]}:
-                    <span className="font-bold">{cardType[1]}</span>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-          <form
-            action={formAction}
-            className="flex flex-1 flex-col gap-8"
-            ref={(node) => {
-              formRef.current = node;
-              setIsFormMounted(!!node);
-            }}
-          >
-            <div className="flex flex-1 flex-col gap-4">
-              <div>
-                <Label htmlFor="name">Deck name</Label>
-                <Input
-                  ref={nameInputRef}
-                  name="name"
-                  onChange={onNameInputChange}
-                  key="name"
-                  type="text"
-                  required
-                  autoComplete="off"
-                  autoFocus
-                  spellCheck="true"
-                  maxLength={40}
-                  placeholder="Include the class name to capture your Hearthstone deck's essence"
-                />
-              </div>
-              <div className="flex flex-1 flex-col">
-                <Label htmlFor="description">Description</Label>
-                <Textarea
-                  name="description"
-                  maxLength={3000}
-                  className="flex-1 resize-none"
-                  spellCheck="true"
-                  autoCapitalize="sentences"
-                  draggable={false}
-                  placeholder="Describe Your Deck's Strategy and Key Cards"
-                />
-              </div>
-              <div>
-                <Label htmlFor="youtube_link">Youtube link</Label>
-                <Input
-                  name="youtube_link"
-                  key="youtube_link"
-                  type="url"
-                  autoComplete="off"
-                  pattern="^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$"
-                  placeholder="Make sure to add youtube video link if you got one!"
-                />
-              </div>
-            </div>
-            <div className="flex items-start gap-8">
-              <div>
-                <Label>Archetype</Label>
-                <Select defaultValue="aggro" name="archetype" required>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Archetype" />
-                  </SelectTrigger>
-                  <SelectContent side="top">
-                    <SelectItem value="aggro">Aggro</SelectItem>
-                    <SelectItem value="midrange">Midrange</SelectItem>
-                    <SelectItem value="control">Control</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label>Sub-archetype</Label>
-                <div className="flex h-10 items-center gap-2">
-                  <span className="text-lg">
-                    {subArchetype?.name ?? "None"}
-                  </span>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <InfoIcon className="size-4" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      Sub-archetype is determined based on current metas and
-                      cards in your deck
-                    </TooltipContent>
-                  </Tooltip>
+            <form
+              action={formAction}
+              className="flex flex-1 flex-col gap-8"
+              ref={(node) => {
+                formRef.current = node;
+                setIsFormMounted(!!node);
+              }}
+            >
+              <div className="flex flex-1 flex-col gap-4">
+                <div>
+                  <Label htmlFor="name">Deck name</Label>
+                  <Input
+                    ref={nameInputRef}
+                    name="name"
+                    onChange={onNameInputChange}
+                    key="name"
+                    type="text"
+                    required
+                    autoComplete="off"
+                    autoFocus
+                    spellCheck="true"
+                    maxLength={40}
+                    placeholder="Include the class name to capture your Hearthstone deck's essence"
+                  />
+                </div>
+                <div className="flex flex-1 flex-col">
+                  <Label htmlFor="description">Description</Label>
+                  <Textarea
+                    name="description"
+                    maxLength={3000}
+                    className="flex-1 resize-none"
+                    spellCheck="true"
+                    autoCapitalize="sentences"
+                    draggable={false}
+                    placeholder="Describe Your Deck's Strategy and Key Cards"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="youtube_link">Youtube link</Label>
+                  <Input
+                    name="youtube_link"
+                    key="youtube_link"
+                    type="url"
+                    autoComplete="off"
+                    pattern="^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$"
+                    placeholder="Make sure to add youtube video link if you got one!"
+                  />
                 </div>
               </div>
-            </div>
-            <SubmitButton />
-          </form>
-        </div>
-      </SheetContent>
-    </Sheet>
+              <div className="flex items-start gap-8">
+                <div>
+                  <Label>Archetype</Label>
+                  <Select defaultValue="aggro" name="archetype" required>
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Archetype" />
+                    </SelectTrigger>
+                    <SelectContent side="top">
+                      <SelectItem value="aggro">Aggro</SelectItem>
+                      <SelectItem value="midrange">Midrange</SelectItem>
+                      <SelectItem value="control">Control</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label>Sub-archetype</Label>
+                  <div className="flex h-10 items-center gap-2">
+                    <span className="text-lg">
+                      {subArchetype?.name ?? "None"}
+                    </span>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <InfoIcon className="size-4" />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        Sub-archetype is determined based on current metas and
+                        cards in your deck
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
+                </div>
+              </div>
+              <SubmitButton />
+            </form>
+          </div>
+        </SheetContent>
+      </Sheet>
+    </>
   );
 }

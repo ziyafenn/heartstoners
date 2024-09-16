@@ -76,7 +76,7 @@ export default async function Home() {
             Recent submissions from our users
           </h2>
           <ul className="grid grid-cols-auto-fill-deckcard gap-4">
-            {decks!.slice(0, 6).map((deck) => (
+            {decks?.slice(0, 6).map((deck) => (
               <DeckUICard data={deck} key={deck.id} />
             ))}
           </ul>
