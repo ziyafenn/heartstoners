@@ -1,19 +1,57 @@
 "use client";
 
-import { login } from "@/actions/login.action";
+import { postAuth } from "@/actions/login.action";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { createClient } from "@/service/supabase.auth.client";
+import { signInSchema } from "@/types/schema";
 import Link from "next/link";
-import { useFormState } from "react-dom";
+import { type FormEvent, useState } from "react";
 
 export function SignIn() {
-  const [state, action] = useFormState(login, { error: "" });
+  const [error, setError] = useState("");
+
+  async function signinUser(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const supabase = createClient();
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const dataObj = {
+      email: formData.get("email"),
+      password: formData.get("password"),
+    };
+
+    const {
+      success,
+      data: parsedData,
+      error: parseError,
+    } = signInSchema.safeParse(dataObj);
+
+    if (!success) {
+      return console.log(success, parseError);
+    }
+
+    const { email, password } = parsedData;
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      setError(error.message);
+    }
+
+    await postAuth();
+  }
+
   return (
-    <form className="flex flex-col gap-8" action={action}>
+    <form className="flex flex-col gap-8" onSubmit={signinUser}>
       <div className="flex flex-col gap-2">
-        {state.error && (
-          <span className="pt-2 text-center text-red-500">{state.error}</span>
+        {error && (
+          <span className="pt-2 text-center text-red-500">{error}</span>
         )}
         <div>
           <Label htmlFor="email">Email</Label>

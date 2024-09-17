@@ -1,92 +1,24 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-
 import { createClient } from "@/service/supabase.auth.server";
+import { revalidatePath } from "next/cache";
 
-type Result = { page: "signin" | "signup"; error?: string };
+type Form = {
+  email: string;
+  password: string;
+  username: string;
+};
 
-export async function login(
-  state: Result,
-  formData: FormData,
-): Promise<Result> {
-  const supabase = createClient();
-
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-  const data = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
-  };
-
-  const { data: loginData, error } =
-    await supabase.auth.signInWithPassword(data);
-
-  if (error) {
-    console.log(error);
-
-    return {
-      page: "signin",
-      error: error.message,
-    };
-  }
-
+export async function postAuth(redirectPath?: string) {
   revalidatePath("/", "layout");
   redirect("/");
 }
-
-export async function signup(
-  state: Result,
-  formData: FormData,
-): Promise<Result> {
-  const supabase = createClient();
-
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
-  const username = formData.get("username") as string;
-
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.signUp({
-    email,
-    password,
-    options: { data: { username } },
-  });
-
-  if (error) {
-    console.log(error);
-
-    const message =
-      error.code === "unexpected_failure"
-        ? "Username already taken"
-        : error.message;
-    return {
-      error: message,
-      page: "signup",
-    };
-  }
-
-  revalidatePath("/", "layout");
-  redirect("/");
-}
-
-export async function signout() {
-  const supabase = createClient();
-
-  await supabase.auth.signOut();
-}
-
-type ForgotPassword = Result & { message?: string };
 
 export async function forgotPassword(
-  state: ForgotPassword,
+  state: null,
   formData: FormData,
-): Promise<ForgotPassword> {
+): Promise<{ message: string }> {
   const supabase = createClient();
   const email = formData.get("email") as string;
   await supabase.auth.resetPasswordForEmail(email);
@@ -94,4 +26,10 @@ export async function forgotPassword(
   return {
     message: "Link to reset password was sent to the email",
   };
+}
+
+export async function signout() {
+  const supabase = createClient();
+
+  await supabase.auth.signOut();
 }

@@ -35,13 +35,14 @@
     "cmdk": "1.0.0",
     "deckstrings": "^3.1.2",
     "lucide-react": "^0.441.0",
-    "next": "14.2.11",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "next": "15.0.0-rc.0",
+    "react": "19.0.0-rc-f2df5694-20240916",
+    "react-dom": "19.0.0-rc-f2df5694-20240916",
     "react-intersection-observer": "^9.13.1",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
-    "wretch": "^2.10.0"
+    "wretch": "^2.10.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.1",
