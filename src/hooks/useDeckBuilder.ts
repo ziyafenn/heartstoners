@@ -1,5 +1,10 @@
-import { type FormEvent, useCallback, useEffect, useState } from "react";
-import { useFormState } from "react-dom";
+import {
+  type FormEvent,
+  useActionState,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { loadPageWithFilters } from "@/actions/deckBuider.action";
 import type {
   Card,
@@ -13,6 +18,8 @@ import type {
 
 import { getDeckByCode, getZilliaxSideboardCards } from "@/service/hs.service";
 import { ZILLIAX_ID } from "@/lib/constants";
+import { updateDeckCodeQuery } from "@/lib/utils";
+import { useSearchParams } from "next/navigation";
 
 export function useDeckBuilder({
   initState,
@@ -26,7 +33,7 @@ export function useDeckBuilder({
     loading?: boolean;
   };
 }) {
-  const [cardsPage, onSearch] = useFormState(loadPageWithFilters, initState);
+  const [cardsPage, onSearch] = useActionState(loadPageWithFilters, initState);
   const [selectedCards, setSelectedCards] = useState<Card[]>(
     () => deck?.cards ?? [],
   );
@@ -43,6 +50,8 @@ export function useDeckBuilder({
     unholy: 0,
   });
   const [touristCard, setTouristCard] = useState<Card | null>(null);
+
+  const searchParams = useSearchParams();
 
   const loadNextPage = useCallback(async () => {
     const formData = new FormData();
@@ -125,6 +134,15 @@ export function useDeckBuilder({
     if (card.touristClassId) setTouristCard(card);
 
     setSelectedCards(currentSelection);
+    // updateDeckCodeQuery(
+    //   {
+    //     card_ids: selectedCards.map((card) => card.id),
+    //     deck_class: initState.params.class,
+    //     deck_format: initState.params.set,
+    //     sideboard_cards: sideboardCards.map(()),
+    //   },
+    //   searchParams.toString(),
+    // );
   }
 
   function removeCard(card: Card) {

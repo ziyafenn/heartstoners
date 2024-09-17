@@ -4,10 +4,10 @@ import { forgotPassword } from "@/actions/login.action";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 
 export function ForgotPasswordForm() {
-  const [state, action] = useFormState(forgotPassword, { message: "" });
+  const [state, action] = useActionState(forgotPassword, { message: "" });
 
   return (
     <form className="flex flex-col gap-8" action={action}>

@@ -14,8 +14,8 @@ import { filterDecks } from "@/actions/deckSearch.action";
 import type { CraftableDeck, UserDeck } from "@/types/deck.type";
 import { DeckRow } from "./DeckRow";
 import { DeckSearchTableHeader } from "./DeckSearchTableHeader";
-import { useFormState } from "react-dom";
 import type { Tables } from "@/types/supabase.type";
+import { useActionState } from "react";
 
 type Props = {
   decks: UserDeck[];
@@ -30,7 +30,7 @@ export function DeckSearch({
   craftableDecks,
   subArchetypes,
 }: Props) {
-  const [currentDecks, action] = useFormState(filterDecks, decks);
+  const [currentDecks, action] = useActionState(filterDecks, decks);
 
   function getCraftableDeck(id: number) {
     return craftableDecks?.find(

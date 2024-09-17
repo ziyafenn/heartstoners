@@ -14,17 +14,11 @@ import type {
   CardsPage,
 } from "@/types/hs.type";
 import { redirect } from "next/navigation";
-import {
-  type DeckCard,
-  type DeckDefinition,
-  decode,
-  encode,
-  type SideboardCard,
-} from "deckstrings";
+import { decode } from "deckstrings";
 import { CARD_CLASSES } from "@/lib/cardClasses";
 import type { Enums, Tables } from "@/types/supabase.type";
 // import { checkProfanity } from "@/service/profanity.service";
-import { findData, getYouTubeVideoID } from "@/lib/utils";
+import { encodeDeck, findData, getYouTubeVideoID } from "@/lib/utils";
 
 type Params = CardsPage & { params: CardSeachParams; loading?: boolean };
 
@@ -130,64 +124,9 @@ export async function decodeDeck(formData: FormData) {
   const slug = findData(CARD_CLASSES, "cardId", deck.heroes[0]).slug;
   const format: Enums<"deck_format"> = deck.format === 1 ? "wild" : "standard";
 
-  redirect(`/deckbuilder/${format}?deckClass=${slug}&deckCode=${deckCode}`);
-}
-
-export async function encodeDeck({
-  card_ids,
-  sideboard_cards,
-  deck_class,
-  deck_format,
-}: Pick<
-  DeckInitParams,
-  "card_ids" | "sideboard_cards" | "deck_class" | "deck_format"
->) {
-  function convertCards(ids: number[]): DeckCard[] {
-    const counts: Record<number, number> = {};
-
-    for (const id of ids) {
-      counts[id] = (counts[id] || 0) + 1;
-    }
-
-    return Object.entries(counts).map(([id, count]) => [Number(id), count]);
-  }
-
-  function convertSideboardCards(idPairs: string[]): SideboardCard[] {
-    const counts: Record<number, number> = {};
-    const parents: Record<number, number> = {};
-
-    for (const pair of idPairs) {
-      const [childIdStr, parentIdStr] = pair.split(":");
-      const childId = Number.parseInt(childIdStr, 10);
-      const parentId = Number.parseInt(parentIdStr, 10);
-
-      if (!counts[childId]) {
-        counts[childId] = 0;
-        parents[childId] = parentId;
-      }
-
-      counts[childId]++;
-    }
-
-    return Object.entries(counts).map(([childIdStr, count]) => {
-      const childId = Number.parseInt(childIdStr, 10);
-      return [childId, count, parents[childId]];
-    });
-  }
-
-  const heroCardId = findData(CARD_CLASSES, "slug", deck_class).cardId;
-
-  const deck: DeckDefinition = {
-    cards: convertCards(card_ids), // [dbfId, count] pairs
-    sideboardCards: sideboard_cards
-      ? convertSideboardCards(sideboard_cards)
-      : [], // [dbfId, count, sideboardOwnerDbfId] triplets
-    heroes: [heroCardId], // Garrosh Hellscream
-    format: deck_format === "standard" ? 2 : 1,
-  };
-
-  const deckCode = encode(deck);
-  return deckCode;
+  redirect(
+    `/deckbuilder/deck?deckClass=${slug}&format=${format}&deckCode=${deckCode}`,
+  );
 }
 
 export async function getSubArchetype(

@@ -28,7 +28,13 @@ import {
 import type { Tables } from "@/types/supabase.type";
 import type { DeckInitParams } from "@/types/deck.type";
 import { useSearchParams } from "next/navigation";
-import { type ChangeEvent, useEffect, useRef, useState } from "react";
+import {
+  type ChangeEvent,
+  useActionState,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { CARD_TYPES } from "@/lib/cardTypes";
 import { CARD_RARITIES } from "@/lib/cardRarities";
 import { AssetIcon } from "@/components/AssetIcon";
@@ -39,7 +45,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { InfoIcon } from "lucide-react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormStatus } from "react-dom";
 import { CARD_CLASSES } from "@/lib/cardClasses";
 import { CardTypeIcon } from "@/components/CardTypeIcon";
 import { DeckManaChart } from "@/components/DeckManaChart";
@@ -156,7 +162,7 @@ export default function DeckBuilderForm({
   const cardTypeAllocation = Object.entries(cardTypes);
   const cardRarityAllocation = Object.entries(cardRarities);
 
-  const [state, formAction] = useFormState(createDeck, {
+  const [state, formAction] = useActionState(createDeck, {
     data: initParams,
   });
 

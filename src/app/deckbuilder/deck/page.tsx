@@ -15,14 +15,17 @@ import type {
 import type { CardClass } from "blizzard.js/dist/resources/hs";
 
 export default async function ClassDeckBuilder({
-  params,
+  // params,
   searchParams,
 }: {
-  params: { format: SetGroups["slug"] };
-  searchParams: { deckClass: CardClass; deckCode?: string };
+  // params: { format: SetGroups["slug"] };
+  searchParams: {
+    deckClass: CardClass;
+    format: SetGroups["slug"];
+    deckCode?: string;
+  };
 }) {
-  const { format } = params;
-  const { deckClass, deckCode } = searchParams;
+  const { deckClass, format, deckCode } = searchParams;
   let currentDeck: Deck | null = null;
   let currentDeckClass = deckClass;
   let currentDeckFormat = format;

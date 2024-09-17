@@ -32,8 +32,8 @@ export default function DeclBuilder() {
             <li className="select-none" key={cardClass.id}>
               <Link
                 href={{
-                  pathname: "/deckbuilder/standard",
-                  query: { deckClass: cardClass.slug },
+                  pathname: "/deckbuilder/deck",
+                  query: { deckClass: cardClass.slug, format: "standard" },
                 }}
               >
                 <div className="relative rounded-sm border-8 border-orange-400 border-double">

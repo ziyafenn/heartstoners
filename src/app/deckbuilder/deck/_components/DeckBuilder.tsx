@@ -14,7 +14,7 @@ import type {
   Rarity,
   SetGroups,
 } from "@/types/hs.type";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 import { CurrentDeck } from "./CurrentDeck";
 import { CardSearchResult } from "./CardSearchResult";
 import { useInView } from "react-intersection-observer";
@@ -26,6 +26,9 @@ import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { getSubArchetype } from "@/actions/deckBuider.action";
 import type { Tables } from "@/types/supabase.type";
+import { createClient } from "@/service/supabase.auth.client";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import AuthCard from "@/app/(auth)/login/_components/AuthCard";
 
 function Loading() {
   return <div className="z-50 size-full bg-red-500">Loading</div>;
@@ -47,13 +50,14 @@ export function DeckBuilder({
   deck: Deck | null;
 }) {
   const searchParams = useSearchParams();
-  const params = useParams<{ format: SetGroups["slug"] }>();
-  const { format } = params;
+  const pathname = usePathname();
+
+  const format = searchParams.get("format") as SetGroups["slug"];
   const deckClass = searchParams.get("deckClass") as CardClass["slug"];
   const initState = {
     ...initialCards,
     params: {
-      set: format as "standard",
+      set: format,
       class: [deckClass, "neutral"] as CardClass["slug"][],
       multiClass: deckClass,
     },
@@ -108,17 +112,17 @@ export function DeckBuilder({
   }
 
   async function onFormOpen() {
-    // const supabase = createClient();
-    // const {
-    //   data: { user },
-    //   error,
-    // } = await supabase.auth.getUser();
-    // if (!user) {
-    //   console.log("no user");
+    const supabase = createClient();
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser();
+    if (!user) {
+      console.log("no user");
 
-    //   setIsSignedIn(true);
-    //   return;
-    // }
+      setIsSignedIn(true);
+      return;
+    }
 
     const subArchetype = await getSubArchetype(deckClass, selectedCards);
     if (subArchetype) setSubArchetype(subArchetype);
@@ -147,11 +151,11 @@ export function DeckBuilder({
           subArchetype={subArchetype}
         />
       )}
-      {/* <Dialog open={isSignedIn} onOpenChange={setIsSignedIn}>
+      <Dialog open={isSignedIn} onOpenChange={setIsSignedIn}>
         <DialogContent className="sm:max-w-[425px]">
-          <SignUp />
+          <AuthCard redirect={pathname} />
         </DialogContent>
-      </Dialog> */}
+      </Dialog>
       <div className="flex flex-col gap-4">
         <DeckBuilderFilter
           action={updateFilters}
