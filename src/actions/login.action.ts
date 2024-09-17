@@ -10,9 +10,10 @@ type Form = {
   username: string;
 };
 
-export async function postAuth(redirectPath?: string) {
+export async function postAuth({ redirectPath }: { redirectPath?: string }) {
   revalidatePath("/", "layout");
-  redirect(redirectPath ?? "/");
+
+  redirectPath && redirect(redirectPath);
 }
 
 export async function forgotPassword(
@@ -34,7 +35,7 @@ export async function signout() {
   await supabase.auth.signOut();
 }
 
-export async function discordLogin() {
+export async function discordLogin({ redirectPath = "/" }) {
   const site_url = process.env.NEXT_PUBLIC_SITE_URL;
 
   const supabase = createClient();
@@ -42,7 +43,7 @@ export async function discordLogin() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "discord",
     options: {
-      redirectTo: `${site_url}/auth/callback`,
+      redirectTo: `${site_url}/auth/callback?next=${redirectPath}`,
     },
   });
 

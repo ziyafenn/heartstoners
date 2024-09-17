@@ -51,9 +51,13 @@ export function DeckBuilder({
 }) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const supabase = createClient();
 
-  const format = searchParams.get("format") as SetGroups["slug"];
+  const format =
+    searchParams.get("format") ?? ("standard" as SetGroups["slug"]);
   const deckClass = searchParams.get("deckClass") as CardClass["slug"];
+  const deckCode = searchParams.get("deckCode");
+
   const initState = {
     ...initialCards,
     params: {
@@ -82,7 +86,7 @@ export function DeckBuilder({
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [subArchetype, setSubArchetype] =
     useState<Tables<"meta_sub_archetypes"> | null>(null);
-  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [isAuthDialogOpen, setIsAuthDialogOpen] = useState(false);
 
   const currentSideboard = sideboardCards.find(
     (sideboard) => sideboard.sideboardCard.id === activeSideboardCard?.id,
@@ -112,7 +116,6 @@ export function DeckBuilder({
   }
 
   async function onFormOpen() {
-    const supabase = createClient();
     const {
       data: { user },
       error,
@@ -120,7 +123,7 @@ export function DeckBuilder({
     if (!user) {
       console.log("no user");
 
-      setIsSignedIn(true);
+      setIsAuthDialogOpen(true);
       return;
     }
 
@@ -151,9 +154,13 @@ export function DeckBuilder({
           subArchetype={subArchetype}
         />
       )}
-      <Dialog open={isSignedIn} onOpenChange={setIsSignedIn}>
+      <Dialog open={isAuthDialogOpen} onOpenChange={setIsAuthDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
-          <AuthCard redirect={pathname} />
+          <AuthCard
+            action={() => setIsAuthDialogOpen(false)}
+            redirect={`/deckbuilder/deck?deckClass=${deckClass}&format=${format}&deckCode=${deckCode}`}
+            //todo: pass generated deck code.
+          />
         </DialogContent>
       </Dialog>
       <div className="flex flex-col gap-4">
@@ -220,7 +227,7 @@ export function DeckBuilder({
             ) : (
               <Button
                 type="button"
-                disabled={selectedCards.length < 30}
+                disabled={selectedCards.length < 1}
                 className="rounded-none bg-orange-200"
                 onClick={onFormOpen}
               >

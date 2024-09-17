@@ -10,7 +10,10 @@ import type { z } from "zod";
 
 type Form = z.infer<typeof signInSchema>;
 
-export function SignIn({ redirect }: { redirect?: string }) {
+export function SignIn({
+  redirect,
+  setSuccess,
+}: { redirect?: string; setSuccess?: (value: boolean) => void }) {
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<
     Partial<Record<keyof Form, string[]>>
@@ -54,7 +57,7 @@ export function SignIn({ redirect }: { redirect?: string }) {
       setError(error.message);
       return;
     }
-
+    if (setSuccess) setSuccess(true);
     await postAuth(redirect);
   }
 
