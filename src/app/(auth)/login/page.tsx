@@ -1,5 +1,5 @@
-import TabsCard from "./_components/TabsCard";
+import AuthCard from "./_components/AuthCard";
 
 export default function LoginPage() {
-  return <TabsCard />;
+  return <AuthCard />;
 }

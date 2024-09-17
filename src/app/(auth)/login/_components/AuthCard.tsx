@@ -11,7 +11,7 @@ import { SignIn } from "./SignIn";
 import { SignUp } from "./SignUp";
 import { DiscordSignIn } from "./DiscordSignIn";
 
-export default function TabsCard() {
+export default function AuthCard({ redirect }: { redirect?: string }) {
   return (
     <Card className="w-full max-w-sm shadow-2xl">
       <CardHeader>
@@ -25,10 +25,10 @@ export default function TabsCard() {
             <TabsTrigger value="signup">Sign up</TabsTrigger>
           </TabsList>
           <TabsContent value="signin">
-            <SignIn />
+            <SignIn redirect={redirect} />
           </TabsContent>
           <TabsContent value="signup">
-            <SignUp />
+            <SignUp redirect={redirect} />
           </TabsContent>
         </Tabs>
         <CardFooter className="flex flex-col gap-4">

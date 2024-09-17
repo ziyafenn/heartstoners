@@ -9,7 +9,7 @@ import { FormItem } from "./FormItem";
 
 type Form = z.infer<typeof signUpSchema>;
 
-export function SignUp() {
+export function SignUp({ redirect }: { redirect?: string }) {
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<
     Partial<Record<keyof Form, string[]>>
@@ -56,7 +56,7 @@ export function SignUp() {
       setError(error.message);
       return;
     }
-    await postAuth();
+    await postAuth(redirect);
   }
 
   return (

@@ -12,7 +12,7 @@ type Form = {
 
 export async function postAuth(redirectPath?: string) {
   revalidatePath("/", "layout");
-  redirect("/");
+  redirect(redirectPath ?? "/");
 }
 
 export async function forgotPassword(
