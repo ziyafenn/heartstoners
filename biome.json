@@ -25,7 +25,10 @@
         "noForEach": "off"
       },
       "correctness": {
-        "noUnusedImports": "warn"
+        "noUnusedImports": {
+          "fix": "none",
+          "level": "warn"
+        }
       },
       "nursery": {
         "useSortedClasses": {

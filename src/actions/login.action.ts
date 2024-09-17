@@ -5,10 +5,10 @@ import { redirect } from "next/navigation";
 
 import { createClient } from "@/service/supabase.auth.server";
 
-type Result = { error?: string };
+type Result = { page: "signin" | "signup"; error?: string };
 
 export async function login(
-  state: { error?: string },
+  state: Result,
   formData: FormData,
 ): Promise<Result> {
   const supabase = createClient();
@@ -24,7 +24,10 @@ export async function login(
     await supabase.auth.signInWithPassword(data);
 
   if (error) {
+    console.log(error);
+
     return {
+      page: "signin",
       error: error.message,
     };
   }
@@ -56,12 +59,15 @@ export async function signup(
   });
 
   if (error) {
+    console.log(error);
+
     const message =
       error.code === "unexpected_failure"
         ? "Username already taken"
         : error.message;
     return {
       error: message,
+      page: "signup",
     };
   }
 

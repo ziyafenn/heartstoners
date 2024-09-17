@@ -26,9 +26,6 @@ import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { getSubArchetype } from "@/actions/deckBuider.action";
 import type { Tables } from "@/types/supabase.type";
-import { createClient } from "@/service/supabase.auth.client";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { SignUp } from "@/app/(auth)/auth/@auth/_components/SignUp";
 
 function Loading() {
   return <div className="z-50 size-full bg-red-500">Loading</div>;
@@ -111,17 +108,17 @@ export function DeckBuilder({
   }
 
   async function onFormOpen() {
-    const supabase = createClient();
-    const {
-      data: { user },
-      error,
-    } = await supabase.auth.getUser();
-    if (!user) {
-      console.log("no user");
+    // const supabase = createClient();
+    // const {
+    //   data: { user },
+    //   error,
+    // } = await supabase.auth.getUser();
+    // if (!user) {
+    //   console.log("no user");
 
-      setIsSignedIn(true);
-      return;
-    }
+    //   setIsSignedIn(true);
+    //   return;
+    // }
 
     const subArchetype = await getSubArchetype(deckClass, selectedCards);
     if (subArchetype) setSubArchetype(subArchetype);
@@ -150,11 +147,11 @@ export function DeckBuilder({
           subArchetype={subArchetype}
         />
       )}
-      <Dialog open={isSignedIn} onOpenChange={setIsSignedIn}>
+      {/* <Dialog open={isSignedIn} onOpenChange={setIsSignedIn}>
         <DialogContent className="sm:max-w-[425px]">
           <SignUp />
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
       <div className="flex flex-col gap-4">
         <DeckBuilderFilter
           action={updateFilters}
