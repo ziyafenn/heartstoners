@@ -1,14 +1,23 @@
 "use client";
 import { postAuth } from "@/actions/login.action";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { createClient } from "@/service/supabase.auth.client";
 import { signUpSchema } from "@/types/schema";
 import { type FormEvent, useState } from "react";
+import type { z } from "zod";
+import { FormItem } from "./FormItem";
+
+type Form = z.infer<typeof signUpSchema>;
 
 export function SignUp() {
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<
+    Partial<Record<keyof Form, string[]>>
+  >({
+    email: [],
+    password: [],
+    username: [],
+  });
 
   async function signupUser(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -29,7 +38,10 @@ export function SignUp() {
     } = signUpSchema.safeParse(dataObj);
 
     if (!success) {
-      return console.log(success, parseError);
+      const er = parseError.flatten().fieldErrors;
+
+      setFieldErrors(er);
+      return;
     }
 
     const { email, password, username } = parsedData;
@@ -37,11 +49,12 @@ export function SignUp() {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { username } },
+      options: { data: { display_name: username } },
     });
 
     if (error) {
       setError(error.message);
+      return;
     }
     await postAuth();
   }
@@ -50,24 +63,17 @@ export function SignUp() {
     <form className="flex flex-col gap-8" onSubmit={signupUser}>
       {error && <span className="pt-2 text-center text-red-500">{error}</span>}
       <div className="flex flex-col gap-2">
-        <div>
-          <Label htmlFor="username">Username</Label>
-          <Input name="username" type="username" required key="username" />
-        </div>
-        <div>
-          <Label htmlFor="email">Email</Label>
-          <Input
-            key="email"
-            name="email"
-            type="email"
-            placeholder="m@example.com"
-            required
-          />
-        </div>
-        <div>
-          <Label htmlFor="password">Password</Label>
-          <Input name="password" type="password" required key="password" />
-        </div>
+        <FormItem
+          field="username"
+          label="Username"
+          error={fieldErrors.username?.[0]}
+        />
+        <FormItem field="email" label="Email" error={fieldErrors.email?.[0]} />
+        <FormItem
+          field="password"
+          label="Password"
+          error={fieldErrors.password?.[0]}
+        />
       </div>
       <Button type="submit" className="w-full">
         Create your account

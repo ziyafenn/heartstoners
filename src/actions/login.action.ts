@@ -33,3 +33,20 @@ export async function signout() {
 
   await supabase.auth.signOut();
 }
+
+export async function discordLogin() {
+  const site_url = process.env.NEXT_PUBLIC_SITE_URL;
+
+  const supabase = createClient();
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "discord",
+    options: {
+      redirectTo: `${site_url}/auth/callback`,
+    },
+  });
+
+  if (data.url) {
+    redirect(data.url);
+  }
+}

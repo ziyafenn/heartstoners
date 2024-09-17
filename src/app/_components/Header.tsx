@@ -26,7 +26,7 @@ export async function Header() {
           </li>
           <li>
             {userProfile ? (
-              <ProfileMenu username={userProfile.username} />
+              <ProfileMenu username={userProfile.display_name} />
             ) : (
               <Link href="/login">Sign in</Link>
             )}

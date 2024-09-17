@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -10,6 +9,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SignIn } from "./SignIn";
 import { SignUp } from "./SignUp";
+import { DiscordSignIn } from "./DiscordSignIn";
 
 export default function TabsCard() {
   return (
@@ -33,9 +33,7 @@ export default function TabsCard() {
         </Tabs>
         <CardFooter className="flex flex-col gap-4">
           <span className="text-gray-400 text-sm">or continue with</span>
-          <Button type="button" className="w-full">
-            Discord
-          </Button>
+          <DiscordSignIn />
         </CardFooter>
       </CardContent>
     </Card>

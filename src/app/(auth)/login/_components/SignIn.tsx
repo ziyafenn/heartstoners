@@ -2,15 +2,22 @@
 
 import { postAuth } from "@/actions/login.action";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { createClient } from "@/service/supabase.auth.client";
 import { signInSchema } from "@/types/schema";
-import Link from "next/link";
 import { type FormEvent, useState } from "react";
+import { FormItem } from "./FormItem";
+import type { z } from "zod";
+
+type Form = z.infer<typeof signInSchema>;
 
 export function SignIn() {
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<
+    Partial<Record<keyof Form, string[]>>
+  >({
+    email: [],
+    password: [],
+  });
 
   async function signinUser(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -30,7 +37,10 @@ export function SignIn() {
     } = signInSchema.safeParse(dataObj);
 
     if (!success) {
-      return console.log(success, parseError);
+      const er = parseError.flatten().fieldErrors;
+
+      setFieldErrors(er);
+      return;
     }
 
     const { email, password } = parsedData;
@@ -42,6 +52,7 @@ export function SignIn() {
 
     if (error) {
       setError(error.message);
+      return;
     }
 
     await postAuth();
@@ -53,30 +64,12 @@ export function SignIn() {
         {error && (
           <span className="pt-2 text-center text-red-500">{error}</span>
         )}
-        <div>
-          <Label htmlFor="email">Email</Label>
-          <Input
-            name="email"
-            type="email"
-            placeholder="m@example.com"
-            required
-          />
-        </div>
-        <div>
-          <div className="flex items-center justify-between">
-            <Label htmlFor="password">Password</Label>
-            <Button
-              type="button"
-              variant="link"
-              size="sm"
-              className="text-blue-500"
-              asChild
-            >
-              <Link href="/resetPassword">Forgot password?</Link>
-            </Button>
-          </div>
-          <Input name="password" type="password" required />
-        </div>
+        <FormItem field="email" label="Email" error={fieldErrors.email?.[0]} />
+        <FormItem
+          field="password"
+          label="Password"
+          error={fieldErrors.password?.[0]}
+        />
       </div>
       <Button type="submit">Sign In with Email</Button>
     </form>
