@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Patua_One as FonsHs, Inter as FontSans } from "next/font/google";
+import { Patua_One as FonsHs, Rubik as FontSans } from "next/font/google";
 import "./globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";

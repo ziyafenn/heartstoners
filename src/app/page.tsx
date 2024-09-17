@@ -63,9 +63,7 @@ export default async function Home() {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <h2 className="font-hs text-2xl outline-2">
-            Most popular decks of the week
-          </h2>
+          <h2 className="text-2xl outline-2">Most popular decks of the week</h2>
           <ul className="grid grid-cols-auto-fill-deckcard gap-4">
             {mostPopular?.map((deck) => (
               <DeckUICard data={deck} key={deck.id} />
@@ -73,7 +71,7 @@ export default async function Home() {
           </ul>
         </div>
         <div className="flex flex-col gap-4">
-          <h2 className="font-hs text-2xl outline-2">
+          <h2 className="text-2xl outline-2">
             Recent submissions from our users
           </h2>
           <ul className="grid grid-cols-auto-fill-deckcard gap-4">
