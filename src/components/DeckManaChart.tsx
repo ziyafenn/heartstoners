@@ -14,7 +14,8 @@ export function DeckManaChart({ selectedCards }: { selectedCards: Card[] }) {
   const manaCostCounts: { name: string; count: number }[] = [];
   const manaCostCountsSum = selectedCards.reduce(
     (acc, card) => {
-      acc[card.manaCost] = (acc[card.manaCost] || 0) + 1;
+      const manaCost = card.manaCost >= 7 ? 7 : card.manaCost;
+      acc[manaCost] = (acc[manaCost] || 0) + 1;
       return acc;
     },
     { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0 } as {
@@ -37,12 +38,12 @@ export function DeckManaChart({ selectedCards }: { selectedCards: Card[] }) {
         indexBy="name"
         margin={{ top: 0, right: 0, bottom: 40, left: 0 }}
         padding={0.4}
-        colors={[colors.blue[300]]}
+        colors={[colors.indigo[500]]}
         isInteractive={false}
         theme={{
           grid: { line: { stroke: colors.border } },
           axis: { legend: { text: { fill: "#FFFFFF" } } },
-          labels: { text: { fill: "red" } },
+          labels: { text: { fill: "white" } },
           text: { fill: "white" },
         }}
         axisBottom={{
