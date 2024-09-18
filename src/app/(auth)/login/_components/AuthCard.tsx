@@ -19,8 +19,8 @@ export default function AuthCard({
   return (
     <Card className="w-full max-w-sm shadow-2xl">
       <CardHeader>
-        <CardTitle>Sign In</CardTitle>
-        <CardDescription>Choose your preferred sign-in method</CardDescription>
+        <CardTitle>Join HeartStoners</CardTitle>
+        <CardDescription>Sign in or create your account</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4 px-6 pb-6">
         <AuthForm

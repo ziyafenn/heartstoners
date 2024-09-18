@@ -2,6 +2,8 @@
 
 import { discordLogin } from "@/actions/login.action";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import discordLogo from "public/img/discord.svg";
 
 export function DiscordSignIn({
   redirectDeckCode,
@@ -10,9 +12,10 @@ export function DiscordSignIn({
     <Button
       onClick={() => discordLogin({ redirectDeckCode })}
       type="button"
-      className="w-full"
+      className="flex w-full items-center gap-2 bg-[#5865F2] text-white"
     >
-      Discord
+      <Image src={discordLogo} alt="discord" />
+      Sign in with Discord
     </Button>
   );
 }

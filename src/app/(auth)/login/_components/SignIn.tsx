@@ -12,8 +12,8 @@ type Form = z.infer<typeof signInSchema>;
 
 export function SignIn({
   redirectDeckCode,
-  setSuccess,
-}: { redirectDeckCode?: string; setSuccess?: (value: boolean) => void }) {
+  onClose,
+}: { redirectDeckCode?: string; onClose?: () => void }) {
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<
     Partial<Record<keyof Form, string[]>>
@@ -57,8 +57,8 @@ export function SignIn({
       setError(error.message);
       return;
     }
-    if (setSuccess) setSuccess(true);
-    await postAuth(redirectDeckCode);
+    await postAuth({ shouldRedirect: !redirectDeckCode });
+    if (onClose) onClose();
   }
 
   return (

@@ -169,7 +169,11 @@ export function DeckBuilder({
       <Dialog open={isAuthDialogOpen} onOpenChange={setIsAuthDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogTitle>Your deck is saved</DialogTitle>
-          <DialogDescription>You need an account to continue</DialogDescription>
+          <DialogDescription>
+            To finish creating your deck, please sign in or create an account.
+            Your progress has been saved and your deck will be restored once you
+            sign in.
+          </DialogDescription>
           <AuthForm
             onClose={() => setIsAuthDialogOpen(false)}
             redirectDeckCode={deckCode ?? ""}

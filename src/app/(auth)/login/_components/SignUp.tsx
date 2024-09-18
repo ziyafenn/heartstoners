@@ -9,7 +9,10 @@ import { FormItem } from "./FormItem";
 
 type Form = z.infer<typeof signUpSchema>;
 
-export function SignUp({ redirectDeckCode }: { redirectDeckCode?: string }) {
+export function SignUp({
+  redirectDeckCode,
+  onClose,
+}: { redirectDeckCode?: string; onClose?: () => void }) {
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<
     Partial<Record<keyof Form, string[]>>
@@ -56,7 +59,8 @@ export function SignUp({ redirectDeckCode }: { redirectDeckCode?: string }) {
       setError(error.message);
       return;
     }
-    await postAuth(redirectDeckCode);
+    await postAuth({ shouldRedirect: !redirectDeckCode });
+    if (onClose) onClose();
   }
 
   return (

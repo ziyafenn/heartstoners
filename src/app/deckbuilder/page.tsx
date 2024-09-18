@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { decodeDeck } from "@/actions/deckBuider.action";
 import { AssetIcon } from "@/components/AssetIcon";
 
-export default function DeclBuilder() {
+export default function DeckBuilder() {
   return (
     <div className="m-auto flex flex-col gap-8">
       <div className="flex items-center justify-between">

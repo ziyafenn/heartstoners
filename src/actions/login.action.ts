@@ -10,10 +10,9 @@ type Form = {
   username: string;
 };
 
-export async function postAuth(redirectDeckCode?: string) {
+export async function postAuth({ shouldRedirect = true }) {
   revalidatePath("/", "layout");
-
-  if (!redirectDeckCode) redirect("/");
+  if (shouldRedirect) redirect("/");
 }
 
 export async function forgotPassword(
