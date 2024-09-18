@@ -130,9 +130,7 @@ export default function DeckBuilderForm({
   const cardTypeAllocation = Object.entries(cardTypes);
   const cardRarityAllocation = Object.entries(cardRarities);
 
-  const [state, formAction] = useActionState(createDeck, {
-    data: initParams,
-  });
+  const [state, formAction] = useActionState(createDeck, { initParams });
 
   function onNameInputChange(event: ChangeEvent<HTMLInputElement>) {
     const input = event.currentTarget;
@@ -141,6 +139,8 @@ export default function DeckBuilderForm({
       input.setCustomValidity("");
     }
   }
+
+  const { userInput } = state;
 
   useEffect(() => {
     if (!isFormMounted || !formRef) return;
@@ -277,6 +277,7 @@ export default function DeckBuilderForm({
                     spellCheck="true"
                     maxLength={40}
                     placeholder="Include the class name to capture your Hearthstone deck's essence"
+                    defaultValue={userInput?.name}
                   />
                 </div>
                 <div className="flex flex-1 flex-col">
@@ -289,24 +290,31 @@ export default function DeckBuilderForm({
                     autoCapitalize="sentences"
                     draggable={false}
                     placeholder="Describe Your Deck's Strategy and Key Cards"
+                    defaultValue={userInput?.description}
                   />
                 </div>
                 <div>
-                  <Label htmlFor="youtube_link">Youtube link</Label>
+                  <Label htmlFor="youtube_id">Youtube link</Label>
                   <Input
-                    name="youtube_link"
-                    key="youtube_link"
+                    name="youtube_id"
+                    key="youtube_id"
                     type="url"
                     autoComplete="off"
                     pattern="^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$"
                     placeholder="Make sure to add youtube video link if you got one!"
+                    defaultValue={state.userInput?.youtube_id ?? ""}
                   />
                 </div>
               </div>
               <div className="flex items-start gap-8">
                 <div>
                   <Label>Archetype</Label>
-                  <Select defaultValue="aggro" name="archetype" required>
+                  <Select
+                    defaultValue="aggro"
+                    name="archetype"
+                    required
+                    value={userInput?.archetype}
+                  >
                     <SelectTrigger className="w-[180px]">
                       <SelectValue placeholder="Archetype" />
                     </SelectTrigger>

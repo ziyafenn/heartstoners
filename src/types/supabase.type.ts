@@ -244,7 +244,7 @@ export type Database = {
           deck_class: Database["public"]["Enums"]["card_class"]
           deck_code: string
           deck_format: Database["public"]["Enums"]["deck_format"]
-          description: string | null
+          description: string
           dust_cost_per_card: number[]
           dust_cost_sum: number
           game_mode: Database["public"]["Enums"]["game_mode"]
@@ -264,7 +264,7 @@ export type Database = {
           deck_class: Database["public"]["Enums"]["card_class"]
           deck_code?: string
           deck_format: Database["public"]["Enums"]["deck_format"]
-          description?: string | null
+          description?: string
           dust_cost_per_card: number[]
           dust_cost_sum?: number
           game_mode?: Database["public"]["Enums"]["game_mode"]
@@ -284,7 +284,7 @@ export type Database = {
           deck_class?: Database["public"]["Enums"]["card_class"]
           deck_code?: string
           deck_format?: Database["public"]["Enums"]["deck_format"]
-          description?: string | null
+          description?: string
           dust_cost_per_card?: number[]
           dust_cost_sum?: number
           game_mode?: Database["public"]["Enums"]["game_mode"]

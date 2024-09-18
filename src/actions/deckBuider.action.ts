@@ -18,7 +18,8 @@ import { decode } from "deckstrings";
 import { CARD_CLASSES } from "@/lib/cardClasses";
 import type { Enums, Tables } from "@/types/supabase.type";
 // import { checkProfanity } from "@/service/profanity.service";
-import { encodeDeck, findData, getYouTubeVideoID } from "@/lib/utils";
+import { encodeDeck, findData } from "@/lib/utils";
+import { checkProfanity } from "@/service/profanity.service";
 
 type Params = CardsPage & { params: CardSeachParams; loading?: boolean };
 
@@ -57,7 +58,11 @@ export async function loadPageWithFilters(
   return res;
 }
 
-type CreateDeck = { data: DeckInitParams | null; error?: string };
+type CreateDeck = {
+  initParams: DeckInitParams;
+  userInput?: DeckUserInputParams;
+  error?: string;
+};
 
 export async function createDeck(
   state: CreateDeck,
@@ -66,29 +71,24 @@ export async function createDeck(
   let userInput = {} as DeckUserInputParams;
   const gameVersion = await getCurrentGameVersion();
   for (const [key, value] of formData.entries()) {
-    if (key === "youtube_link") {
-      userInput = {
-        ...userInput,
-        youtube_id: getYouTubeVideoID(value.toString()),
-      };
-    } else {
-      userInput = {
-        ...userInput,
-        [key]: value,
-      };
-    }
+    userInput = {
+      ...userInput,
+      [key]: value,
+    };
   }
-  const { data: initParams } = state;
+  const { initParams } = state;
 
-  // const text = `${userInput.name}. ${userInput.description}`;
-  // const { isProfanity } = await checkProfanity(text);
+  const text = userInput.name;
+  const { isProfanity } = await checkProfanity(text);
 
-  // if (isProfanity)
-  //   return {
-  //     data: null,
-  //     error:
-  //       "It seems your text input contains profanity. If it's not, please contact us on Discord.",
-  //   };
+  if (isProfanity) {
+    return {
+      initParams,
+      userInput,
+      error:
+        "It seems your text input contains profanity. If it's not, please contact us on Discord.",
+    };
+  }
 
   const deckCode = encodeDeck({
     card_ids: initParams?.card_ids,
@@ -99,7 +99,7 @@ export async function createDeck(
 
   const { data, error } = await createUserDeck({
     gameVersion,
-    initParams: initParams!,
+    initParams,
     userInput,
     deckCode,
   });
@@ -109,7 +109,11 @@ export async function createDeck(
       error.code === "PGRST116"
         ? "It appears that this deck has already been created by you. If you believe this is an error, please contact us on our Discord to report the issue."
         : error.message;
-    return { data: null, error: message };
+    return {
+      initParams,
+      userInput,
+      error: message,
+    };
   }
 
   redirect(`/decks/${data.id}`, RedirectType.replace); //redirect type does nothing

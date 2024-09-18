@@ -11,6 +11,7 @@ import type {
   DeckUserInputParams,
 } from "@/types/deck.type";
 import type { QueryData } from "@supabase/supabase-js";
+import { getYouTubeVideoID } from "@/lib/utils";
 
 const deckQuery = `*, 
     profiles (*),
@@ -253,6 +254,9 @@ export async function createUserDeck({
       {
         ...initParams,
         ...userInput,
+        youtube_id: userInput.youtube_id
+          ? getYouTubeVideoID(userInput.youtube_id)
+          : null,
         game_version: gameVersion,
         deck_code: deckCode,
       },
