@@ -14,8 +14,8 @@ export async function Header() {
         <Link href="/">
           <Image
             src="/img/logo.png"
-            width={676}
-            height={362}
+            width={1290}
+            height={402}
             alt="heartstoners logo"
             className="h-20 w-auto"
           />
