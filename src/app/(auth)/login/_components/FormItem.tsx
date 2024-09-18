@@ -1,19 +1,24 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
-import type { InputHTMLAttributes } from "react";
+import type { InputHTMLAttributes, RefObject } from "react";
 
 export function FormItem({
   field,
   label,
   error,
+  description = "",
   forgotPassTarget,
+  ref,
   ...attr
 }: {
   field: string;
   label: string;
+  description?: string;
   error: string | undefined;
   forgotPassTarget?: "_blank" | "_self";
+  ref?: RefObject<HTMLInputElement>;
 } & InputHTMLAttributes<HTMLInputElement>) {
   return (
     <div>
@@ -29,8 +34,17 @@ export function FormItem({
           </Link>
         )}
       </div>
-      <Input key={field} name={field} type={field} required {...attr} />
-      <p className="mt-1 text-red-500 text-sm">{error}</p>
+      <Input
+        key={field}
+        name={field}
+        type={field}
+        required
+        ref={ref}
+        {...attr}
+      />
+      <p className={cn("mt-2 text-gray-400 text-xs", error && "text-red-500")}>
+        {error ? error : description}
+      </p>
     </div>
   );
 }

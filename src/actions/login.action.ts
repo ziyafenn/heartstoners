@@ -15,19 +15,6 @@ export async function postAuth({ shouldRedirect = true }) {
   if (shouldRedirect) redirect("/");
 }
 
-export async function forgotPassword(
-  state: { message: string },
-  formData: FormData,
-): Promise<{ message: string }> {
-  const supabase = createClient();
-  const email = formData.get("email") as string;
-  await supabase.auth.resetPasswordForEmail(email);
-
-  return {
-    message: "Link to reset password was sent to the email",
-  };
-}
-
 export async function signout() {
   const supabase = createClient();
 

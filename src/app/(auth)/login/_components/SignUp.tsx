@@ -67,16 +67,18 @@ export function SignUp({
     <form className="flex flex-col gap-8" onSubmit={signupUser}>
       {error && <span className="pt-2 text-center text-red-500">{error}</span>}
       <div className="flex flex-col gap-2">
-        <FormItem
-          field="username"
-          label="Username"
-          error={fieldErrors.username?.[0]}
-        />
         <FormItem field="email" label="Email" error={fieldErrors.email?.[0]} />
         <FormItem
           field="password"
           label="Password"
           error={fieldErrors.password?.[0]}
+          description="Min 6 characters"
+        />
+        <FormItem
+          field="username"
+          label="Username"
+          error={fieldErrors.username?.[0]}
+          description="Min 3 characters, no profanity"
         />
       </div>
       <Button type="submit" className="w-full">

@@ -4,8 +4,10 @@ type Props = {
 };
 export function DeckDescription({ description, youtube_id }: Props) {
   return (
-    <div className="flex flex-col gap-4 pr-4">
-      <div className="whitespace-pre-wrap">{description}</div>
+    <div className="flex max-w-[80ch] flex-col gap-4 pr-4">
+      <div className="whitespace-pre-wrap">
+        {description || "Author did not write any description..."}
+      </div>
       {!!youtube_id && (
         <iframe
           id="ytplayer"
