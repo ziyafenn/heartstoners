@@ -13,7 +13,7 @@ import type {
   CardSeachParams,
   CardsPage,
 } from "@/types/hs.type";
-import { redirect } from "next/navigation";
+import { redirect, RedirectType } from "next/navigation";
 import { decode } from "deckstrings";
 import { CARD_CLASSES } from "@/lib/cardClasses";
 import type { Enums, Tables } from "@/types/supabase.type";
@@ -112,7 +112,7 @@ export async function createDeck(
     return { data: null, error: message };
   }
 
-  redirect(`/decks/${data.id}`);
+  redirect(`/decks/${data.id}`, RedirectType.replace); //redirect type does nothing
 }
 
 export async function decodeDeck(formData: FormData) {
