@@ -93,7 +93,7 @@ export type Database = {
           deck_id: number
           id: number
           ip: string
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           author_id: string
@@ -101,7 +101,7 @@ export type Database = {
           deck_id: number
           id?: number
           ip: string
-          user_id?: string | null
+          user_id?: string
         }
         Update: {
           author_id?: string
@@ -109,7 +109,7 @@ export type Database = {
           deck_id?: number
           id?: number
           ip?: string
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: [
           {
@@ -140,21 +140,21 @@ export type Database = {
           created_at: string
           id: number
           is_expansion: boolean
-          url: string | null
+          url: string
           version_name: string
         }
         Insert: {
           created_at?: string
           id?: number
           is_expansion?: boolean
-          url?: string | null
+          url?: string
           version_name: string
         }
         Update: {
           created_at?: string
           id?: number
           is_expansion?: boolean
-          url?: string | null
+          url?: string
           version_name?: string
         }
         Relationships: []
@@ -163,7 +163,7 @@ export type Database = {
         Row: {
           as_of: string | null
           card_class: Database["public"]["Enums"]["card_class"]
-          core_cards: number[] | null
+          core_cards: number[]
           created_at: string
           deck_class_id: number
           id: number
@@ -176,7 +176,7 @@ export type Database = {
         Insert: {
           as_of?: string | null
           card_class: Database["public"]["Enums"]["card_class"]
-          core_cards?: number[] | null
+          core_cards?: number[]
           created_at?: string
           deck_class_id: number
           id?: number
@@ -189,7 +189,7 @@ export type Database = {
         Update: {
           as_of?: string | null
           card_class?: Database["public"]["Enums"]["card_class"]
-          core_cards?: number[] | null
+          core_cards?: number[]
           created_at?: string
           deck_class_id?: number
           id?: number
@@ -203,28 +203,28 @@ export type Database = {
       }
       profiles: {
         Row: {
-          avatar_url: string | null
+          avatar_url: string
           created_at: string
           display_name: string
-          hsreplay_id: string | null
+          hsreplay_id: string
           id: string
-          website: string | null
+          website: string
         }
         Insert: {
-          avatar_url?: string | null
+          avatar_url?: string
           created_at?: string
           display_name: string
-          hsreplay_id?: string | null
+          hsreplay_id?: string
           id: string
-          website?: string | null
+          website?: string
         }
         Update: {
-          avatar_url?: string | null
+          avatar_url?: string
           created_at?: string
           display_name?: string
-          hsreplay_id?: string | null
+          hsreplay_id?: string
           id?: string
-          website?: string | null
+          website?: string
         }
         Relationships: [
           {
@@ -251,7 +251,7 @@ export type Database = {
           game_version: string
           id: number
           name: string
-          sideboard_cards: string[] | null
+          sideboard_cards: string[]
           sub_archetype: number | null
           updated_at: string
           user_id: string
@@ -263,15 +263,15 @@ export type Database = {
           created_at?: string
           deck_class: Database["public"]["Enums"]["card_class"]
           deck_code?: string
-          deck_format: Database["public"]["Enums"]["deck_format"]
+          deck_format?: Database["public"]["Enums"]["deck_format"]
           description?: string
           dust_cost_per_card: number[]
-          dust_cost_sum?: number
+          dust_cost_sum: number
           game_mode?: Database["public"]["Enums"]["game_mode"]
           game_version: string
           id?: number
           name: string
-          sideboard_cards?: string[] | null
+          sideboard_cards?: string[]
           sub_archetype?: number | null
           updated_at?: string
           user_id?: string
@@ -291,7 +291,7 @@ export type Database = {
           game_version?: string
           id?: number
           name?: string
-          sideboard_cards?: string[] | null
+          sideboard_cards?: string[]
           sub_archetype?: number | null
           updated_at?: string
           user_id?: string
