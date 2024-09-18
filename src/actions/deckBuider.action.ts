@@ -116,7 +116,7 @@ export async function createDeck(
 }
 
 export async function decodeDeck(formData: FormData) {
-  const deckCode = formData.get("deckCode");
+  const deckCode = formData.get("deckCode") as string;
 
   if (!deckCode) return;
 
@@ -124,9 +124,8 @@ export async function decodeDeck(formData: FormData) {
   const slug = findData(CARD_CLASSES, "cardId", deck.heroes[0]).slug;
   const format: Enums<"deck_format"> = deck.format === 1 ? "wild" : "standard";
 
-  redirect(
-    `/deckbuilder/deck?deckClass=${slug}&format=${format}&deckCode=${deckCode}`,
-  );
+  const params = new URLSearchParams({ deckCode });
+  redirect(`/deckbuilder/deck?${params}`);
 }
 
 export async function getSubArchetype(

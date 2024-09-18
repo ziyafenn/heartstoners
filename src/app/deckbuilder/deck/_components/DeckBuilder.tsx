@@ -1,7 +1,6 @@
 "use client";
 
 import { DeckBuilderFilter } from "./DeckBuilderFilter";
-
 import { Button } from "@/components/ui/button";
 import DeckBuilderForm from "./DeckBuilderForm";
 import type {
@@ -14,7 +13,7 @@ import type {
   Rarity,
   SetGroups,
 } from "@/types/hs.type";
-import { useParams, usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { CurrentDeck } from "./CurrentDeck";
 import { CardSearchResult } from "./CardSearchResult";
 import { useInView } from "react-intersection-observer";
@@ -27,8 +26,13 @@ import { useEffect, useState } from "react";
 import { getSubArchetype } from "@/actions/deckBuider.action";
 import type { Tables } from "@/types/supabase.type";
 import { createClient } from "@/service/supabase.auth.client";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import AuthCard from "@/app/(auth)/login/_components/AuthCard";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { AuthForm } from "@/app/(auth)/login/_components/AuthForm";
 
 function Loading() {
   return <div className="z-50 size-full bg-red-500">Loading</div>;
@@ -41,6 +45,8 @@ export function DeckBuilder({
   keywords,
   cardTypes,
   deck,
+  deckClass,
+  format = "standard",
 }: {
   initialCards: CardsPage;
   minionTypes: MinionTypes[];
@@ -48,15 +54,10 @@ export function DeckBuilder({
   keywords: Keyword[];
   cardTypes: CardType[];
   deck: Deck | null;
+  deckClass: CardClass["slug"];
+  format: SetGroups["slug"];
 }) {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
   const supabase = createClient();
-
-  const format =
-    searchParams.get("format") ?? ("standard" as SetGroups["slug"]);
-  const deckClass = searchParams.get("deckClass") as CardClass["slug"];
-  const deckCode = searchParams.get("deckCode");
 
   const initState = {
     ...initialCards,
@@ -82,7 +83,8 @@ export function DeckBuilder({
     inView,
     deck,
   });
-
+  const seachParams = useSearchParams();
+  const deckCode = seachParams.get("deckCode");
   const [isLoading, setIsLoading] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [subArchetype, setSubArchetype] =
@@ -122,8 +124,6 @@ export function DeckBuilder({
       error,
     } = await supabase.auth.getUser();
     if (!user) {
-      console.log("no user");
-
       setIsAuthDialogOpen(true);
       return;
     }
@@ -133,9 +133,20 @@ export function DeckBuilder({
     setIsFormOpen(true);
   }
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Here we update query only on the first render. Deck code qquery is updated from the custom hook.
   useEffect(() => {
+    const url = new URL(window.location.href);
+    const searchParams = new URLSearchParams({
+      deckClass,
+      format,
+      deckCode: deckCode ?? "",
+    });
+
+    url.search = searchParams.toString();
+
+    window.history.replaceState({}, "", url.toString());
     window.scroll({ top: 0 });
-  }, []);
+  }, [deckClass, format]);
 
   useEffect(() => {
     if (!cardsPage.loading) {
@@ -157,10 +168,11 @@ export function DeckBuilder({
       )}
       <Dialog open={isAuthDialogOpen} onOpenChange={setIsAuthDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
-          <AuthCard
-            action={() => setIsAuthDialogOpen(false)}
-            redirect={`/deckbuilder/deck?deckClass=${deckClass}&format=${format}&deckCode=${deckCode}`}
-            //todo: pass generated deck code.
+          <DialogTitle>Your deck is saved</DialogTitle>
+          <DialogDescription>You need an account to continue</DialogDescription>
+          <AuthForm
+            onClose={() => setIsAuthDialogOpen(false)}
+            redirectDeckCode={deckCode ?? ""}
           />
         </DialogContent>
       </Dialog>
@@ -172,6 +184,7 @@ export function DeckBuilder({
           keywords={keywords}
           cardTypes={cardTypes}
           touristCard={touristCard}
+          deckClass={deckClass}
         />
         <main className="grid select-none grid-cols-[1fr,320px] gap-8">
           {isLoading ? (

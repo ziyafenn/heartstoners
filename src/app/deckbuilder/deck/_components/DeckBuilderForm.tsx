@@ -25,7 +25,6 @@ import {
 } from "@/components/ui/select";
 import type { Tables } from "@/types/supabase.type";
 import type { DeckInitParams } from "@/types/deck.type";
-import { useSearchParams } from "next/navigation";
 import {
   type ChangeEvent,
   useActionState,
@@ -84,8 +83,7 @@ export default function DeckBuilderForm({
 }: Props) {
   const formRef = useRef<(() => void) | HTMLFormElement | null>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
-  const searchParams = useSearchParams();
-  const deckClass = searchParams.get("deckClass") as CardClass["slug"];
+  const deckClass = deckSearchParams.multiClass;
   const [isFormMounted, setIsFormMounted] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
 

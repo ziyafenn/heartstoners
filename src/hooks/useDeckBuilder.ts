@@ -19,7 +19,6 @@ import type {
 import { getDeckByCode, getZilliaxSideboardCards } from "@/service/hs.service";
 import { ZILLIAX_ID } from "@/lib/constants";
 import { getDeckData, updateDeckCodeQuery } from "@/lib/utils";
-import { useSearchParams } from "next/navigation";
 
 export function useDeckBuilder({
   initState,
@@ -50,8 +49,6 @@ export function useDeckBuilder({
     unholy: 0,
   });
   const [touristCard, setTouristCard] = useState<Card | null>(null);
-
-  const searchParams = useSearchParams();
 
   const loadNextPage = useCallback(async () => {
     const formData = new FormData();

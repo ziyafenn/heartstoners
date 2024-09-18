@@ -17,7 +17,7 @@ export async function Header() {
             width={1290}
             height={402}
             alt="heartstoners logo"
-            className="h-20 w-auto"
+            className="h-16 w-auto"
           />
         </Link>
         <ul className="flex items-center gap-8">

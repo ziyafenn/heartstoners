@@ -4,66 +4,29 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { SignIn } from "./SignIn";
-import { SignUp } from "./SignUp";
-import { DiscordSignIn } from "./DiscordSignIn";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 
-type Props = { redirect?: string; action?: (value: boolean) => void };
+import { AuthForm } from "./AuthForm";
 
-function TabContent({ redirect, action: setSuccess }: Props) {
-  return (
-    <Tabs defaultValue="signin">
-      <TabsList>
-        <TabsTrigger value="signin">Sign in</TabsTrigger>
-        <TabsTrigger value="signup">Sign up</TabsTrigger>
-      </TabsList>
-      <TabsContent value="signin">
-        <SignIn redirect={redirect} setSuccess={setSuccess} />
-      </TabsContent>
-      <TabsContent value="signup">
-        <SignUp redirect={redirect} />
-      </TabsContent>
-    </Tabs>
-  );
-}
+type Props = { redirectDeckCode?: string; action?: (value: boolean) => void };
 
-export default function AuthCard({ redirect, action: closeDialog }: Props) {
-  const [success, setSuccess] = useState(false);
-  const router = useRouter();
-  function onFinish() {
-    closeDialog!(true);
-    // router.refresh();
-  }
-
+export default function AuthCard({
+  redirectDeckCode,
+  action: closeDialog,
+}: Props) {
   return (
     <Card className="w-full max-w-sm shadow-2xl">
       <CardHeader>
         <CardTitle>Sign In</CardTitle>
         <CardDescription>Choose your preferred sign-in method</CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-col gap-4 px-6">
-        {!success ? (
-          <TabContent redirect={redirect} action={setSuccess} />
-        ) : (
-          <div>
-            success
-            <Button onClick={() => onFinish()} type="button">
-              close
-            </Button>
-          </div>
-        )}
-        <CardFooter className="flex flex-col gap-4">
-          <span className="text-gray-400 text-sm">or continue with</span>
-          <DiscordSignIn redirectPath={redirect} />
-        </CardFooter>
+      <CardContent className="flex flex-col gap-4 px-6 pb-6">
+        <AuthForm
+          close={() => closeDialog!(true)}
+          redirectDeckCode={redirectDeckCode}
+        />
       </CardContent>
     </Card>
   );

@@ -16,7 +16,7 @@ export default function ForgotPassword() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Button asChild variant="ghost" className="p-0">
-            <Link href="/auth/login">
+            <Link href="/login">
               <ArrowLeft className="size-5" />
             </Link>
           </Button>

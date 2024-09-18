@@ -10,14 +10,14 @@ type Form = {
   username: string;
 };
 
-export async function postAuth({ redirectPath }: { redirectPath?: string }) {
+export async function postAuth(redirectDeckCode?: string) {
   revalidatePath("/", "layout");
 
-  redirectPath && redirect(redirectPath);
+  if (!redirectDeckCode) redirect("/");
 }
 
 export async function forgotPassword(
-  state: null,
+  state: { message: string },
   formData: FormData,
 ): Promise<{ message: string }> {
   const supabase = createClient();
@@ -35,15 +35,19 @@ export async function signout() {
   await supabase.auth.signOut();
 }
 
-export async function discordLogin({ redirectPath = "/" }) {
+export async function discordLogin({
+  redirectDeckCode,
+}: { redirectDeckCode?: string }) {
   const site_url = process.env.NEXT_PUBLIC_SITE_URL;
 
   const supabase = createClient();
-
+  const next = redirectDeckCode
+    ? `?next=/deckbuilder/deck?deckCode=${redirectDeckCode}`
+    : "";
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "discord",
     options: {
-      redirectTo: `${site_url}/auth/callback?next=${redirectPath}`,
+      redirectTo: `${site_url}/auth/callback${next}`,
     },
   });
 

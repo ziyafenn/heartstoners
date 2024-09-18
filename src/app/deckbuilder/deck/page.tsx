@@ -64,6 +64,8 @@ export default async function ClassDeckBuilder({
       keywords={hsData[3]}
       cardTypes={hsData[4]}
       deck={currentDeck}
+      deckClass={currentDeckClass}
+      format={currentDeckFormat}
     />
   );
 }

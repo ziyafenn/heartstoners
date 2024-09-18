@@ -17,7 +17,6 @@ import type {
 } from "@/types/hs.type";
 import { useEffect, useRef, useState } from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { useSearchParams } from "next/navigation";
 import type { CardSearchOptions } from "blizzard.js/dist/resources/hs";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -33,6 +32,7 @@ type Props = {
   keywords: Keyword[];
   cardTypes: CardType[];
   touristCard: Card | null;
+  deckClass: CardClass["slug"];
 };
 
 export function DeckBuilderFilter({
@@ -42,11 +42,11 @@ export function DeckBuilderFilter({
   keywords,
   cardTypes,
   touristCard,
+  deckClass,
 }: Props) {
   const formRef = useRef<HTMLFormElement>(null);
   const filterRef = useRef<HTMLDivElement>(null);
-  const searchParams = useSearchParams();
-  const deckClass = searchParams.get("deckClass") as CardClass["slug"];
+
   const manaCost = [...Array(10).keys(), "10+"];
   const touristClass =
     touristCard && findData(CARD_CLASSES, "id", touristCard.touristClassId);
