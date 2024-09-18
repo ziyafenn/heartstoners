@@ -90,11 +90,11 @@ export async function createDeck(
   //       "It seems your text input contains profanity. If it's not, please contact us on Discord.",
   //   };
 
-  const deckCode = await encodeDeck({
+  const deckCode = encodeDeck({
     card_ids: initParams?.card_ids,
     deck_class: initParams?.deck_class,
     deck_format: initParams?.deck_format,
-    sideboard_cards: initParams?.sideboard_cards ?? null,
+    sideboard_cards: initParams?.sideboard_cards,
   });
 
   const { data, error } = await createUserDeck({

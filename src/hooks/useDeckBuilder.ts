@@ -18,7 +18,7 @@ import type {
 
 import { getDeckByCode, getZilliaxSideboardCards } from "@/service/hs.service";
 import { ZILLIAX_ID } from "@/lib/constants";
-import { updateDeckCodeQuery } from "@/lib/utils";
+import { getDeckData, updateDeckCodeQuery } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 
 export function useDeckBuilder({
@@ -61,26 +61,6 @@ export function useDeckBuilder({
 
     onSearch(formData);
   }, [cardsPage.params, onSearch]);
-
-  function addSideboardCard(sideboardCard: Card) {
-    if (!activeSideboardCard) return null;
-    const currentSideboardCards = [...sideboardCards];
-    const activeSideboard = currentSideboardCards.find(
-      (sideboard) => sideboard.sideboardCard.id === activeSideboardCard.id,
-    );
-
-    if (activeSideboard) {
-      activeSideboard.cardsInSideboard.push(sideboardCard);
-    } else {
-      const newSideboard: SideboardCards = {
-        sideboardCard: activeSideboardCard,
-        cardsInSideboard: [sideboardCard],
-      };
-      currentSideboardCards.push(newSideboard);
-    }
-
-    setSideboardCards(currentSideboardCards);
-  }
 
   function createRuneSlots(runeCost: RuneCost) {
     const runeSlots = { ...deathKnightRuneSlots };
@@ -127,44 +107,83 @@ export function useDeckBuilder({
   }
 
   function addCard(card: Card) {
-    const currentSelection = [...selectedCards];
-    currentSelection.push(card);
+    const currentSelectedCards = [...selectedCards];
+    currentSelectedCards.push(card);
 
     if (card.runeCost) createRuneSlots(card.runeCost);
     if (card.touristClassId) setTouristCard(card);
 
-    setSelectedCards(currentSelection);
-    // updateDeckCodeQuery(
-    //   {
-    //     card_ids: selectedCards.map((card) => card.id),
-    //     deck_class: initState.params.class,
-    //     deck_format: initState.params.set,
-    //     sideboard_cards: sideboardCards.map(()),
-    //   },
-    //   searchParams.toString(),
-    // );
+    setSelectedCards(currentSelectedCards);
+
+    updateDeckCodeQuery({
+      cards: currentSelectedCards,
+      sideboardCards: sideboardCards,
+      multiClass: initState.params.multiClass,
+      set: initState.params.set,
+    });
   }
 
   function removeCard(card: Card) {
-    const { id, runeCost } = card;
+    const { id, runeCost, bannedFromSideboard } = card;
+    const isSideboardCard = sideboardCards.some(
+      (sideboard) => sideboard.sideboardCard.id === id,
+    );
     const currentCardCount = selectedCards.filter(
       (card) => card.id === id,
     ).length;
-    let updatedSelection: Card[] = [...selectedCards];
+    let currentSelectedCards: Card[] = [...selectedCards];
 
     if (currentCardCount === 1) {
-      updatedSelection = selectedCards.filter((card) => card.id !== id);
+      currentSelectedCards = selectedCards.filter((card) => card.id !== id);
     } else {
-      const indexToRemove = updatedSelection.findLastIndex(
+      const indexToRemove = currentSelectedCards.findLastIndex(
         (card) => card.id === id,
       );
-      updatedSelection.splice(indexToRemove, 1);
+      currentSelectedCards.splice(indexToRemove, 1);
     }
 
-    if (runeCost) removeRuneSlots(runeCost, updatedSelection);
+    if (runeCost) removeRuneSlots(runeCost, currentSelectedCards);
     if (card.touristClassId) setTouristCard(null);
+    if (bannedFromSideboard && isSideboardCard)
+      setSideboardCards((state) =>
+        state.filter((sideboard) => sideboard.sideboardCard.id !== id),
+      );
 
-    setSelectedCards(updatedSelection);
+    setSelectedCards(currentSelectedCards);
+
+    updateDeckCodeQuery({
+      cards: currentSelectedCards,
+      sideboardCards: sideboardCards,
+      multiClass: initState.params.multiClass,
+      set: initState.params.set,
+    });
+  }
+
+  function addSideboardCard(sideboardCard: Card) {
+    if (!activeSideboardCard) return null;
+    const currentSideboardCards = [...sideboardCards];
+    const activeSideboard = currentSideboardCards.find(
+      (sideboard) => sideboard.sideboardCard.id === activeSideboardCard.id,
+    );
+
+    if (activeSideboard) {
+      activeSideboard.cardsInSideboard.push(sideboardCard);
+    } else {
+      const newSideboard: SideboardCards = {
+        sideboardCard: activeSideboardCard,
+        cardsInSideboard: [sideboardCard],
+      };
+      currentSideboardCards.push(newSideboard);
+    }
+
+    setSideboardCards(currentSideboardCards);
+
+    updateDeckCodeQuery({
+      cards: selectedCards,
+      sideboardCards: currentSideboardCards,
+      multiClass: initState.params.multiClass,
+      set: initState.params.set,
+    });
   }
 
   function removeSideboardCard(card: Card) {
@@ -186,6 +205,13 @@ export function useDeckBuilder({
       );
     }
     setSideboardCards(currentSideboardCards);
+
+    updateDeckCodeQuery({
+      cards: selectedCards,
+      sideboardCards: currentSideboardCards,
+      multiClass: initState.params.multiClass,
+      set: initState.params.set,
+    });
   }
 
   async function getDeckFromCode(e: FormEvent<HTMLFormElement>) {
@@ -205,6 +231,8 @@ export function useDeckBuilder({
     setActiveSideboardCard(card);
   }
 
+  const deckData = getDeckData(selectedCards, sideboardCards);
+
   useEffect(() => {
     if (inView) loadNextPage();
   }, [inView, loadNextPage]);
@@ -217,6 +245,7 @@ export function useDeckBuilder({
     zilliaxCards,
     deathKnightRuneSlots,
     touristCard,
+    deckData,
     actions: {
       addSideboardCard,
       addCard,

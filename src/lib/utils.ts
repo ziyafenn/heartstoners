@@ -8,7 +8,16 @@ import {
 } from "deckstrings";
 import { CARD_CLASSES } from "./cardClasses";
 import type { UserDeck } from "@/types/deck.type";
-import { Deck } from "@/types/hs.type";
+import type {
+  Card,
+  CardSeachParams,
+  CardType,
+  Deck,
+  Rarity,
+  SideboardCards,
+} from "@/types/hs.type";
+import { CARD_TYPES } from "./cardTypes";
+import { CARD_RARITIES } from "./cardRarities";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -121,22 +130,70 @@ export function encodeDeck({
   return deckCode;
 }
 
-export function updateQueryString(
-  searchParams: string,
-  name: string,
-  value: string,
+export function updateDeckCodeQuery(
+  deck: Pick<Deck, "cards" | "sideboardCards"> &
+    Pick<CardSeachParams, "set" | "multiClass">,
 ) {
-  const params = new URLSearchParams(searchParams);
-  params.set(name, value);
-
-  return params.toString();
+  const { card_ids, sideboard_cards } = getDeckData(
+    deck.cards,
+    deck.sideboardCards,
+  );
+  const deckCode = encodeDeck({
+    card_ids,
+    sideboard_cards,
+    deck_class: deck.multiClass,
+    deck_format: deck.set,
+  });
+  const url = new URL(window.location.href);
+  url.searchParams.set("deckCode", deckCode);
+  window.history.replaceState({}, "", url);
 }
 
-export function updateDeckCodeQuery(
-  deck: Parameters<typeof encodeDeck>[0],
-  searchParams: string,
+export function getDeckData(
+  selectedCards: Card[],
+  sideboardCards: SideboardCards[],
 ) {
-  const deckCode = encodeDeck(deck);
-  const query = updateQueryString(searchParams, "deckCode", deckCode);
-  return query;
+  let dust_cost_sum = 0;
+  const dust_cost_per_card: number[] = [];
+  const card_ids: number[] = [];
+  const cardTypes: Record<CardType["name"], number> = {
+    Hero: 0,
+    Location: 0,
+    Minion: 0,
+    Spell: 0,
+    Weapon: 0,
+    HeroPower: 0,
+    Reward: 0,
+  };
+  const cardRarities: Record<Rarity["name"], number> = {
+    Common: 0,
+    Free: 0,
+    Epic: 0,
+    Rare: 0,
+    Legendary: 0,
+  };
+
+  const sideboard_cards = sideboardCards.flatMap((sideboard) => {
+    const primaryId = sideboard.sideboardCard.id;
+    return sideboard.cardsInSideboard.map((card) => `${card.id}:${primaryId}`);
+  });
+
+  selectedCards.forEach((card) => {
+    dust_cost_per_card.push(getDustCost(card.rarityId));
+    dust_cost_sum += getDustCost(card.rarityId);
+    card_ids.push(card.id);
+    const cardTypeName = findData(CARD_TYPES, "id", card.cardTypeId).name;
+    cardTypes[cardTypeName] = cardTypes[cardTypeName] + 1;
+    const cardRarityName = findData(CARD_RARITIES, "id", card.rarityId).name;
+    cardRarities[cardRarityName] = cardRarities[cardRarityName] + 1;
+  });
+
+  return {
+    dust_cost_sum,
+    dust_cost_per_card,
+    card_ids,
+    cardTypes,
+    cardRarities,
+    sideboard_cards,
+  };
 }

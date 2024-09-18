@@ -75,6 +75,7 @@ export function DeckBuilder({
     zilliaxCards,
     deathKnightRuneSlots,
     touristCard,
+    deckData,
     actions,
   } = useDeckBuilder({
     initState,
@@ -150,7 +151,7 @@ export function DeckBuilder({
           toggleOpen={setIsFormOpen}
           selectedCards={selectedCards}
           deckSearchParams={cardsPage.params}
-          sideboardCards={sideboardCards}
+          deckData={deckData}
           subArchetype={subArchetype}
         />
       )}
@@ -227,7 +228,7 @@ export function DeckBuilder({
             ) : (
               <Button
                 type="button"
-                disabled={selectedCards.length < 1}
+                disabled={selectedCards.length < 30}
                 className="rounded-none bg-orange-200"
                 onClick={onFormOpen}
               >

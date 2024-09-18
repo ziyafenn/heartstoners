@@ -14,10 +14,8 @@ import type {
   CardClass,
   CardSeachParams,
   CardType,
-  Rarity,
-  SideboardCards,
 } from "@/types/hs.type";
-import { findData, getDustCost } from "@/lib/utils";
+import { findData, type getDeckData } from "@/lib/utils";
 import {
   Select,
   SelectContent,
@@ -35,8 +33,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { CARD_TYPES } from "@/lib/cardTypes";
-import { CARD_RARITIES } from "@/lib/cardRarities";
 import { AssetIcon } from "@/components/AssetIcon";
 import { Label } from "@/components/ui/label";
 import {
@@ -62,7 +58,7 @@ import {
 type Props = {
   deckSearchParams: CardSeachParams;
   selectedCards: Card[];
-  sideboardCards: SideboardCards[];
+  deckData: ReturnType<typeof getDeckData>;
   isOpen: boolean;
   toggleOpen: (open: boolean) => void;
   subArchetype: Tables<"meta_sub_archetypes"> | null;
@@ -81,7 +77,7 @@ function SubmitButton() {
 export default function DeckBuilderForm({
   selectedCards,
   deckSearchParams,
-  sideboardCards,
+  deckData,
   isOpen,
   toggleOpen,
   subArchetype,
@@ -93,43 +89,17 @@ export default function DeckBuilderForm({
   const [isFormMounted, setIsFormMounted] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
 
-  const aggroCount = 0;
-  const midrangeCount = 0;
-  const controlCount = 0;
-  let dust_cost_sum = 0;
-  const dust_cost_per_card: number[] = [];
-  const card_ids: number[] = [];
-  const cardTypes: Record<CardType["name"], number> = {
-    Hero: 0,
-    Location: 0,
-    Minion: 0,
-    Spell: 0,
-    Weapon: 0,
-    HeroPower: 0,
-    Reward: 0,
-  };
-  const cardRarities: Record<Rarity["name"], number> = {
-    Common: 0,
-    Free: 0,
-    Epic: 0,
-    Rare: 0,
-    Legendary: 0,
-  };
-
-  selectedCards.forEach((card) => {
-    dust_cost_per_card.push(getDustCost(card.rarityId));
-    dust_cost_sum += getDustCost(card.rarityId);
-    card_ids.push(card.id);
-    const cardTypeName = findData(CARD_TYPES, "id", card.cardTypeId).name;
-    cardTypes[cardTypeName] = cardTypes[cardTypeName] + 1;
-    const cardRarityName = findData(CARD_RARITIES, "id", card.rarityId).name;
-    cardRarities[cardRarityName] = cardRarities[cardRarityName] + 1;
-  });
-
-  const sideboard_cards = sideboardCards.flatMap((sideboard) => {
-    const primaryId = sideboard.sideboardCard.id;
-    return sideboard.cardsInSideboard.map((card) => `${card.id}:${primaryId}`);
-  });
+  const {
+    cardRarities,
+    cardTypes,
+    card_ids,
+    dust_cost_per_card,
+    dust_cost_sum,
+    sideboard_cards,
+  } = deckData;
+  // const aggroCount = 0;
+  // const midrangeCount = 0;
+  // const controlCount = 0;
 
   // for (const [name, count] of Object.entries(manaCostCountsSum)) {
   //   const manaCost = parseInt(name);
