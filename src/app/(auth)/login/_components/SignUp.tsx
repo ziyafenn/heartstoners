@@ -6,6 +6,7 @@ import { signUpSchema } from "@/types/schema";
 import { type FormEvent, useState } from "react";
 import type { z } from "zod";
 import { FormItem } from "./FormItem";
+import { checkProfanity } from "@/service/profanity.service";
 
 type Form = z.infer<typeof signUpSchema>;
 
@@ -49,6 +50,16 @@ export function SignUp({
 
     const { email, password, username } = parsedData;
 
+    const { isProfanity } = await checkProfanity(username);
+
+    if (isProfanity) {
+      setFieldErrors((state) => ({
+        ...state,
+        username: ["It seems your username contains profanity"],
+      }));
+      return;
+    }
+
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -78,7 +89,9 @@ export function SignUp({
           field="username"
           label="Username"
           error={fieldErrors.username?.[0]}
-          description="Min 3 characters, no profanity"
+          description="Min 3 characters"
+          minLength={3}
+          maxLength={20}
         />
       </div>
       <Button type="submit" className="w-full">

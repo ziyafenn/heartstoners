@@ -9,7 +9,7 @@ type Props = {
 
 export function UserAvatar({ imageSrc, className }: Props) {
   return (
-    <Avatar className={cn("size-8", className)}>
+    <Avatar className={cn("size-6", className)}>
       <AvatarImage src={imageSrc} />
       <AvatarFallback>CN</AvatarFallback>
     </Avatar>

@@ -24,8 +24,6 @@ export async function getUser() {
 
   const { data, error } = await supabase.auth.getUser();
 
-  if (error) throw new Error(error.message);
-
   return data;
 }
 
@@ -36,8 +34,6 @@ export async function getUserProfile(id: string) {
     .select("*")
     .eq("id", id)
     .single();
-
-  if (error) throw new Error(error.message);
 
   return data;
 }
@@ -66,8 +62,6 @@ export async function getSingleDeck(deckId: number) {
     .eq("id", deckId)
     .single();
 
-  if (error) throw new Error(error.message);
-
   return data;
 }
 
@@ -79,7 +73,6 @@ export async function getMetasByClass(className: CardClass["slug"]) {
     .select("*")
     .eq("card_class", className);
 
-  if (error) throw new Error(error.message);
   return data;
 }
 
@@ -89,8 +82,6 @@ export async function getMetaSubArchetypes() {
   const { data, error } = await supabase
     .from("meta_sub_archetypes")
     .select("*");
-
-  if (error) throw new Error(error.message);
 
   return data;
 }
@@ -104,8 +95,6 @@ export async function getCurrentGameVersion() {
     .order("id", { ascending: false })
     .limit(1)
     .single();
-
-  if (error) throw new Error(error.message);
 
   return data.version_name;
 }
@@ -122,8 +111,6 @@ export async function getCraftableDecks(
     p_card_collection: userCollection,
     p_deck_id: deckId,
   });
-
-  if (error) throw new Error(error.message);
 
   return data;
 }
@@ -159,8 +146,6 @@ export async function getRequestedDecks(
 
   const { data, count, error } = await query;
 
-  if (error) throw new Error(error.message);
-
   return { data: data, count: count ?? 0 };
 }
 
@@ -171,8 +156,6 @@ export async function getTopClasses() {
     .from("user_decks")
     .select("deck_class, deck_class.count()");
 
-  if (error) throw new Error(error.message);
-
   return data;
 }
 export async function getTopMetas() {
@@ -181,8 +164,6 @@ export async function getTopMetas() {
   const { data, error } = await supabase
     .from("user_decks")
     .select("meta_sub_archetypes (*), sub_archetype, sub_archetype.count()");
-
-  if (error) throw new Error(error.message);
 
   return data;
 }
@@ -193,8 +174,6 @@ export async function getTopAuthors() {
   const { data, error } = await supabase
     .from("user_decks")
     .select("profiles (*), user_id, user_id.count()");
-
-  if (error) throw new Error(error.message);
 
   return data;
 }
@@ -209,8 +188,6 @@ export async function deckLiked({
   const { data, error } = await supabase
     .from("deck_likes")
     .insert({ deck_id, author_id, ip });
-
-  if (error) throw new Error(error.message);
 
   return data;
 }
@@ -229,8 +206,6 @@ export async function getDeckLikeByIp({
     .eq("deck_id", deckId)
     .eq("ip", ip)
     .single();
-
-  if (error) throw new Error(error.message);
 
   return data;
 }
@@ -277,8 +252,6 @@ export async function createUserDeck({
     )
     .select()
     .single();
-
-  if (error) throw new Error(error.message);
 
   return data;
 }

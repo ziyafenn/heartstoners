@@ -43,28 +43,24 @@ export async function copyDeck(deckId: number) {
 }
 
 export async function getUserDeck(deckId: number) {
-  try {
-    const userIp = getUserIp();
-    const encryptedUserIp = encrypt(userIp);
-    const getDeck = getSingleDeck(deckId);
-    const getDeckLikes = getDeckLikeByIp({
-      deckId: Number(deckId),
-      ip: encryptedUserIp,
-    });
-    const getAvailableDust = getUserCollection();
+  const userIp = getUserIp();
+  const encryptedUserIp = encrypt(userIp);
+  const getDeck = getSingleDeck(deckId);
+  const getDeckLikes = getDeckLikeByIp({
+    deckId: Number(deckId),
+    ip: encryptedUserIp,
+  });
+  const getAvailableDust = getUserCollection();
 
-    const {
-      "0": deck,
-      "1": didUserLike,
-      "2": userCollection,
-    } = await Promise.all([getDeck, getDeckLikes, getAvailableDust]);
+  const {
+    "0": deck,
+    "1": didUserLike,
+    "2": userCollection,
+  } = await Promise.all([getDeck, getDeckLikes, getAvailableDust]);
 
-    return {
-      deck,
-      didUserLike: !!didUserLike,
-      availableDust: userCollection?.dust ?? 0,
-    };
-  } catch (error) {
-    throw new Error(error as string);
-  }
+  return {
+    deck,
+    didUserLike: !!didUserLike,
+    availableDust: userCollection?.dust ?? 0,
+  };
 }

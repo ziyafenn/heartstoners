@@ -14,23 +14,24 @@ export async function Header() {
         <Link href="/">
           <Image
             src="/img/logo.png"
-            width={1290}
-            height={402}
+            width={1140}
+            height={450}
             alt="heartstoners logo"
-            className="h-16 w-auto"
+            className="h-20 w-auto"
           />
         </Link>
-        <ul className="flex items-center gap-8">
-          <li>
-            <Link href="/decks">Decks</Link>
-          </li>
+        <ul className="flex items-center gap-8 font-medium">
           <li>
             {userProfile ? (
-              <ProfileMenu username={userProfile.display_name} />
+              <ProfileMenu userProfile={userProfile} />
             ) : (
               <Link href="/login">Sign in</Link>
             )}
           </li>
+          <li>
+            <Link href="/decks">Discover Decks</Link>
+          </li>
+
           <li>
             <Button asChild variant="primary">
               <Link href="/deckbuilder">Create a deck</Link>

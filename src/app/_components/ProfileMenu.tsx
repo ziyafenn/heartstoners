@@ -6,13 +6,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { UserAvatar } from "@/components/UserAvatar";
+import type { Tables } from "@/types/supabase.type";
 import { ChevronDown } from "lucide-react";
 
-export function ProfileMenu({ username }: { username: string }) {
+export function ProfileMenu({
+  userProfile,
+}: { userProfile: Tables<"profiles"> }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex items-center gap-1">
-        {username} <ChevronDown className="size-4" />
+      <DropdownMenuTrigger className="flex items-center gap-2">
+        <UserAvatar imageSrc={userProfile.avatar_url} className="size-6" />
+        {userProfile.display_name} <ChevronDown className="size-4" />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem onClick={() => signout()}>Sign out</DropdownMenuItem>

@@ -11,6 +11,9 @@ import {
 import { DeckUICard } from "./_components/DeckUICard";
 import { SidebarCardItem } from "./_components/SidebarCardItem";
 import { SidebarItemContainer } from "@/components/SidebarItemContainer";
+import Image from "next/image";
+import Link from "next/link";
+import discordLogo from "public/img/discord.svg";
 
 export default async function Home() {
   const fetchDecks = getDecks();
@@ -50,17 +53,28 @@ export default async function Home() {
   return (
     <div className="grid grid-cols-[1fr_320px] gap-8 rounded-md">
       <main className="flex flex-col gap-8">
-        <div
-          id="hero"
-          className="relative flex flex-col justify-start gap-4 rounded-sm bg-hero bg-left bg-no-repeat p-10"
-        >
-          <h3 className="font-hs text-2xl">
-            Craft your winning deck with our Reno-certified deckbuilder for
-            Hearthstone! Conquer all challengers with Reno and his minions!
-          </h3>
-          <div className="flex gap-4">
-            <Button>Sign up</Button>
-            <Button>Discover decks</Button>
+        <div className="relative h-48 rounded-md bg-hero bg-left bg-no-repeat shadow-2xl">
+          <div className="absolute flex size-full items-center justify-between bg-gradient-to-r from-neutral-900/80 via-transparent to-neutral-900 p-10">
+            <div className="flex w-3/5 flex-col gap-4">
+              <h3 className="font-hs text-2xl">
+                Craft your winning deck with our Reno-certified deckbuilder for
+                Hearthstone! Conquer all challengers with Reno and his minions!
+              </h3>
+              <div className="flex gap-4">
+                <Button variant="secondary" asChild>
+                  <Link href="/decks">Discover decks</Link>
+                </Button>
+              </div>
+            </div>
+            <div className="select-none">
+              <Image
+                src="/img/logo.png"
+                width={1140}
+                height={450}
+                alt="heartstoners logo"
+                className="h-auto w-96"
+              />
+            </div>
           </div>
         </div>
         <div className="flex flex-col gap-4">
@@ -83,10 +97,21 @@ export default async function Home() {
         </div>
       </main>
       <aside className="flex flex-col gap-8">
-        <div className="border border-border p-4">
-          Join our discord
-          <Button>Join</Button>
+        <div className="relative flex items-center justify-between rounded-sm bg-gradient-to-r from-[#5865F2] to-indigo-600 p-4">
+          <div className="absolute top-0 right-0 bottom-0 left-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
+          <div className="flex items-center gap-2 ">
+            <Image src={discordLogo} alt="discord logo" />
+            <span className="font-medium text-lg leading-none">
+              Join our discord!
+            </span>
+          </div>
+          <Button variant="secondary" asChild>
+            <Link href="https://discord.gg/4zqnSMStha" target="_blank">
+              Join
+            </Link>
+          </Button>
         </div>
+
         <SidebarItemContainer name="Top Creators">
           <ul className="flex flex-col gap-2 divide-y p-4">
             {topAuthors?.map(({ profiles }, index) => (
