@@ -1,9 +1,9 @@
 "use client";
 
-import { ResponsiveBar } from "@nivo/bar";
-import resolveConfig from "tailwindcss/resolveConfig";
-import tailwindConfig from "tailwind.config";
 import type { Card } from "@/types/hs.type";
+import { ResponsiveBar } from "@nivo/bar";
+import tailwindConfig from "tailwind.config";
+import resolveConfig from "tailwindcss/resolveConfig";
 
 const fullConfig = resolveConfig(tailwindConfig);
 const {

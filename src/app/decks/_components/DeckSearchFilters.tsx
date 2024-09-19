@@ -1,32 +1,33 @@
 "use client";
+import { AssetIcon } from "@/components/AssetIcon";
+import { Combobox } from "@/components/ComboBox";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 import { Toggle } from "@/components/ui/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import {
-  type HTMLAttributes,
-  type KeyboardEvent,
-  useRef,
-  useState,
-} from "react";
-import { CARD_CLASSES } from "@/lib/cardClasses";
-import { AssetIcon } from "@/components/AssetIcon";
-import type { DeckFilters } from "@/types/deck.type";
-import { Combobox } from "@/components/ComboBox";
-import type { Tables } from "@/types/supabase.type";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
+import { CARD_CLASSES } from "@/lib/cardClasses";
+import type { DeckFilters } from "@/types/deck.type";
+import type { Tables } from "@/types/supabase.type";
 import { X } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
-import { Input } from "@/components/ui/input";
+import {
+  type HTMLAttributes,
+  type KeyboardEvent,
+  type RefObject,
+  useState,
+} from "react";
 
 type Props = {
   onUpdateFilters: (payload: FormData) => void;
   subArchetypes: Tables<"meta_sub_archetypes">[];
   availableDust: number;
+  formRef: RefObject<HTMLFormElement>;
 };
 
 function Filter({
@@ -52,6 +53,7 @@ export function Filters({
   onUpdateFilters,
   subArchetypes,
   availableDust,
+  formRef,
 }: Props) {
   const [values, setValues] = useState<DeckFilters>({
     craftable_decks: "false",
@@ -59,7 +61,6 @@ export function Filters({
     deck_class: "",
     sub_archetype: "",
   });
-  const formRef = useRef<HTMLFormElement>(null);
   const [dustCostValue, setDustCostValue] = useState(String(availableDust));
   const subs = subArchetypes.map((subArch) => ({
     id: subArch.id,

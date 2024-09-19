@@ -1,9 +1,9 @@
-import Link from "next/link";
+import { AssetIcon } from "@/components/AssetIcon";
 import { DeckPopularity } from "@/components/DeckPopularity";
+import { Badge } from "@/components/ui/badge";
 import type { UserDeck } from "@/types/deck.type";
 import Image from "next/image";
-import { AssetIcon } from "@/components/AssetIcon";
-import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 type Props = UserDeck;
 
@@ -45,7 +45,7 @@ export function DeckUICard({ data: deck }: { data: Props }) {
           </div>
           <div className="flex flex-col items-end gap-2">
             <div id="author" className="flex items-center gap-2">
-              <span className="text-sm">by {profiles!.username}</span>
+              <span className="text-sm">by {profiles!.display_name}</span>
               <span className="size-6 rounded-full bg-yellow-50" />
             </div>
             <DeckPopularity deck={deck} />

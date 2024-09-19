@@ -16,6 +16,9 @@ const nextConfig = {
       {
         hostname: "d15f34w2p8l1cc.cloudfront.net",
       },
+      {
+        hostname: "cdn.discordapp.com"
+      }
     ],
   },
 };

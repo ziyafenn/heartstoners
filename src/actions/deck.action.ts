@@ -51,20 +51,16 @@ export async function getUserDeck(deckId: number) {
       deckId: Number(deckId),
       ip: encryptedUserIp,
     });
-    const getAvailableDust = await getUserCollection();
+    const getAvailableDust = getUserCollection();
 
     const {
-      "0": userDeck,
+      "0": deck,
       "1": didUserLike,
       "2": userCollection,
     } = await Promise.all([getDeck, getDeckLikes, getAvailableDust]);
 
-    const { data, error } = userDeck;
-
-    if (error) throw error;
-
     return {
-      deck: data,
+      deck,
       didUserLike: !!didUserLike,
       availableDust: userCollection?.dust ?? 0,
     };

@@ -30,6 +30,12 @@
           "level": "warn"
         }
       },
+      "style": {
+        "noNonNullAssertion": {
+          "fix": "none",
+          "level": "info"
+        }
+      },
       "nursery": {
         "useSortedClasses": {
           "fix": "safe",

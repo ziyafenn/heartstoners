@@ -1,8 +1,7 @@
-import { DeckBuilder } from "./_components/DeckBuilder";
 import {
-  searchHsCards,
-  getHsMetadata,
   getDeckByCode,
+  getHsMetadata,
+  searchHsCards,
 } from "@/service/hs.service";
 import type {
   CardType,
@@ -13,6 +12,7 @@ import type {
   SetGroups,
 } from "@/types/hs.type";
 import type { CardClass } from "blizzard.js/dist/resources/hs";
+import { DeckBuilder } from "./_components/DeckBuilder";
 
 export default async function ClassDeckBuilder({
   // params,

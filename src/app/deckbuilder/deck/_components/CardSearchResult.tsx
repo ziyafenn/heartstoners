@@ -1,7 +1,7 @@
 import type { cardViewerProps } from "@/lib/cardViewerProps";
 
-import type { Card } from "@/types/hs.type";
 import { HsCard } from "@/components/HsCard";
+import type { Card } from "@/types/hs.type";
 
 type Props = {
   children: React.ReactNode;

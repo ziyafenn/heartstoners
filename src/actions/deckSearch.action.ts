@@ -28,10 +28,16 @@ type CraftableDecks = NonNullable<
   Awaited<ReturnType<typeof searchForCraftableDecks>>
 >["craftableDecks"];
 
+type DeckSearchResult = {
+  userDecks: UserDeck[];
+  pagination: [number, number];
+  count?: number;
+};
+
 export async function filterDecks(
-  state: UserDeck[],
+  state: DeckSearchResult,
   formData: FormData,
-): Promise<UserDeck[]> {
+): Promise<DeckSearchResult> {
   let craftableDecks: CraftableDecks = [];
   let filters: DeckFilters = {};
   const isCraftable = formData.get("craftable_decks");
@@ -49,6 +55,13 @@ export async function filterDecks(
     };
   }
 
-  const decks = await getRequestedDecks(filters, craftableDecks);
-  return decks;
+  const { data: userDecks, count } = await getRequestedDecks(
+    filters,
+    craftableDecks,
+  );
+  return {
+    userDecks,
+    count,
+    pagination: state.pagination,
+  };
 }

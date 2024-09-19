@@ -4,6 +4,7 @@ import { DustCost } from "@/components/DustCost";
 import { Badge } from "@/components/ui/badge";
 import { TableCell, TableRow } from "@/components/ui/table";
 import type { CraftableDeck, UserDeck } from "@/types/deck.type";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 type Props = {
@@ -45,9 +46,17 @@ export function DeckRow({ deck, availableDust, craftableDeck }: Props) {
       <TableCell className="text-right">
         {new Date(deck.updated_at).toLocaleDateString()}
       </TableCell>
-      <TableCell>
-        <span>{deck.profiles!.avatar_url}</span>
-        <span>{deck.profiles!.username}</span>
+      <TableCell className="flex items-center gap-2">
+        {deck.profiles?.avatar_url && (
+          <Image
+            src={deck.profiles.avatar_url}
+            width={32}
+            height={32}
+            alt={deck.profiles.display_name}
+            className="rounded-full"
+          />
+        )}
+        <span>{deck.profiles!.display_name}</span>
       </TableCell>
       <TableCell>
         <DeckPopularity deck={deck} />

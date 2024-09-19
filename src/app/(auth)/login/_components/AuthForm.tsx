@@ -1,7 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { DiscordSignIn } from "./DiscordSignIn";
 import { SignIn } from "./SignIn";
 import { SignUp } from "./SignUp";
-import { DiscordSignIn } from "./DiscordSignIn";
 
 type Props = {
   redirectDeckCode?: string;

@@ -1,4 +1,5 @@
 "use client";
+import { signout } from "@/actions/login.action";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,7 +7,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
-import { signout } from "@/actions/login.action";
 
 export function ProfileMenu({ username }: { username: string }) {
   return (

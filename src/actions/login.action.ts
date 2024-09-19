@@ -1,8 +1,8 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { createClient } from "@/service/supabase.auth.server";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 type Form = {
   email: string;

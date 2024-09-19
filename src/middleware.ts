@@ -1,5 +1,5 @@
-import { type NextRequest, NextResponse } from "next/server";
 import { updateSession } from "@/service/supabase.middleware";
+import { type NextRequest, NextResponse } from "next/server";
 import { deckInteraction } from "./service/supabase.service";
 
 export async function middleware(request: NextRequest) {

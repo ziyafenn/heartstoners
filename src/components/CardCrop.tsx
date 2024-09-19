@@ -1,16 +1,16 @@
 "use client";
 
-import { forwardRef, useState } from "react";
-import type { Card } from "@/types/hs.type";
-import Image from "next/image";
-import { Button } from "./ui/button";
-import { cn } from "@/lib/utils";
-import { MinusIcon, XIcon } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
+import type { Card } from "@/types/hs.type";
+import { MinusIcon, XIcon } from "lucide-react";
+import Image from "next/image";
+import { forwardRef, useState } from "react";
+import { Button } from "./ui/button";
 
 type CardCropProps = {
   card: Card;
@@ -38,7 +38,7 @@ export const CardCrop = forwardRef<HTMLLIElement, CardCropProps>(
         <TooltipTrigger asChild>
           <li
             className={cn(
-              "flex justify-end rounded-sm min-h-10 relative select-none",
+              "relative flex min-h-10 select-none justify-end rounded-sm",
               card.maxSideboardCards && !isView && "min-h-12",
             )}
             onMouseEnter={() => setHovered(card.id)}
@@ -53,9 +53,9 @@ export const CardCrop = forwardRef<HTMLLIElement, CardCropProps>(
               </div>
             )}
             <>
-              <div className="absolute z-10 flex h-10 w-full select-none items-center justify-between rounded-lg bg-gradient-to-r from-black from-30% via-transparent via-70% font-hs">
+              <div className="absolute z-10 flex h-10 w-full select-none items-center justify-between rounded-lg bg-gradient-to-r from-30% from-black via-70% via-transparent font-hs">
                 <div className="flex items-center gap-2 pl-2">
-                  <div className="font-outline-2 flex size-8 items-center justify-center bg-[url(/assets/mana.png)] bg-contain bg-no-repeat text-center text-[16px]">
+                  <div className="flex size-8 items-center justify-center bg-[url(/assets/mana.png)] bg-contain bg-no-repeat text-center font-outline-2 text-[16px]">
                     {card.manaCost}
                   </div>
                   <span className="font-outline-2 leading-none">
@@ -63,8 +63,8 @@ export const CardCrop = forwardRef<HTMLLIElement, CardCropProps>(
                   </span>
                 </div>
                 <div className="flex size-8 w-4 items-center justify-center rounded-l-lg bg-black/80 pl-1 text-center text-[gold]">
-                  {hovered === card.id && !isView ? (
-                    <button onClick={() => onRemove!(card)} type="button">
+                  {hovered === card.id && !isView && onRemove ? (
+                    <button onClick={() => onRemove(card)} type="button">
                       {count === 2 ? (
                         <MinusIcon className="size-4" />
                       ) : (

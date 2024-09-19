@@ -34,10 +34,10 @@ export function DeckCards({ deckClass, cards, sideboardCards }: Props) {
   return (
     <aside className="grid grid-cols-2 gap-4">
       <div className="flex h-max w-[320px] flex-col rounded-md border-4 border-border shadow-lg">
-        <div className="relative text-xl font-bold">
+        <div className="relative font-bold text-xl">
           <div className="absolute size-full bg-black/50" />
-          <div className="absolute flex size-full items-center justify-between pl-3 pr-2">
-            <span className="font-outline-2 font-hs leading-tight drop-shadow-md">
+          <div className="absolute flex size-full items-center justify-between pr-2 pl-3">
+            <span className="font-hs font-outline-2 leading-tight drop-shadow-md">
               {deckClass.name}
             </span>
             {/* {deckClassSlug === "deathknight" && (
@@ -71,10 +71,10 @@ export function DeckCards({ deckClass, cards, sideboardCards }: Props) {
             key={sideboard.sideboardCard.id}
             className="flex w-[320px] flex-col rounded-md border-4 border-border shadow-lg"
           >
-            <div className="relative text-lg font-bold">
-              <div className="absolute size-full bg-gradient-to-r from-black from-30% via-transparent via-70%" />
-              <div className="absolute flex size-full items-center justify-between pl-3 pr-2">
-                <span className="font-outline-2 font-hs leading-tight drop-shadow-md">
+            <div className="relative font-bold text-lg">
+              <div className="absolute size-full bg-gradient-to-r from-30% from-black via-70% via-transparent" />
+              <div className="absolute flex size-full items-center justify-between pr-2 pl-3">
+                <span className="font-hs font-outline-2 leading-tight drop-shadow-md">
                   {sideboard.sideboardCard.name}
                 </span>
               </div>

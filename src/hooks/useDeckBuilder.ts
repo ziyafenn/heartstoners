@@ -1,10 +1,3 @@
-import {
-  type FormEvent,
-  useActionState,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
 import { loadPageWithFilters } from "@/actions/deckBuider.action";
 import type {
   Card,
@@ -12,13 +5,20 @@ import type {
   CardsPage,
   Deck,
   Rune,
-  SideboardCards,
   RuneCost,
+  SideboardCards,
 } from "@/types/hs.type";
+import {
+  type FormEvent,
+  useActionState,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 
-import { getDeckByCode, getZilliaxSideboardCards } from "@/service/hs.service";
 import { ZILLIAX_ID } from "@/lib/constants";
 import { getDeckData, updateDeckCodeQuery } from "@/lib/utils";
+import { getDeckByCode, getZilliaxSideboardCards } from "@/service/hs.service";
 
 export function useDeckBuilder({
   initState,
@@ -186,11 +186,12 @@ export function useDeckBuilder({
   function removeSideboardCard(card: Card) {
     const { id } = card;
 
-    if (!activeSideboardCard) return null;
+    if (!activeSideboardCard) return;
     let currentSideboardCards = [...sideboardCards];
     const currentSideboard = currentSideboardCards.find(
       (sideboard) => sideboard.sideboardCard.id === activeSideboardCard.id,
-    )!;
+    );
+    if (!currentSideboard) return;
     const updatedSideboardCards = currentSideboard.cardsInSideboard.filter(
       (card) => card.id !== id,
     );

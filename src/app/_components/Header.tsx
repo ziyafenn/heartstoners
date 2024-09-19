@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
+import { getUser, getUserProfile } from "@/service/supabase.service";
 import Image from "next/image";
 import Link from "next/link";
-import { getUser, getUserProfile } from "@/service/supabase.service";
 import { ProfileMenu } from "./ProfileMenu";
 
 export async function Header() {

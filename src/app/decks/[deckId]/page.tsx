@@ -1,14 +1,14 @@
-import { getDeckByCardList } from "@/service/hs.service";
 import { getUserDeck } from "@/actions/deck.action";
+import { getDeckByCardList } from "@/service/hs.service";
 import { DeckCards } from "./_components/DeckCards";
+import { DeckDescription } from "./_components/DeckDescription";
 import { DeckHeader } from "./_components/DeckHeader";
 import { DeckStats } from "./_components/DeckStats";
-import { DeckDescription } from "./_components/DeckDescription";
 
 export default async function Deck({ params }: { params: { deckId: number } }) {
   const { deckId } = params;
   const userDeck = await getUserDeck(deckId);
-  const { deck, didUserLike, availableDust } = userDeck!;
+  const { deck, didUserLike, availableDust } = userDeck;
   const { card_ids, description, sideboard_cards, youtube_id } = deck;
 
   const {

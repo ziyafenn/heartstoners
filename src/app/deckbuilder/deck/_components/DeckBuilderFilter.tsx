@@ -1,5 +1,8 @@
 "use client";
 
+import { AssetIcon } from "@/components/AssetIcon";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -7,6 +10,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { CARD_CLASSES } from "@/lib/cardClasses";
+import { findData } from "@/lib/utils";
 import type {
   Card,
   CardClass,
@@ -15,15 +21,9 @@ import type {
   MinionTypes,
   Rarity,
 } from "@/types/hs.type";
-import { useEffect, useRef, useState } from "react";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import type { CardSearchOptions } from "blizzard.js/dist/resources/hs";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
-import { CARD_CLASSES } from "@/lib/cardClasses";
-import { AssetIcon } from "@/components/AssetIcon";
-import { findData } from "@/lib/utils";
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
   action: (payload: FormData) => void;
@@ -64,7 +64,7 @@ export function DeckBuilderFilter({
   >(new Map());
 
   function onValueChange(
-    value: string[] | string | null,
+    value: string[] | string,
     type: keyof CardSearchOptions,
     isReset?: boolean,
   ) {
@@ -73,19 +73,21 @@ export function DeckBuilderFilter({
 
     if (!(type === "class" || type === "manaCost")) {
       if (isReset) updatedFilters.delete(type);
-      else updatedFilters.set(type, formattedValue!);
+      else updatedFilters.set(type, formattedValue);
     }
 
     setValues((state) => ({ ...state, [type]: value }));
     setActiveFilters(updatedFilters);
 
-    const form = formRef.current!;
+    const form = formRef.current;
+    if (!form) return;
+
     const formData = new FormData(form);
 
     if (isReset) {
       formData.delete(type);
     } else {
-      formData.set(type, formattedValue!);
+      formData.set(type, formattedValue);
     }
     formData.set("filter", "true");
 
@@ -106,7 +108,7 @@ export function DeckBuilderFilter({
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [filterRef]);
+  }, []);
 
   useEffect(() => {
     if (!formRef.current) return;
@@ -132,7 +134,7 @@ export function DeckBuilderFilter({
     formData.set("class", currentClasses.join(","));
     formData.set("filter", "true");
     action(formData);
-  }, [touristCard, formRef, values.class, action, deckClass]);
+  }, [touristCard, values.class, action, deckClass]);
 
   return (
     <>
@@ -218,7 +220,7 @@ export function DeckBuilderFilter({
                 ))}
               </SelectContent>
             </Select>
-            <Select
+            {/* <Select
               name="keyword"
               onValueChange={(value) => onValueChange(value, "keyword")}
               value={values.keyword as string}
@@ -235,7 +237,7 @@ export function DeckBuilderFilter({
                     </SelectItem>
                   ))}
               </SelectContent>
-            </Select>
+            </Select> */}
             <Select
               name="type"
               onValueChange={(value) => onValueChange(value, "type")}

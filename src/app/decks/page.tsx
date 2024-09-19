@@ -17,7 +17,8 @@ export default async function Decks() {
 
   return (
     <DeckSearch
-      decks={decks}
+      decks={decks.data}
+      count={decks.count}
       craftableDecks={craftableDecks?.craftableDecks ?? []}
       availableDust={craftableDecks?.userCollection.dust ?? 0}
       subArchetypes={subArchetypes}

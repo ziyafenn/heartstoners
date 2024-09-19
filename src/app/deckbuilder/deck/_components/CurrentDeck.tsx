@@ -1,3 +1,8 @@
+import { AssetIcon } from "@/components/AssetIcon";
+import { CardCrop } from "@/components/CardCrop";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { CARD_CLASSES } from "@/lib/cardClasses";
+import { findData } from "@/lib/utils";
 import type {
   Card,
   CardClass,
@@ -5,13 +10,8 @@ import type {
   RuneCost,
   SideboardCards,
 } from "@/types/hs.type";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { useEffect, useRef, useState } from "react";
-import { CardCrop } from "@/components/CardCrop";
-import { CARD_CLASSES } from "@/lib/cardClasses";
-import { AssetIcon } from "@/components/AssetIcon";
 import Image from "next/image";
-import { findData } from "@/lib/utils";
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
   children: React.ReactNode;
@@ -61,6 +61,7 @@ export function CurrentDeck({
     return runes;
   }
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const scrollArea = scrollAreaRef.current;
     const lastItem = endOfListRef.current;
@@ -90,7 +91,7 @@ export function CurrentDeck({
     }
 
     setAvailHeight(height);
-  }, [scrollAreaRef]);
+  }, []);
 
   return (
     <aside className="mt-6">

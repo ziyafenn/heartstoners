@@ -16,6 +16,9 @@ export default function AuthCard({
   redirectDeckCode,
   action: closeDialog,
 }: Props) {
+  function onClose() {
+    if (closeDialog) closeDialog(true);
+  }
   return (
     <Card className="w-full max-w-sm shadow-2xl">
       <CardHeader>
@@ -23,10 +26,7 @@ export default function AuthCard({
         <CardDescription>Sign in or create your account</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4 px-6 pb-6">
-        <AuthForm
-          close={() => closeDialog!(true)}
-          redirectDeckCode={redirectDeckCode}
-        />
+        <AuthForm onClose={onClose} redirectDeckCode={redirectDeckCode} />
       </CardContent>
     </Card>
   );

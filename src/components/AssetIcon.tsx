@@ -1,7 +1,6 @@
-import Image from "next/image";
-import { Tooltip, TooltipTrigger, TooltipContent } from "./ui/tooltip";
-import type { Rarity, SetGroups, CardClass, Card } from "@/types/hs.type";
 import { cn } from "@/lib/utils";
+import type { Card, CardClass, Rarity, SetGroups } from "@/types/hs.type";
+import Image from "next/image";
 import type { HTMLAttributes } from "react";
 
 type NameTypeMap = {

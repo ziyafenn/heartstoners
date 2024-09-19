@@ -1,6 +1,10 @@
 "use server";
 
+import { CARD_CLASSES } from "@/lib/cardClasses";
+// import { checkProfanity } from "@/service/profanity.service";
+import { encodeDeck, findData } from "@/lib/utils";
 import { searchHsCards } from "@/service/hs.service";
+import { checkProfanity } from "@/service/profanity.service";
 import {
   createUserDeck,
   getCurrentGameVersion,
@@ -13,13 +17,9 @@ import type {
   CardSeachParams,
   CardsPage,
 } from "@/types/hs.type";
-import { redirect, RedirectType } from "next/navigation";
-import { decode } from "deckstrings";
-import { CARD_CLASSES } from "@/lib/cardClasses";
 import type { Enums, Tables } from "@/types/supabase.type";
-// import { checkProfanity } from "@/service/profanity.service";
-import { encodeDeck, findData } from "@/lib/utils";
-import { checkProfanity } from "@/service/profanity.service";
+import { decode } from "deckstrings";
+import { RedirectType, redirect } from "next/navigation";
 
 type Params = CardsPage & { params: CardSeachParams; loading?: boolean };
 
@@ -138,9 +138,9 @@ export async function getSubArchetype(
 ) {
   const metas = await getMetasByClass(deckClass);
 
-  const bestMatch = metas!.reduce(
+  const bestMatch = metas.reduce(
     (best, meta) => {
-      const metaMatches = meta!.core_cards!.filter((coreCard) =>
+      const metaMatches = meta.core_cards.filter((coreCard) =>
         selectedCards.map((selectedCard) => selectedCard.id).includes(coreCard),
       ).length;
       return metaMatches > best.matchedCardCount

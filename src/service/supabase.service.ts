@@ -1,17 +1,17 @@
 "use server";
 
-import type { CardClass } from "@/types/hs.type";
-import type { UserCollection } from "@/types/hsreplay.type";
-import type { Tables } from "@/types/supabase.type";
-import { createClient } from "./supabase.auth.server";
+import { getYouTubeVideoID } from "@/lib/utils";
 import type {
   CraftableDeck,
   DeckFilters,
   DeckInitParams,
   DeckUserInputParams,
 } from "@/types/deck.type";
+import type { CardClass } from "@/types/hs.type";
+import type { UserCollection } from "@/types/hsreplay.type";
+import type { Tables } from "@/types/supabase.type";
 import type { QueryData } from "@supabase/supabase-js";
-import { getYouTubeVideoID } from "@/lib/utils";
+import { createClient } from "./supabase.auth.server";
 
 const deckQuery = `*, 
     profiles (*),
@@ -24,16 +24,20 @@ export async function getUser() {
 
   const { data, error } = await supabase.auth.getUser();
 
+  if (error) throw new Error(error.message);
+
   return data;
 }
 
 export async function getUserProfile(id: string) {
   const supabase = createClient();
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("profiles")
     .select("*")
     .eq("id", id)
     .single();
+
+  if (error) throw new Error(error.message);
 
   return data;
 }
@@ -56,13 +60,15 @@ export async function getDecks() {
 export async function getSingleDeck(deckId: number) {
   const supabase = createClient();
 
-  const result = await supabase
+  const { data, error } = await supabase
     .from("user_decks")
     .select(deckQuery)
     .eq("id", deckId)
     .single();
 
-  return result;
+  if (error) throw new Error(error.message);
+
+  return data;
 }
 
 export async function getMetasByClass(className: CardClass["slug"]) {
@@ -73,6 +79,7 @@ export async function getMetasByClass(className: CardClass["slug"]) {
     .select("*")
     .eq("card_class", className);
 
+  if (error) throw new Error(error.message);
   return data;
 }
 
@@ -82,6 +89,8 @@ export async function getMetaSubArchetypes() {
   const { data, error } = await supabase
     .from("meta_sub_archetypes")
     .select("*");
+
+  if (error) throw new Error(error.message);
 
   return data;
 }
@@ -96,7 +105,9 @@ export async function getCurrentGameVersion() {
     .limit(1)
     .single();
 
-  return data!.version_name;
+  if (error) throw new Error(error.message);
+
+  return data.version_name;
 }
 
 export async function getCraftableDecks(
@@ -111,12 +122,16 @@ export async function getCraftableDecks(
     p_card_collection: userCollection,
     p_deck_id: deckId,
   });
-  return data ?? [];
+
+  if (error) throw new Error(error.message);
+
+  return data;
 }
 
 export async function getRequestedDecks(
   filters: DeckFilters,
   craftableDecks?: CraftableDeck[] | null,
+  range = [0, 10],
 ) {
   const supabase = createClient();
   let query = supabase.from("user_decks").select(deckQuery);
@@ -135,47 +150,39 @@ export async function getRequestedDecks(
   if (filters.deck_format) {
     query = query.eq("deck_format", filters.deck_format);
   }
-  // if (dust_cost) {
-  //   query = query.("dust_cost", dust_cost);
-  // }
-  // if (filters?.game_mode) {
-  //   query = query.eq("game_mode", game_mode);
-  // }
   if (filters.sub_archetype) {
     query = query.eq("sub_archetype", filters.sub_archetype);
   }
   // if (filters?.user_id) {
   //   query = query.eq("user_id", filters.user_id);
   // }
-  // if (filters?.name) {
-  //   query = query.textSearch("name", filters.name);
-  // }
-  const { data } = await query;
-  // type Data = Tables<"user_decks"> & {
-  //   profiles: Tables<"profiles">;
-  //   deck_interactions: Tables<"deck_interactions">;
-  //   meta_sub_archetypes: Tables<"meta_sub_archetypes">;
-  // };
-  type UserDecks = QueryData<typeof query>;
 
-  return data as UserDecks;
+  const { data, count, error } = await query.range(range[0], range[1]);
+
+  if (error) throw new Error(error.message);
+
+  return { data: data, count: count ?? 0 };
 }
 
 export async function getTopClasses() {
   const supabase = createClient();
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("user_decks")
     .select("deck_class, deck_class.count()");
+
+  if (error) throw new Error(error.message);
 
   return data;
 }
 export async function getTopMetas() {
   const supabase = createClient();
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("user_decks")
     .select("meta_sub_archetypes (*), sub_archetype, sub_archetype.count()");
+
+  if (error) throw new Error(error.message);
 
   return data;
 }
@@ -183,9 +190,11 @@ export async function getTopMetas() {
 export async function getTopAuthors() {
   const supabase = createClient();
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("user_decks")
     .select("profiles (*), user_id, user_id.count()");
+
+  if (error) throw new Error(error.message);
 
   return data;
 }
@@ -197,9 +206,11 @@ export async function deckLiked({
 }: Pick<Tables<"deck_likes">, "author_id" | "deck_id" | "ip">) {
   const supabase = createClient();
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("deck_likes")
     .insert({ deck_id, author_id, ip });
+
+  if (error) throw new Error(error.message);
 
   return data;
 }
@@ -212,12 +223,14 @@ export async function getDeckLikeByIp({
   ip: string;
 }) {
   const supabase = createClient();
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("deck_likes")
     .select("ip")
     .eq("deck_id", deckId)
     .eq("ip", ip)
     .single();
+
+  if (error) throw new Error(error.message);
 
   return data;
 }
@@ -248,7 +261,7 @@ export async function createUserDeck({
 }) {
   const supabase = createClient();
 
-  const result = await supabase
+  const { data, error } = await supabase
     .from("user_decks")
     .upsert(
       {
@@ -265,5 +278,7 @@ export async function createUserDeck({
     .select()
     .single();
 
-  return result;
+  if (error) throw new Error(error.message);
+
+  return data;
 }

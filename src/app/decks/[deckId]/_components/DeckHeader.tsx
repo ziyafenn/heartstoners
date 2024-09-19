@@ -1,9 +1,9 @@
 import { AssetIcon } from "@/components/AssetIcon";
 import { DeckPopularity } from "@/components/DeckPopularity";
+import { Badge } from "@/components/ui/badge";
 import { toCapital } from "@/lib/utils";
 import type { UserDeck } from "@/types/deck.type";
 import { DeckHeaderActions } from "./DeckHeaderActions";
-import { Badge } from "@/components/ui/badge";
 
 type Props = { deck: UserDeck; didUserLike: boolean; deckCode: string };
 

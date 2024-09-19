@@ -1,15 +1,15 @@
+import { Button } from "@/components/ui/button";
+import { CARD_CLASSES } from "@/lib/cardClasses";
+import { getDeckPopularity } from "@/lib/deckPopularity";
+import { findData } from "@/lib/utils";
 import {
   getDecks,
   getTopAuthors,
   getTopClasses,
   getTopMetas,
 } from "@/service/supabase.service";
-import { Button } from "@/components/ui/button";
 import { DeckUICard } from "./_components/DeckUICard";
 import { SidebarCardItem } from "./_components/SidebarCardItem";
-import { getDeckPopularity } from "@/lib/deckPopularity";
-import { CARD_CLASSES } from "@/lib/cardClasses";
-import { findData } from "@/lib/utils";
 
 export default async function Home() {
   const fetchDecks = getDecks();
@@ -91,8 +91,8 @@ export default async function Home() {
           <ul className="flex flex-col gap-2 divide-y">
             {topAuthors?.map((author, index) => (
               <SidebarCardItem
-                name={author.profiles!.username}
-                key={author.profiles!.username}
+                name={author.profiles!.display_name}
+                key={author.profiles!.id}
               />
             ))}
           </ul>

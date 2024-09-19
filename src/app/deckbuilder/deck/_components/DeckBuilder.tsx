@@ -1,8 +1,19 @@
 "use client";
 
-import { DeckBuilderFilter } from "./DeckBuilderFilter";
+import { getSubArchetype } from "@/actions/deckBuider.action";
+import { AuthForm } from "@/app/(auth)/login/_components/AuthForm";
 import { Button } from "@/components/ui/button";
-import DeckBuilderForm from "./DeckBuilderForm";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { useDeckBuilder } from "@/hooks/useDeckBuilder";
+import { cardViewerProps } from "@/lib/cardViewerProps";
+import { ZILLIAX_ID } from "@/lib/constants";
+import { cn } from "@/lib/utils";
+import { createClient } from "@/service/supabase.auth.client";
 import type {
   CardClass,
   CardType,
@@ -13,26 +24,15 @@ import type {
   Rarity,
   SetGroups,
 } from "@/types/hs.type";
-import { useSearchParams } from "next/navigation";
-import { CurrentDeck } from "./CurrentDeck";
-import { CardSearchResult } from "./CardSearchResult";
-import { useInView } from "react-intersection-observer";
-import { useDeckBuilder } from "@/hooks/useDeckBuilder";
-import { cardViewerProps } from "@/lib/cardViewerProps";
-import { ZILLIAX_ID } from "@/lib/constants";
-import Image from "next/image";
-import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
-import { getSubArchetype } from "@/actions/deckBuider.action";
 import type { Tables } from "@/types/supabase.type";
-import { createClient } from "@/service/supabase.auth.client";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { AuthForm } from "@/app/(auth)/login/_components/AuthForm";
+import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
+import { CardSearchResult } from "./CardSearchResult";
+import { CurrentDeck } from "./CurrentDeck";
+import { DeckBuilderFilter } from "./DeckBuilderFilter";
+import DeckBuilderForm from "./DeckBuilderForm";
 
 function Loading() {
   return <div className="z-50 size-full bg-red-500">Loading</div>;

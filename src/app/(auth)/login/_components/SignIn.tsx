@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { createClient } from "@/service/supabase.auth.client";
 import { signInSchema } from "@/types/schema";
 import { type FormEvent, useState } from "react";
-import { FormItem } from "./FormItem";
 import type { z } from "zod";
+import { FormItem } from "./FormItem";
 
 type Form = z.infer<typeof signInSchema>;
 

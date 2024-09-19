@@ -1,24 +1,16 @@
 "use client";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import { Table, TableBody } from "@/components/ui/table";
-import { Filters } from "./DeckSearchFilters";
 import { filterDecks } from "@/actions/deckSearch.action";
+import { Table, TableBody } from "@/components/ui/table";
 import type { CraftableDeck, UserDeck } from "@/types/deck.type";
-import { DeckRow } from "./DeckRow";
-import { DeckSearchTableHeader } from "./DeckSearchTableHeader";
 import type { Tables } from "@/types/supabase.type";
-import { useActionState } from "react";
+import { useActionState, useRef } from "react";
+import { DeckRow } from "./DeckRow";
+import { Filters } from "./DeckSearchFilters";
+import { DeckSearchTableHeader } from "./DeckSearchTableHeader";
 
 type Props = {
   decks: UserDeck[];
+  count: number;
   craftableDecks: CraftableDeck[];
   availableDust: number;
   subArchetypes: Tables<"meta_sub_archetypes">[];
@@ -29,8 +21,14 @@ export function DeckSearch({
   availableDust,
   craftableDecks,
   subArchetypes,
+  count,
 }: Props) {
-  const [currentDecks, action] = useActionState(filterDecks, decks);
+  const [state, action] = useActionState(filterDecks, {
+    userDecks: decks,
+    pagination: [0, 10] as const,
+    count,
+  });
+  const formRef = useRef<HTMLFormElement>(null);
 
   function getCraftableDeck(id: number) {
     return craftableDecks?.find(
@@ -44,12 +42,13 @@ export function DeckSearch({
         onUpdateFilters={action}
         subArchetypes={subArchetypes}
         availableDust={availableDust}
+        formRef={formRef}
       />
       <div>
         <Table>
           <DeckSearchTableHeader />
           <TableBody>
-            {currentDecks.map((deck) => (
+            {state.userDecks.map((deck) => (
               <DeckRow
                 deck={deck}
                 availableDust={availableDust}
@@ -59,22 +58,12 @@ export function DeckSearch({
             ))}
           </TableBody>
         </Table>
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious href="#" />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">1</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext href="#" />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+        {/* <DeckSearchPagination
+          formRef={formRef}
+          onChangePage={action}
+          count={state.count}
+          pagination={state.pagination}
+        /> */}
       </div>
     </div>
   );

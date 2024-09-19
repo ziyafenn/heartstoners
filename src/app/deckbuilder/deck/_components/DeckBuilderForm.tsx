@@ -1,47 +1,5 @@
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { createDeck } from "@/actions/deckBuider.action";
-import { Button } from "@/components/ui/button";
-import type {
-  Card,
-  CardClass,
-  CardSeachParams,
-  CardType,
-} from "@/types/hs.type";
-import { findData, type getDeckData } from "@/lib/utils";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import type { Tables } from "@/types/supabase.type";
-import type { DeckInitParams } from "@/types/deck.type";
-import {
-  type ChangeEvent,
-  useActionState,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
 import { AssetIcon } from "@/components/AssetIcon";
-import { Label } from "@/components/ui/label";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { InfoIcon } from "lucide-react";
-import { useFormStatus } from "react-dom";
-import { CARD_CLASSES } from "@/lib/cardClasses";
 import { CardTypeIcon } from "@/components/CardTypeIcon";
 import { DeckManaChart } from "@/components/DeckManaChart";
 import {
@@ -53,6 +11,48 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { CARD_CLASSES } from "@/lib/cardClasses";
+import { findData, type getDeckData } from "@/lib/utils";
+import type { DeckInitParams } from "@/types/deck.type";
+import type {
+  Card,
+  CardClass,
+  CardSeachParams,
+  CardType,
+} from "@/types/hs.type";
+import type { Tables } from "@/types/supabase.type";
+import { InfoIcon } from "lucide-react";
+import {
+  type ChangeEvent,
+  useActionState,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { useFormStatus } from "react-dom";
 
 type Props = {
   deckSearchParams: CardSeachParams;
@@ -123,7 +123,7 @@ export default function DeckBuilderForm({
     deck_class: deckClass as CardClass["slug"],
     deck_format: deckSearchParams.set as "standard",
     sub_archetype: subArchetype?.id ?? null,
-    sideboard_cards: sideboard_cards.length ? sideboard_cards : null,
+    sideboard_cards,
     dust_cost_sum,
   };
 
@@ -143,11 +143,13 @@ export default function DeckBuilderForm({
   const { userInput } = state;
 
   useEffect(() => {
-    if (!isFormMounted || !formRef) return;
+    if (!isFormMounted) return;
     const form = formRef.current as HTMLFormElement;
-    const nameInput = nameInputRef.current!;
 
     function validateForm(event: SubmitEvent) {
+      const nameInput = nameInputRef.current;
+
+      if (!form || !nameInput) return;
       const cardClassName = findData(CARD_CLASSES, "slug", deckClass).name;
 
       // Rule 1: Ensure card class name is a whole word
@@ -179,7 +181,7 @@ export default function DeckBuilderForm({
     return () => {
       form.removeEventListener("submit", validateForm);
     };
-  }, [isFormMounted, formRef, deckClass, nameInputRef]);
+  }, [isFormMounted, deckClass]);
 
   useEffect(() => {
     if (state.error) setIsAlertOpen(true);
