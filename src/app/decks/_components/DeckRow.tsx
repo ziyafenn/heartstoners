@@ -3,6 +3,7 @@ import { DeckPopularity } from "@/components/DeckPopularity";
 import { DustCost } from "@/components/DustCost";
 import { Badge } from "@/components/ui/badge";
 import { TableCell, TableRow } from "@/components/ui/table";
+import { UserAvatar } from "@/components/UserAvatar";
 import type { CraftableDeck, UserDeck } from "@/types/deck.type";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -19,21 +20,23 @@ export function DeckRow({ deck, availableDust, craftableDeck }: Props) {
     <TableRow
       key={deck.id}
       onClick={() => router.push(`/decks/${deck.id}`)}
-      className="cursor-pointer select-none"
+      className="cursor-pointer select-none items-center"
     >
-      <TableCell className="flex items-center gap-4">
-        <AssetIcon type="hero" name={deck.deck_class} className="size-10" />
-        <span className="flex flex-col gap-1">
-          <div className="font-bold text-base">{deck.name}</div>
-          <div className="flex gap-1">
-            <AssetIcon type="asset" name="dust" />
-            <DustCost
-              availableDust={availableDust}
-              dustCostSum={deck.dust_cost_sum}
-              craftableDeck={craftableDeck}
-            />
-          </div>
-        </span>
+      <TableCell>
+        <div className="flex items-center gap-4">
+          <AssetIcon type="hero" name={deck.deck_class} className="size-10" />
+          <span className="flex flex-col gap-1">
+            <div className="font-bold text-base">{deck.name}</div>
+            <div className="flex gap-1">
+              <AssetIcon type="asset" name="dust" />
+              <DustCost
+                availableDust={availableDust}
+                dustCostSum={deck.dust_cost_sum}
+                craftableDeck={craftableDeck}
+              />
+            </div>
+          </span>
+        </div>
       </TableCell>
       <TableCell>
         <ul className="flex gap-1">
@@ -46,17 +49,11 @@ export function DeckRow({ deck, availableDust, craftableDeck }: Props) {
       <TableCell className="text-right">
         {new Date(deck.updated_at).toLocaleDateString()}
       </TableCell>
-      <TableCell className="flex items-center gap-2">
-        {deck.profiles?.avatar_url && (
-          <Image
-            src={deck.profiles.avatar_url}
-            width={32}
-            height={32}
-            alt={deck.profiles.display_name}
-            className="rounded-full"
-          />
-        )}
-        <span>{deck.profiles!.display_name}</span>
+      <TableCell>
+        <div className="flex items-center gap-2">
+          <UserAvatar imageSrc={deck.profiles?.avatar_url} />
+          <span>{deck.profiles!.display_name}</span>
+        </div>
       </TableCell>
       <TableCell>
         <DeckPopularity deck={deck} />

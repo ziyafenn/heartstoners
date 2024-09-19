@@ -239,6 +239,7 @@ export function DeckBuilder({
               <Button
                 onClick={() => actions.toggleSideboard(null)}
                 type="button"
+                className="h-12 rounded-none"
               >
                 {`Close ${activeSideboardCard.name} sideboard`}
               </Button>
@@ -246,7 +247,7 @@ export function DeckBuilder({
               <Button
                 type="button"
                 disabled={selectedCards.length < 30}
-                className="rounded-none bg-orange-200"
+                className="h-12 rounded-none"
                 onClick={onFormOpen}
               >
                 {`Create Deck (${selectedCards.length}/30)`}

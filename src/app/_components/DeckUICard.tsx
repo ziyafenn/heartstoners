@@ -1,6 +1,7 @@
 import { AssetIcon } from "@/components/AssetIcon";
 import { DeckPopularity } from "@/components/DeckPopularity";
 import { Badge } from "@/components/ui/badge";
+import { UserAvatar } from "@/components/UserAvatar";
 import type { UserDeck } from "@/types/deck.type";
 import Image from "next/image";
 import Link from "next/link";
@@ -46,7 +47,7 @@ export function DeckUICard({ data: deck }: { data: Props }) {
           <div className="flex flex-col items-end gap-2">
             <div id="author" className="flex items-center gap-2">
               <span className="text-sm">by {profiles!.display_name}</span>
-              <span className="size-6 rounded-full bg-yellow-50" />
+              <UserAvatar imageSrc={profiles?.avatar_url} />
             </div>
             <DeckPopularity deck={deck} />
           </div>

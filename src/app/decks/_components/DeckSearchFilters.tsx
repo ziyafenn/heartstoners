@@ -1,6 +1,7 @@
 "use client";
 import { AssetIcon } from "@/components/AssetIcon";
 import { Combobox } from "@/components/ComboBox";
+import { SidebarItemContainer } from "@/components/SidebarItemContainer";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,12 +17,7 @@ import { CARD_CLASSES } from "@/lib/cardClasses";
 import type { DeckFilters } from "@/types/deck.type";
 import type { Tables } from "@/types/supabase.type";
 import { X } from "lucide-react";
-import {
-  type HTMLAttributes,
-  type KeyboardEvent,
-  type RefObject,
-  useState,
-} from "react";
+import { type KeyboardEvent, type RefObject, useState } from "react";
 
 type Props = {
   onUpdateFilters: (payload: FormData) => void;
@@ -29,25 +25,6 @@ type Props = {
   availableDust: number;
   formRef: RefObject<HTMLFormElement>;
 };
-
-function Filter({
-  name,
-  children,
-  className,
-}: {
-  name: string;
-  children: React.ReactNode;
-  className?: HTMLAttributes<HTMLDivElement>["className"];
-}) {
-  return (
-    <div className="flex w-full flex-col overflow-clip rounded border border-violet-950 bg-black/20">
-      <div className="border-violet-950 border-b bg-violet-950/50 p-3 font-medium">
-        {name}
-      </div>
-      <div className={className}>{children}</div>
-    </div>
-  );
-}
 
 export function Filters({
   onUpdateFilters,
@@ -109,7 +86,7 @@ export function Filters({
         action={onUpdateFilters}
         className="flex flex-1 flex-col items-start gap-4"
       >
-        <Filter name="Deck Class" className="p-4">
+        <SidebarItemContainer name="Deck Class" className="p-4">
           <ToggleGroup
             type="single"
             orientation="horizontal"
@@ -143,8 +120,8 @@ export function Filters({
               );
             })}
           </ToggleGroup>
-        </Filter>
-        <Filter name="My collection">
+        </SidebarItemContainer>
+        <SidebarItemContainer name="My collection">
           <Toggle
             onPressedChange={(value) =>
               onValueChange("craftable_decks", String(value))
@@ -173,8 +150,8 @@ export function Filters({
               </span>
             </div>
           )}
-        </Filter>
-        <Filter name="Archetypes" className="flex flex-col">
+        </SidebarItemContainer>
+        <SidebarItemContainer name="Archetypes" className="flex flex-col">
           <div className="flex flex-col gap-4 p-4">
             <Combobox
               data={filteredSubArches}
@@ -213,8 +190,8 @@ export function Filters({
               Control
             </ToggleGroupItem>
           </ToggleGroup>
-        </Filter>
-        <Filter name="Game format">
+        </SidebarItemContainer>
+        <SidebarItemContainer name="Game format">
           <ToggleGroup
             type="single"
             orientation="vertical"
@@ -231,7 +208,7 @@ export function Filters({
               Wild
             </ToggleGroupItem>
           </ToggleGroup>
-        </Filter>
+        </SidebarItemContainer>
 
         <input
           type="hidden"

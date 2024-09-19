@@ -30,8 +30,8 @@ type CraftableDecks = NonNullable<
 
 type DeckSearchResult = {
   userDecks: UserDeck[];
-  pagination: [number, number];
-  count?: number;
+  // pagination: [number, number];
+  // count?: number;
 };
 
 export async function filterDecks(
@@ -61,7 +61,5 @@ export async function filterDecks(
   );
   return {
     userDecks,
-    count,
-    pagination: state.pagination,
   };
 }

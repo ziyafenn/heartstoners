@@ -32,7 +32,7 @@ export async function Header() {
             )}
           </li>
           <li>
-            <Button asChild>
+            <Button asChild variant="primary">
               <Link href="/deckbuilder">Create a deck</Link>
             </Button>
           </li>

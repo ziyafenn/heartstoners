@@ -10,6 +10,7 @@ import {
 } from "@/service/supabase.service";
 import { DeckUICard } from "./_components/DeckUICard";
 import { SidebarCardItem } from "./_components/SidebarCardItem";
+import { SidebarItemContainer } from "@/components/SidebarItemContainer";
 
 export default async function Home() {
   const fetchDecks = getDecks();
@@ -86,39 +87,39 @@ export default async function Home() {
           Join our discord
           <Button>Join</Button>
         </div>
-        <div className="border border-border p-4">
-          <h3>Top creators</h3>
-          <ul className="flex flex-col gap-2 divide-y">
-            {topAuthors?.map((author, index) => (
+        <SidebarItemContainer name="Top Creators">
+          <ul className="flex flex-col gap-2 divide-y p-4">
+            {topAuthors?.map(({ profiles }, index) => (
               <SidebarCardItem
-                name={author.profiles!.display_name}
-                key={author.profiles!.id}
+                name={profiles!.display_name}
+                key={profiles!.id}
+                avatarUrl={profiles?.avatar_url}
               />
             ))}
           </ul>
-        </div>
-        <div className="border border-border p-4">
-          <h3>Top metas</h3>
-          <ul className="flex flex-col gap-2 divide-y">
-            {topMetas?.map((meta, index) => (
+        </SidebarItemContainer>
+        <SidebarItemContainer name="Top Metas">
+          <ul className="flex flex-col gap-2 divide-y p-4">
+            {topMetas?.map(({ meta_sub_archetypes }, index) => (
               <SidebarCardItem
-                name={meta.meta_sub_archetypes?.name}
-                key={meta.meta_sub_archetypes?.id}
+                name={meta_sub_archetypes!.name}
+                slug={meta_sub_archetypes!.card_class}
+                key={meta_sub_archetypes!.id}
               />
             ))}
           </ul>
-        </div>
-        <div className="border border-border p-4">
-          <h3>Top classes</h3>
-          <ul className="flex flex-col gap-2 divide-y">
+        </SidebarItemContainer>
+        <SidebarItemContainer name="Top Classes">
+          <ul className="flex flex-col gap-2 divide-y p-4">
             {topClasses?.map((deckClass) => (
               <SidebarCardItem
                 name={findData(CARD_CLASSES, "slug", deckClass.deck_class).name}
                 key={findData(CARD_CLASSES, "slug", deckClass.deck_class).id}
+                slug={deckClass.deck_class}
               />
             ))}
           </ul>
-        </div>
+        </SidebarItemContainer>
       </aside>
     </div>
   );

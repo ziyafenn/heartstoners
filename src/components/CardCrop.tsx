@@ -47,7 +47,12 @@ export const CardCrop = forwardRef<HTMLLIElement, CardCropProps>(
           >
             {!!card.maxSideboardCards && !isView && (
               <div className="absolute bottom-0 z-20 flex w-full justify-center">
-                <Button size="sm" className="h-4" onClick={onSideboardClick}>
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  className="h-4"
+                  onClick={onSideboardClick}
+                >
                   OPEN {`${cardsInSideboard}/3`}
                 </Button>
               </div>

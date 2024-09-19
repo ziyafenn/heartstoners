@@ -131,7 +131,7 @@ export async function getCraftableDecks(
 export async function getRequestedDecks(
   filters: DeckFilters,
   craftableDecks?: CraftableDeck[] | null,
-  range = [0, 10],
+  // range = [0, 10],
 ) {
   const supabase = createClient();
   let query = supabase.from("user_decks").select(deckQuery);
@@ -157,7 +157,7 @@ export async function getRequestedDecks(
   //   query = query.eq("user_id", filters.user_id);
   // }
 
-  const { data, count, error } = await query.range(range[0], range[1]);
+  const { data, count, error } = await query;
 
   if (error) throw new Error(error.message);
 

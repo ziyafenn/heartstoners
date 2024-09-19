@@ -25,8 +25,6 @@ export function DeckSearch({
 }: Props) {
   const [state, action] = useActionState(filterDecks, {
     userDecks: decks,
-    pagination: [0, 10] as const,
-    count,
   });
   const formRef = useRef<HTMLFormElement>(null);
 
