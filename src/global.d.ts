@@ -5,5 +5,7 @@ declare namespace NodeJS {
     NEXT_PUBLIC_SUPABASE_ANON_KEY: string;
     CRYPTO_HEX_KEY: string;
     CRYPTO_HEX_IV: string;
+    BATTLENET_KEY: string;
+    BATTLENET_SECRET: string;
   }
 }

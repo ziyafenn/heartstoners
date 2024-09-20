@@ -6,6 +6,7 @@ import type {
   Deck,
   Rune,
   RuneCost,
+  SetGroups,
   SideboardCards,
 } from "@/types/hs.type";
 import {
@@ -115,8 +116,8 @@ export function useDeckBuilder({
     updateDeckCodeQuery({
       cards: currentSelectedCards,
       sideboardCards: sideboardCards,
-      multiClass: initState.params.multiClass,
       set: initState.params.set,
+      multiClass: initState.params.multiClass,
     });
   }
 

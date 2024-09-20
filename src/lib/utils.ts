@@ -5,6 +5,7 @@ import type {
   CardType,
   Deck,
   Rarity,
+  SetGroups,
   SideboardCards,
 } from "@/types/hs.type";
 import { type ClassValue, clsx } from "clsx";
@@ -115,7 +116,7 @@ export function encodeDeck({
     });
   }
 
-  const heroCardId = findData(CARD_CLASSES, "slug", deck_class).cardId;
+  const heroCardId = findData(CARD_CLASSES, "slug", deck_class).cardId!;
 
   const deck: DeckDefinition = {
     cards: convertCards(card_ids), // [dbfId, count] pairs
@@ -141,8 +142,8 @@ export function updateDeckCodeQuery(
   const deckCode = encodeDeck({
     card_ids,
     sideboard_cards,
-    deck_class: deck.multiClass,
-    deck_format: deck.set,
+    deck_class: deck.multiClass!,
+    deck_format: deck.set as SetGroups["slug"],
   });
   const url = new URL(window.location.href);
   url.searchParams.set("deckCode", deckCode);
@@ -151,7 +152,7 @@ export function updateDeckCodeQuery(
 
 export function getDeckData(
   selectedCards: Card[],
-  sideboardCards: SideboardCards[],
+  sideboardCards: SideboardCards[] = [],
 ) {
   let dust_cost_sum = 0;
   const dust_cost_per_card: number[] = [];
