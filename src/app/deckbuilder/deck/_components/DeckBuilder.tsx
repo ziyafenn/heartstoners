@@ -249,6 +249,7 @@ export function DeckBuilder({
                 disabled={selectedCards.length < 30}
                 className="h-12 rounded-none"
                 onClick={onFormOpen}
+                variant="primary"
               >
                 {`Create Deck (${selectedCards.length}/30)`}
               </Button>

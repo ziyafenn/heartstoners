@@ -55,7 +55,7 @@ export default async function Home() {
       <main className="flex flex-col gap-8">
         <div className="relative h-48 rounded-md bg-hero bg-left bg-no-repeat shadow-2xl">
           <div className="absolute flex size-full items-center justify-between bg-gradient-to-r from-neutral-900/80 via-transparent to-neutral-900 p-10">
-            <div className="flex w-3/5 flex-col gap-4">
+            <div className="flex min-w-[520px] flex-col gap-4">
               <h3 className="font-hs text-2xl">
                 Craft your winning deck with our Reno-certified deckbuilder for
                 Hearthstone! Conquer all challengers with Reno and his minions!
@@ -66,13 +66,12 @@ export default async function Home() {
                 </Button>
               </div>
             </div>
-            <div className="select-none">
+            <div className="hidden max-w-80 select-none xl:block ">
               <Image
                 src="/img/logo.png"
                 width={1140}
                 height={450}
                 alt="heartstoners logo"
-                className="h-auto w-96"
               />
             </div>
           </div>

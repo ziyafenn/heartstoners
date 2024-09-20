@@ -17,7 +17,8 @@ import { CARD_CLASSES } from "@/lib/cardClasses";
 import { findData } from "@/lib/utils";
 import type { DeckFilters } from "@/types/deck.type";
 import type { Tables } from "@/types/supabase.type";
-import { X } from "lucide-react";
+import { CircleHelp, X } from "lucide-react";
+import Link from "next/link";
 import { type KeyboardEvent, type RefObject, useState } from "react";
 
 type Props = {
@@ -25,6 +26,7 @@ type Props = {
   subArchetypes: Tables<"meta_sub_archetypes">[];
   availableDust: number;
   formRef: RefObject<HTMLFormElement>;
+  hasHsAccount: boolean;
 };
 
 export function Filters({
@@ -32,6 +34,7 @@ export function Filters({
   subArchetypes,
   availableDust,
   formRef,
+  hasHsAccount,
 }: Props) {
   const [values, setValues] = useState<DeckFilters>({
     craftable_decks: "false",
@@ -124,15 +127,32 @@ export function Filters({
           </ToggleGroup>
         </SidebarItemContainer>
         <SidebarItemContainer name="My collection">
-          <Toggle
-            onPressedChange={(value) =>
-              onValueChange("craftable_decks", String(value))
-            }
-            pressed={values.craftable_decks === "true"}
-            size="lg"
-          >
-            Show Craftable
-          </Toggle>
+          <div className="flex items-center justify-between pr-4">
+            <Toggle
+              className="pr-0"
+              onPressedChange={(value) =>
+                onValueChange("craftable_decks", String(value))
+              }
+              pressed={values.craftable_decks === "true"}
+              size="lg"
+              disabled={!hasHsAccount}
+            >
+              Show Craftable
+            </Toggle>
+            {!hasHsAccount && (
+              <Tooltip>
+                <TooltipTrigger>
+                  <CircleHelp className="size-4" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  Make sure you are signed in and have your{" "}
+                  <Link href="/" className="text-blue-500 underline">
+                    HSReplay account connected
+                  </Link>
+                </TooltipContent>
+              </Tooltip>
+            )}
+          </div>
           {values.craftable_decks === "true" && (
             <div className="flex flex-col gap-4 p-4">
               <div className="flex items-center justify-between">

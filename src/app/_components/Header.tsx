@@ -3,6 +3,7 @@ import { getUser, getUserProfile } from "@/service/supabase.service";
 import Image from "next/image";
 import Link from "next/link";
 import { ProfileMenu } from "./ProfileMenu";
+import { User } from "lucide-react";
 
 export async function Header() {
   const auth = await getUser();
@@ -21,17 +22,19 @@ export async function Header() {
           />
         </Link>
         <ul className="flex items-center gap-8 font-medium">
-          <li>
+          <li className="hover:text-indigo-400">
             {userProfile ? (
               <ProfileMenu userProfile={userProfile} />
             ) : (
-              <Link href="/login">Sign in</Link>
+              <Link href="/login" className="flex gap-1">
+                <User className="size-5" />
+                Sign in
+              </Link>
             )}
           </li>
-          <li>
+          <li className="hover:text-indigo-400">
             <Link href="/decks">Discover Decks</Link>
           </li>
-
           <li>
             <Button asChild variant="primary">
               <Link href="/deckbuilder">Create a deck</Link>

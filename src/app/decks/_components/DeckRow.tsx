@@ -5,7 +5,6 @@ import { Badge } from "@/components/ui/badge";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { UserAvatar } from "@/components/UserAvatar";
 import type { CraftableDeck, UserDeck } from "@/types/deck.type";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 type Props = {

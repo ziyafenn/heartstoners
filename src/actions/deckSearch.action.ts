@@ -55,11 +55,9 @@ export async function filterDecks(
     };
   }
 
-  const { data: userDecks, count } = await getRequestedDecks(
-    filters,
-    craftableDecks,
-  );
+  const { data: userDecks } = await getRequestedDecks(filters, craftableDecks);
+
   return {
-    userDecks,
+    userDecks: userDecks ?? [],
   };
 }

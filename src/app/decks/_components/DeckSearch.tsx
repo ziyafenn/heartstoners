@@ -10,7 +10,7 @@ import { DeckSearchTableHeader } from "./DeckSearchTableHeader";
 
 type Props = {
   decks: UserDeck[];
-  count: number;
+  hasHsAccount: boolean;
   craftableDecks: CraftableDeck[];
   availableDust: number;
   subArchetypes: Tables<"meta_sub_archetypes">[];
@@ -21,7 +21,7 @@ export function DeckSearch({
   availableDust,
   craftableDecks,
   subArchetypes,
-  count,
+  hasHsAccount,
 }: Props) {
   const [state, action] = useActionState(filterDecks, {
     userDecks: decks,
@@ -41,6 +41,7 @@ export function DeckSearch({
         subArchetypes={subArchetypes}
         availableDust={availableDust}
         formRef={formRef}
+        hasHsAccount={hasHsAccount}
       />
       <div>
         <Table>

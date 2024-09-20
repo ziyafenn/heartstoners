@@ -9,7 +9,7 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
   const { deckId } = params;
   const userDeck = await getUserDeck(deckId);
   const { deck, didUserLike, availableDust } = userDeck;
-  const { card_ids, description, sideboard_cards, youtube_id } = deck;
+  const { card_ids, description, sideboard_cards, youtube_id } = deck!;
 
   const {
     class: deckClass,
