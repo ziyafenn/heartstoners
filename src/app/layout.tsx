@@ -4,6 +4,12 @@ import "./globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { Header } from "./_components/Header";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import Image from "next/image";
+import discordLogo from "public/img/discord.svg";
+import xLogo from "public/img/x.svg";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const hs = FonsHs({
   subsets: ["latin"],
@@ -24,8 +30,10 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
+  hsConnect,
 }: Readonly<{
   children: React.ReactNode;
+  hsConnect: React.ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -39,16 +47,32 @@ export default async function RootLayout({
       >
         <Header />
         <div className="flex flex-1 flex-col p-8">
-          <TooltipProvider delayDuration={100}>{children}</TooltipProvider>
+          <TooltipProvider delayDuration={100}>
+            {children}
+            {hsConnect}
+          </TooltipProvider>
         </div>
-        <footer className="border-t p-4">
+        <footer className="flex items-center justify-between border-t p-4">
           <div className="text-xs">
-            All assets are trademark of ©2014 Blizzard Entertainment, Inc.
-            <br /> All rights reserved. Heroes of Warcraft is a trademark, and
-            Hearthstone is a registered trademark of Blizzard Entertainment,
-            Inc. in the U.S. and/or other countries.
+            © {new Date().getFullYear()} HeartStone.gg
+            <br />
+            Heartstone™ assets are trademark of ©2014 Blizzard Entertainment,
+            Inc.
+          </div>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" asChild className="size-10 p-0">
+              <Link href="">
+                <Image src={discordLogo} alt="discord" className="size-5" />
+              </Link>
+            </Button>
+            <Button variant="outline" asChild className="size-10 p-0">
+              <Link href="">
+                <Image src={xLogo} alt="discord" className="size-5" />
+              </Link>
+            </Button>
           </div>
         </footer>
+        <SpeedInsights />
       </body>
     </html>
   );

@@ -9,6 +9,7 @@ import {
 import { UserAvatar } from "@/components/UserAvatar";
 import type { Tables } from "@/types/supabase.type";
 import { ChevronDown } from "lucide-react";
+import Link from "next/link";
 
 export function ProfileMenu({
   userProfile,
@@ -21,6 +22,9 @@ export function ProfileMenu({
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem onClick={() => signout()}>Sign out</DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/hsConnect">Hs connect</Link>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

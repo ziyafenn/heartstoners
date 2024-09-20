@@ -68,6 +68,9 @@ importers:
       '@supabase/supabase-js':
         specifier: ^2.45.4
         version: 2.45.4
+      '@vercel/speed-insights':
+        specifier: ^1.0.12
+        version: 1.0.12(next@15.0.0-rc.0(react-dom@19.0.0-rc-f2df5694-20240916(react@19.0.0-rc-f2df5694-20240916))(react@19.0.0-rc-f2df5694-20240916))(react@19.0.0-rc-f2df5694-20240916)
       blizzard.js:
         specifier: github:ziyafenn/blizzard.js
         version: https://codeload.github.com/ziyafenn/blizzard.js/tar.gz/b999b417c7d5e6f037b7b2f59d01f92aeba74448
@@ -1344,6 +1347,29 @@ packages:
 
   '@types/ws@8.5.12':
     resolution: {integrity: sha512-3tPRkv1EtkDpzlgyKyI8pGsGZAGPEaXeu0DOj5DI25Ja91bdAYddYHbADRYVrZMRbfW+1l5YwXVDKohDJNQxkQ==}
+
+  '@vercel/speed-insights@1.0.12':
+    resolution: {integrity: sha512-ZGQ+a7bcfWJD2VYEp2R1LHvRAMyyaFBYytZXsfnbOMkeOvzGNVxUL7aVUvisIrTZjXTSsxG45DKX7yiw6nq2Jw==}
+    peerDependencies:
+      '@sveltejs/kit': ^1 || ^2
+      next: '>= 13'
+      react: ^18 || ^19
+      svelte: ^4
+      vue: ^3
+      vue-router: ^4
+    peerDependenciesMeta:
+      '@sveltejs/kit':
+        optional: true
+      next:
+        optional: true
+      react:
+        optional: true
+      svelte:
+        optional: true
+      vue:
+        optional: true
+      vue-router:
+        optional: true
 
   ansi-regex@5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
@@ -3443,6 +3469,11 @@ snapshots:
   '@types/ws@8.5.12':
     dependencies:
       '@types/node': 22.5.5
+
+  '@vercel/speed-insights@1.0.12(next@15.0.0-rc.0(react-dom@19.0.0-rc-f2df5694-20240916(react@19.0.0-rc-f2df5694-20240916))(react@19.0.0-rc-f2df5694-20240916))(react@19.0.0-rc-f2df5694-20240916)':
+    optionalDependencies:
+      next: 15.0.0-rc.0(react-dom@19.0.0-rc-f2df5694-20240916(react@19.0.0-rc-f2df5694-20240916))(react@19.0.0-rc-f2df5694-20240916)
+      react: 19.0.0-rc-f2df5694-20240916
 
   ansi-regex@5.0.1: {}
 
