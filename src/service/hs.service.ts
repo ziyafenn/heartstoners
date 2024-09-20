@@ -4,12 +4,11 @@ import { promises as fs } from "node:fs";
 import type { Card, CardSeachParams, CardsPage, Deck } from "@/types/hs.type";
 import { hs } from "blizzard.js";
 import type { CardMetaDataType } from "blizzard.js/dist/resources/hs";
-import { env } from "node:process";
 
 async function createHsClient() {
   return await hs.createInstance({
-    key: env.BATTLENET_KEY,
-    secret: env.BATTLENET_SECRET,
+    key: process.env.BATTLENET_KEY,
+    secret: process.env.BATTLENET_SECRET,
     origin: "us", // optional
     locale: "en_US", // optional
     token: "", // optional
