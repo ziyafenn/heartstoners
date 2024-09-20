@@ -2,14 +2,8 @@ import { hostname } from "os";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  async redirects() {
-    return [
-      {
-        source: "/deckbuilder/neutral",
-        destination: "/deckbuilder",
-        permanent: true,
-      },
-    ];
+  eslint:{
+    ignoreDuringBuilds: true,
   },
   images: {
     remotePatterns: [

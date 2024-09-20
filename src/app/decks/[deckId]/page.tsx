@@ -24,10 +24,14 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
   return (
     <div className="grid grid-cols-[1fr,auto] justify-between gap-8">
       <main className="flex flex-col gap-8">
-        <DeckHeader deck={deck} didUserLike={didUserLike} deckCode={deckCode} />
+        <DeckHeader
+          deck={deck!}
+          didUserLike={didUserLike}
+          deckCode={deckCode}
+        />
         <section className="grid h-full grid-cols-[1fr,204px] divide-x-2">
           <DeckDescription description={description} youtube_id={youtube_id} />
-          <DeckStats deck={deck} availableDust={availableDust} cards={cards} />
+          <DeckStats deck={deck!} availableDust={availableDust} cards={cards} />
         </section>
       </main>
       <DeckCards

@@ -13,7 +13,7 @@ export async function searchForCraftableDecks(props?: {
 }) {
   const userCollection = await getUserCollection();
 
-  if (!userCollection) return null;
+  if (!userCollection) return;
 
   const craftableDecks = await getCraftableDecks(
     userCollection.collection,

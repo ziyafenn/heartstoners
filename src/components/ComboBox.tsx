@@ -9,22 +9,28 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command";
-import { type KeyboardEvent, useState } from "react";
+import {
+  type KeyboardEvent,
+  type MouseEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
-type Data = { id: number; label: string; cardClass: string; className: string };
+type Data = { id: string; label: string; cardClass: string; className: string };
 type Props = {
   data: Data[];
-  value: string | undefined | null;
-  selectItem: (value: number) => void;
+  selectItem: (value: string) => void;
 };
 
 type GroupedSubArchetypes = {
   [key: string]: Data[];
 };
 
-export function Combobox({ data, value, selectItem }: Props) {
+export function Combobox({ data, selectItem }: Props) {
+  const inputRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [inputValue, setInputValue] = useState(value);
+  const [inputValue, setInputValue] = useState("");
 
   const groupedSubArchetypes = data.reduce(
     (acc, { cardClass, className, id, label }) => {
@@ -42,6 +48,8 @@ export function Combobox({ data, value, selectItem }: Props) {
     {} as GroupedSubArchetypes,
   );
 
+  const subArchetypesArray = Object.entries(groupedSubArchetypes);
+
   function onSelect(currentValue: string) {
     const id = data.find((item) => item.label === currentValue)?.id;
     id && selectItem(id);
@@ -55,35 +63,50 @@ export function Combobox({ data, value, selectItem }: Props) {
     e.currentTarget.blur();
   }
 
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        inputRef.current &&
+        !inputRef.current.contains(event.target as Node)
+      ) {
+        console.log("Mouse was clicked outside of the div");
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", (e) =>
+      handleClickOutside(e as unknown as MouseEvent),
+    );
+
+    return () => {
+      document.removeEventListener("mousedown", (e) =>
+        handleClickOutside(e as unknown as MouseEvent),
+      );
+    };
+  }, []);
+
   return (
-    <Command>
+    <Command ref={inputRef}>
       <CommandInput
-        placeholder="Search sub-archetype..."
+        placeholder="Search sub-archetype"
         onValueChange={setInputValue}
-        value={inputValue?.toString()}
+        value={inputValue}
         onKeyDown={(e) => e.key === "Escape" && closePopover(e)}
         onFocus={() => setIsOpen(true)}
-        onBlur={() => setIsOpen(false)}
       />
       <div>
         <CommandList
           hidden={!isOpen}
-          className="absolute w-[220px] bg-popover text-popover-foreground"
+          className={"absolute w-[220px] bg-popover text-popover-foreground"}
         >
           <CommandEmpty>No sub-archetype found</CommandEmpty>
-          {Object.keys(groupedSubArchetypes).map((cardClass) => {
-            const subArchetypeGroup = groupedSubArchetypes[cardClass];
-            console.log(cardClass);
-
+          {subArchetypesArray.map(([cardClass, data]) => {
             return (
-              <CommandGroup
-                key={cardClass}
-                heading={subArchetypeGroup[0].className} // Assuming all items in the group have the same className
-              >
-                {subArchetypeGroup.map((subArchetype) => (
+              <CommandGroup key={cardClass} heading={data[0].className}>
+                {data.map((subArchetype) => (
                   <CommandItem
                     key={subArchetype.id}
-                    value={subArchetype.id}
+                    value={subArchetype.label}
                     onSelect={onSelect}
                   >
                     {subArchetype.label}

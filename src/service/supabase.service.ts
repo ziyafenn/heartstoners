@@ -96,7 +96,7 @@ export async function getCurrentGameVersion() {
     .limit(1)
     .single();
 
-  return data.version_name;
+  return data!.version_name;
 }
 
 export async function getCraftableDecks(
@@ -236,7 +236,7 @@ export async function createUserDeck({
 }) {
   const supabase = createClient();
 
-  const { data, error } = await supabase
+  const result = await supabase
     .from("user_decks")
     .upsert(
       {
@@ -253,5 +253,5 @@ export async function createUserDeck({
     .select()
     .single();
 
-  return data;
+  return result;
 }

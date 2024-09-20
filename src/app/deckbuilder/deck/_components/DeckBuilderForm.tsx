@@ -44,6 +44,7 @@ import type {
   CardType,
 } from "@/types/hs.type";
 import type { Tables } from "@/types/supabase.type";
+import type { CardRarity } from "blizzard.js/dist/resources/hs";
 import { InfoIcon } from "lucide-react";
 import {
   type ChangeEvent,
@@ -232,7 +233,7 @@ export default function DeckBuilderForm({
                     >
                       <AssetIcon
                         type="rarity"
-                        name={cardRarity[0].toLowerCase()}
+                        name={cardRarity[0].toLowerCase() as CardRarity}
                       />
                       {cardRarity[0]}:
                       <span className="font-bold">{cardRarity[1]}</span>

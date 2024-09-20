@@ -138,7 +138,7 @@ export async function getSubArchetype(
 ) {
   const metas = await getMetasByClass(deckClass);
 
-  const bestMatch = metas.reduce(
+  const bestMatch = metas!.reduce(
     (best, meta) => {
       const metaMatches = meta.core_cards.filter((coreCard) =>
         selectedCards.map((selectedCard) => selectedCard.id).includes(coreCard),

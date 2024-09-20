@@ -7,6 +7,7 @@ import { CARD_TYPES } from "@/lib/cardTypes";
 import { findData } from "@/lib/utils";
 import type { UserDeck } from "@/types/deck.type";
 import type { Card, CardType, Rarity } from "@/types/hs.type";
+import type { CardRarity } from "blizzard.js/dist/resources/hs";
 import { Calendar, HistoryIcon } from "lucide-react";
 
 type Props = {
@@ -59,7 +60,7 @@ export async function DeckStats({ cards, deck, availableDust }: Props) {
           <DustCost
             availableDust={availableDust}
             dustCostSum={dust_cost_sum}
-            craftableDeck={craftableDeck?.craftableDecks[0]}
+            craftableDeck={craftableDeck?.craftableDecks?.[0]}
           />
         </li>
         {cardRarityAllocation.map((cardRarity) => {
@@ -70,7 +71,10 @@ export async function DeckStats({ cards, deck, availableDust }: Props) {
               className="flex items-center justify-between py-2"
             >
               <span className="flex items-baseline gap-1">
-                <AssetIcon type="rarity" name={cardRarity[0].toLowerCase()} />
+                <AssetIcon
+                  type="rarity"
+                  name={cardRarity[0].toLowerCase() as CardRarity}
+                />
                 {cardRarity[0]}
               </span>
               <span className="font-bold">{cardRarity[1]}</span>

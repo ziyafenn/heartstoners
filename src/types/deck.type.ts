@@ -20,11 +20,10 @@ export type DeckInitParams = Omit<
 >;
 
 export type DeckFilters = Partial<
-  Tables<"user_decks"> & {
-    craftable_decks?: "true" | "false";
-  }
->;
-
+  Record<keyof Tables<"user_decks">, string>
+> & {
+  craftable_decks?: "true" | "false";
+};
 export type UserDeck = NonNullable<Awaited<ReturnType<typeof getSingleDeck>>>;
 
 export type CraftableDeck = DBFunction<

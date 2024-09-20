@@ -44,7 +44,7 @@ export function Filters({
   });
   const [dustCostValue, setDustCostValue] = useState(String(availableDust));
   const subs = subArchetypes.map((subArch) => ({
-    id: subArch.id,
+    id: String(subArch.id),
     label: subArch.name,
     cardClass: subArch.card_class,
     className: findData(CARD_CLASSES, "slug", subArch.card_class).name,
@@ -65,7 +65,7 @@ export function Filters({
 
     setValues((state) => ({ ...state, [key]: value }));
     if (key === "deck_class" && subArchCardClass !== value) {
-      setValues((state) => ({ ...state, sub_archetype: null }));
+      setValues((state) => ({ ...state, sub_archetype: undefined }));
     }
 
     const form = formRef.current;
@@ -177,7 +177,6 @@ export function Filters({
           <div className="flex flex-col gap-4 p-4">
             <Combobox
               data={filteredSubArches}
-              value={values.sub_archetype?.toString()}
               selectItem={(value) => onValueChange("sub_archetype", value)}
             />
             {values.sub_archetype && (
