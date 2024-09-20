@@ -14,6 +14,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { CARD_CLASSES } from "@/lib/cardClasses";
+import { findData } from "@/lib/utils";
 import type { DeckFilters } from "@/types/deck.type";
 import type { Tables } from "@/types/supabase.type";
 import { X } from "lucide-react";
@@ -43,6 +44,7 @@ export function Filters({
     id: subArch.id,
     label: subArch.name,
     cardClass: subArch.card_class,
+    className: findData(CARD_CLASSES, "slug", subArch.card_class).name,
   }));
 
   const filteredSubArches = values.deck_class
@@ -155,7 +157,7 @@ export function Filters({
           <div className="flex flex-col gap-4 p-4">
             <Combobox
               data={filteredSubArches}
-              value={values.sub_archetype}
+              value={values.sub_archetype?.toString()}
               selectItem={(value) => onValueChange("sub_archetype", value)}
             />
             {values.sub_archetype && (
