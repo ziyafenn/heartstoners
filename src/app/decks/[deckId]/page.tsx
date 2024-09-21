@@ -9,7 +9,8 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
   const { deckId } = params;
   const userDeck = await getUserDeck(deckId);
   const { deck, didUserLike, availableDust } = userDeck;
-  const { card_ids, description, sideboard_cards, youtube_id } = deck!;
+  const { card_ids, description, sideboard_cards, youtube_id, profiles } =
+    deck!;
 
   const {
     class: deckClass,
@@ -31,7 +32,12 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
         />
         <section className="grid h-full grid-cols-[1fr,204px] divide-x-2">
           <DeckDescription description={description} youtube_id={youtube_id} />
-          <DeckStats deck={deck!} availableDust={availableDust} cards={cards} />
+          <DeckStats
+            deck={deck!}
+            availableDust={availableDust}
+            cards={cards}
+            author={profiles!}
+          />
         </section>
       </main>
       <DeckCards

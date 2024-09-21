@@ -2,11 +2,13 @@ import { searchForCraftableDecks } from "@/actions/deckSearch.action";
 import { AssetIcon } from "@/components/AssetIcon";
 import { CardTypeIcon } from "@/components/CardTypeIcon";
 import { DustCost } from "@/components/DustCost";
+import { UserAvatar } from "@/components/UserAvatar";
 import { CARD_RARITIES } from "@/lib/cardRarities";
 import { CARD_TYPES } from "@/lib/cardTypes";
 import { findData } from "@/lib/utils";
 import type { UserDeck } from "@/types/deck.type";
 import type { Card, CardType, Rarity } from "@/types/hs.type";
+import type { Tables } from "@/types/supabase.type";
 import type { CardRarity } from "blizzard.js/dist/resources/hs";
 import { Calendar, HistoryIcon } from "lucide-react";
 
@@ -14,9 +16,10 @@ type Props = {
   cards: Card[];
   availableDust: number;
   deck: UserDeck;
+  author: Tables<"profiles">;
 };
 
-export async function DeckStats({ cards, deck, availableDust }: Props) {
+export async function DeckStats({ cards, deck, availableDust, author }: Props) {
   const { game_version, card_ids, dust_cost_sum, updated_at, created_at, id } =
     deck;
   const craftableDeck = await searchForCraftableDecks({ deckId: id });
@@ -50,7 +53,11 @@ export async function DeckStats({ cards, deck, availableDust }: Props) {
   const cardTypeAllocation = Object.entries(cardTypes);
   const cardRarityAllocation = Object.entries(cardRarities);
   return (
-    <div className="flex flex-col divide-y pl-4">
+    <div className="flex flex-col gap-8 pl-4">
+      <div className="flex h-20 flex-col items-center justify-center gap-4 ">
+        <UserAvatar imageSrc={author.avatar_url} className="size-14" />
+        <span>{author.display_name}</span>
+      </div>
       <ul className="flex flex-col divide-y">
         <li className="flex justify-between gap-1 pb-2">
           <span className="flex gap-1">
