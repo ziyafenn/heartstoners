@@ -13,7 +13,7 @@ type HeroProps = BaseProps & {
 
 type UserProps = BaseProps & {
   slug?: never;
-  avatarUrl: string | undefined;
+  avatarUrl: string | null;
 };
 
 type Props = HeroProps | UserProps;

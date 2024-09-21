@@ -1,8 +1,8 @@
 import { getUser } from "@/service/supabase.service";
-import { HsConnectForm } from "./_components/HsConnectForm";
-import { redirect } from "next/navigation";
-import Link from "next/link";
 import { ExternalLink } from "lucide-react";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { HsConnectForm } from "./_components/HsConnectForm";
 
 function LinkWrapper({
   link,

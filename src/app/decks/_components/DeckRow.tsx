@@ -1,9 +1,9 @@
 import { AssetIcon } from "@/components/AssetIcon";
 import { DeckPopularity } from "@/components/DeckPopularity";
 import { DustCost } from "@/components/DustCost";
+import { UserAvatar } from "@/components/UserAvatar";
 import { Badge } from "@/components/ui/badge";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { UserAvatar } from "@/components/UserAvatar";
 import type { CraftableDeck, UserDeck } from "@/types/deck.type";
 import { useRouter } from "next/navigation";
 
@@ -50,7 +50,7 @@ export function DeckRow({ deck, availableDust, craftableDeck }: Props) {
       </TableCell>
       <TableCell>
         <div className="flex items-center gap-2">
-          <UserAvatar imageSrc={deck.profiles?.avatar_url} />
+          <UserAvatar imageSrc={deck.profiles!.avatar_url} />
           <span>{deck.profiles!.display_name}</span>
         </div>
       </TableCell>

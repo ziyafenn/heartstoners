@@ -5,7 +5,7 @@ import type { HTMLAttributes } from "react";
 
 type Props = {
   className?: HTMLAttributes<HTMLDivElement>["className"];
-  imageSrc: string | undefined | null;
+  imageSrc: string | null;
 };
 
 export function UserAvatar({ imageSrc, className }: Props) {

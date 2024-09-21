@@ -93,7 +93,6 @@ export type Database = {
           deck_id: number
           id: number
           ip: string
-          user_id: string
         }
         Insert: {
           author_id: string
@@ -101,7 +100,6 @@ export type Database = {
           deck_id: number
           id?: number
           ip: string
-          user_id?: string
         }
         Update: {
           author_id?: string
@@ -109,7 +107,6 @@ export type Database = {
           deck_id?: number
           id?: number
           ip?: string
-          user_id?: string
         }
         Relationships: [
           {
@@ -124,13 +121,6 @@ export type Database = {
             columns: ["deck_id"]
             isOneToOne: false
             referencedRelation: "user_decks"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "public_deck_likes_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]

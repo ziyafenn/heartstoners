@@ -1,3 +1,4 @@
+import { SidebarItemContainer } from "@/components/SidebarItemContainer";
 import { Button } from "@/components/ui/button";
 import { CARD_CLASSES } from "@/lib/cardClasses";
 import { getDeckPopularity } from "@/lib/deckPopularity";
@@ -8,12 +9,11 @@ import {
   getTopClasses,
   getTopMetas,
 } from "@/service/supabase.service";
-import { DeckUICard } from "./_components/DeckUICard";
-import { SidebarCardItem } from "./_components/SidebarCardItem";
-import { SidebarItemContainer } from "@/components/SidebarItemContainer";
 import Image from "next/image";
 import Link from "next/link";
 import discordLogo from "public/img/discord.svg";
+import { DeckUICard } from "./_components/DeckUICard";
+import { SidebarCardItem } from "./_components/SidebarCardItem";
 
 export default async function Home() {
   const fetchDecks = getDecks();
@@ -117,7 +117,7 @@ export default async function Home() {
               <SidebarCardItem
                 name={profiles!.display_name}
                 key={profiles!.id}
-                avatarUrl={profiles?.avatar_url}
+                avatarUrl={profiles!.avatar_url}
               />
             ))}
           </ul>

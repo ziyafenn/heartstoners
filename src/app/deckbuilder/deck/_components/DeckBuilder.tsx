@@ -2,6 +2,7 @@
 
 import { getSubArchetype } from "@/actions/deckBuider.action";
 import { AuthForm } from "@/app/(auth)/login/_components/AuthForm";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -32,7 +33,6 @@ import { CardSearchResult } from "./CardSearchResult";
 import { CurrentDeck } from "./CurrentDeck";
 import { DeckBuilderFilter } from "./DeckBuilderFilter";
 import DeckBuilderForm from "./DeckBuilderForm";
-import { LoadingSpinner } from "@/components/LoadingSpinner";
 
 function Loading() {
   return <div className="z-50 size-full bg-red-500">Loading</div>;

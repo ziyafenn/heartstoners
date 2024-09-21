@@ -1,12 +1,12 @@
 "use client";
 import { signout } from "@/actions/auth.action";
+import { UserAvatar } from "@/components/UserAvatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { UserAvatar } from "@/components/UserAvatar";
 import type { Tables } from "@/types/supabase.type";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";

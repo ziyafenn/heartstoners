@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { getUser, getUserProfile } from "@/service/supabase.service";
+import { User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { ProfileMenu } from "./ProfileMenu";
-import { User } from "lucide-react";
 
 export async function Header() {
   const auth = await getUser();

@@ -1,12 +1,12 @@
 "use client";
 import { postAuth } from "@/actions/auth.action";
 import { Button } from "@/components/ui/button";
+import { checkProfanity } from "@/service/profanity.service";
 import { createClient } from "@/service/supabase.auth.client";
 import { signUpSchema } from "@/types/schema";
 import { type FormEvent, useState } from "react";
 import type { z } from "zod";
 import { FormItem } from "./FormItem";
-import { checkProfanity } from "@/service/profanity.service";
 
 type Form = z.infer<typeof signUpSchema>;
 

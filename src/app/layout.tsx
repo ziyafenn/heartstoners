@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import { Patua_One as FonsHs, Rubik as FontSans } from "next/font/google";
 import "./globals.css";
+import { Button } from "@/components/ui/button";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { Header } from "./_components/Header";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Image from "next/image";
+import Link from "next/link";
 import discordLogo from "public/img/discord.svg";
 import xLogo from "public/img/x.svg";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { Header } from "./_components/Header";
 
 const hs = FonsHs({
   subsets: ["latin"],

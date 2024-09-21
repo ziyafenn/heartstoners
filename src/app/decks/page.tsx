@@ -5,8 +5,8 @@ import {
   getUser,
   getUserProfile,
 } from "@/service/supabase.service";
-import { DeckSearch } from "./_components/DeckSearch";
 import type { Tables } from "@/types/supabase.type";
+import { DeckSearch } from "./_components/DeckSearch";
 
 export default async function Decks() {
   const getAuthUser = getUser();
