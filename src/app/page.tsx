@@ -54,7 +54,7 @@ export default async function Home() {
     <div className="grid grid-cols-[1fr_320px] gap-8 rounded-md">
       <main className="flex flex-col gap-8">
         <div className="relative h-48 rounded-md bg-hero bg-left bg-no-repeat shadow-2xl">
-          <div className="absolute flex size-full items-center justify-between bg-gradient-to-r from-neutral-900/80 via-transparent to-neutral-900 p-10">
+          <div className="absolute flex size-full items-center justify-between gap-10 bg-gradient-to-r from-neutral-900/80 via-transparent to-neutral-900 p-10">
             <div className="flex min-w-[520px] flex-col gap-4">
               <h3 className="font-hs text-2xl">
                 Craft your winning deck with our Reno-certified deckbuilder for

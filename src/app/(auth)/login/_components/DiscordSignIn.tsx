@@ -1,6 +1,6 @@
 "use client";
 
-import { discordLogin } from "@/actions/login.action";
+import { discordLogin } from "@/actions/auth.action";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import discordLogo from "public/img/discord.svg";

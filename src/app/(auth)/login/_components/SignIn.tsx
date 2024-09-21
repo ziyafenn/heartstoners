@@ -1,6 +1,6 @@
 "use client";
 
-import { postAuth } from "@/actions/login.action";
+import { postAuth } from "@/actions/auth.action";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/service/supabase.auth.client";
 import { signInSchema } from "@/types/schema";

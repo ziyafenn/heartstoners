@@ -1,5 +1,5 @@
 "use client";
-import { signout } from "@/actions/login.action";
+import { signout } from "@/actions/auth.action";
 import {
   DropdownMenu,
   DropdownMenuContent,

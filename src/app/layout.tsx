@@ -30,10 +30,8 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-  hsConnect,
 }: Readonly<{
   children: React.ReactNode;
-  hsConnect: React.ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -47,26 +45,23 @@ export default async function RootLayout({
       >
         <Header />
         <div className="flex flex-1 flex-col p-8">
-          <TooltipProvider delayDuration={100}>
-            {children}
-            {hsConnect}
-          </TooltipProvider>
+          <TooltipProvider delayDuration={100}>{children}</TooltipProvider>
         </div>
         <footer className="flex items-center justify-between border-t p-4">
           <div className="text-xs">
-            © {new Date().getFullYear()} HeartStone.gg
+            © {new Date().getFullYear()} HeartStoners.gg
             <br />
             Heartstone™ assets are trademark of ©2014 Blizzard Entertainment,
             Inc.
           </div>
           <div className="flex items-center gap-2">
             <Button variant="outline" asChild className="size-10 p-0">
-              <Link href="">
+              <Link href="https://discord.gg/4zqnSMStha" target="_blank">
                 <Image src={discordLogo} alt="discord" className="size-5" />
               </Link>
             </Button>
             <Button variant="outline" asChild className="size-10 p-0">
-              <Link href="">
+              <Link href="https://x.com/heartstoners_gg" target="_blank">
                 <Image src={xLogo} alt="discord" className="size-5" />
               </Link>
             </Button>

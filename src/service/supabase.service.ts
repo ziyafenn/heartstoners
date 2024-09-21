@@ -255,3 +255,21 @@ export async function createUserDeck({
 
   return result;
 }
+
+export async function updateUser(
+  userId: string,
+  {
+    hsReplayId,
+  }: {
+    hsReplayId: string;
+  },
+) {
+  const supabase = createClient();
+
+  const result = await supabase
+    .from("profiles")
+    .update({ hsreplay_id: hsReplayId })
+    .eq("id", userId);
+
+  return result;
+}
