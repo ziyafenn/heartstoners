@@ -21,10 +21,10 @@ export function ProfileMenu({
         {userProfile.display_name} <ChevronDown className="size-4" />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem onClick={() => signout()}>Sign out</DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/hsConnect">Hs connect</Link>
+          <Link href="/auth/hsConnect">Connect to HSReplay</Link>
         </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => signout()}>Sign out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

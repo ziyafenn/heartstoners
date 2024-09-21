@@ -25,7 +25,6 @@ import type {
   SetGroups,
 } from "@/types/hs.type";
 import type { Tables } from "@/types/supabase.type";
-import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
@@ -33,6 +32,7 @@ import { CardSearchResult } from "./CardSearchResult";
 import { CurrentDeck } from "./CurrentDeck";
 import { DeckBuilderFilter } from "./DeckBuilderFilter";
 import DeckBuilderForm from "./DeckBuilderForm";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 
 function Loading() {
   return <div className="z-50 size-full bg-red-500">Loading</div>;
@@ -180,7 +180,7 @@ export function DeckBuilder({
           />
         </DialogContent>
       </Dialog>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 p-8">
         <DeckBuilderFilter
           action={updateFilters}
           rarities={rarities}
@@ -211,17 +211,11 @@ export function DeckBuilder({
               <div
                 ref={ref}
                 className={cn(
-                  "size-24 self-center",
+                  "flex w-full items-center justify-center",
                   (!canLoadMore || isActiveSideboardCardZilliax) && "hidden",
                 )}
               >
-                <Image
-                  src="/img/hs-logo.png"
-                  width={256}
-                  height={256}
-                  alt="heartstone-logo"
-                  className="animate-spin-slow object-contain delay-1000"
-                />
+                <LoadingSpinner slow />
               </div>
             </CardSearchResult>
           )}

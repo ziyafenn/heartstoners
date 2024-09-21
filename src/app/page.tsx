@@ -51,7 +51,7 @@ export default async function Home() {
     })
     .slice(0, 6);
   return (
-    <div className="grid grid-cols-[1fr_320px] gap-8 rounded-md">
+    <div className="grid grid-cols-[1fr_320px] gap-8 rounded-md p-8">
       <main className="flex flex-col gap-8">
         <div className="relative h-48 rounded-md bg-hero bg-left bg-no-repeat shadow-2xl">
           <div className="absolute flex size-full items-center justify-between gap-10 bg-gradient-to-r from-neutral-900/80 via-transparent to-neutral-900 p-10">

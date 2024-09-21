@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export default function DeckBuilder() {
   return (
-    <div className="m-auto flex flex-col gap-8">
+    <div className="m-auto flex flex-col gap-8 p-8">
       <div className="flex items-center justify-between">
         <h2 className="font-medium text-2xl">
           Pick your class or import deck from code

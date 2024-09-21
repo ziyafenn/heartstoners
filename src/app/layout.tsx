@@ -34,7 +34,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" style={{ scrollbarGutter: "stable" }}>
       <body
         className={cn(
           inter.variable,
@@ -44,7 +44,7 @@ export default async function RootLayout({
         )}
       >
         <Header />
-        <div className="flex flex-1 flex-col p-8">
+        <div className="flex flex-1 flex-col">
           <TooltipProvider delayDuration={100}>{children}</TooltipProvider>
         </div>
         <footer className="flex items-center justify-between border-t p-4">

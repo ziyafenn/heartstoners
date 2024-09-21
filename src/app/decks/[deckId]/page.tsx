@@ -22,7 +22,7 @@ export default async function Deck({ params }: { params: { deckId: number } }) {
   });
 
   return (
-    <div className="grid grid-cols-[1fr,auto] justify-between gap-8">
+    <div className="grid grid-cols-[1fr,auto] justify-between gap-8 p-8">
       <main className="flex flex-col gap-8">
         <DeckHeader
           deck={deck!}

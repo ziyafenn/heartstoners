@@ -99,14 +99,14 @@ export default async function HsConnect() {
       <div className="flex max-w-3xl flex-col gap-12">
         <section>
           <h1 className="mb-1 font-semibold text-3xl">
-            Sync Your Collection to Find Craftable Decks
+            Sync your collection to find craftable decks
           </h1>
           <p>
-            HeartStoners integrates with HSReplay.net and Hearthstone Deck
-            Tracker to sync your Hearthstone collection and dust cost. This
-            allows you to discover community-created decks you can craft, see
-            which cards you're missing, and calculate how much dust you'll need
-            to craft them.
+            HeartStoners integrates with <strong>HSReplay.net</strong> and{" "}
+            <strong>Hearthstone Deck Tracker</strong> to sync your Hearthstone
+            collection and dust cost. This allows you to discover
+            community-created decks you can craft, see which cards you're
+            missing, and calculate how much dust you'll need to craft them.
           </p>
         </section>
         <HsConnectForm />
