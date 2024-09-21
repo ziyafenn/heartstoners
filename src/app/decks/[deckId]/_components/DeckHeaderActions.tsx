@@ -12,6 +12,10 @@ type DeckHeaderProps = {
   authorId: string;
 };
 
+function checkACookieExists(cookies: string) {
+  return cookies.split(";").some((item) => item.trim().startsWith("copy="));
+}
+
 export function DeckHeaderActions({
   didUserLike,
   deckCode,
@@ -22,7 +26,13 @@ export function DeckHeaderActions({
 
   async function onCopy() {
     await navigator.clipboard.writeText(deckCode);
-    await copyDeck(deckId);
+    const cookies = document.cookie;
+    const hasUserCopiedDeck = checkACookieExists(cookies);
+
+    if (!hasUserCopiedDeck) {
+      document.cookie = `copy=true;path=/decks/${deckId}`;
+      await copyDeck(deckId);
+    }
   }
 
   async function onLike() {

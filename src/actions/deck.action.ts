@@ -8,7 +8,6 @@ import {
   getSingleDeck,
 } from "@/service/supabase.service";
 import type { Tables } from "@/types/supabase.type";
-import { cookies } from "next/headers";
 
 export async function likeDeck({
   author_id,
@@ -25,21 +24,10 @@ export async function likeDeck({
 }
 
 export async function copyDeck(deckId: number) {
-  const cookieStore = cookies();
-  const hasUserCopiedDeck = cookieStore.has("copy");
-
-  if (!hasUserCopiedDeck) {
-    cookieStore.set({
-      name: "copy",
-      value: "true",
-      path: `/decks/${deckId}`,
-    });
-
-    await deckInteraction({
-      deckId,
-      type: "increment_copies",
-    });
-  }
+  await deckInteraction({
+    deckId,
+    type: "increment_copies",
+  });
 }
 
 export async function getUserDeck(deckId: number) {
