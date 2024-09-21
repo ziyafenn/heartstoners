@@ -34,7 +34,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" style={{ scrollbarGutter: "stable" }}>
+    <html lang="en">
       <body
         className={cn(
           inter.variable,

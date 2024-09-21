@@ -146,7 +146,10 @@ export function Filters({
                 </TooltipTrigger>
                 <TooltipContent>
                   Make sure you are signed in and have your{" "}
-                  <Link href="/" className="text-blue-500 underline">
+                  <Link
+                    href="/auth/hsConnect/"
+                    className="text-blue-500 underline"
+                  >
                     HSReplay account connected
                   </Link>
                 </TooltipContent>
