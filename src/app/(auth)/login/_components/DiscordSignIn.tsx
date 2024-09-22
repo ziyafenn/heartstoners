@@ -12,7 +12,8 @@ export function DiscordSignIn({
     <Button
       onClick={() => discordLogin({ redirectDeckCode })}
       type="button"
-      className="flex w-full items-center gap-2 bg-[#5865F2] text-white"
+      variant="secondary"
+      className="flex w-full items-center gap-2 bg-[#5865F2] text-white hover:bg-[#4854d5]"
     >
       <Image src={discordLogo} alt="discord" />
       Sign in with Discord
