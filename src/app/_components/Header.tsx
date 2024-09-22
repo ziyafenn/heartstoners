@@ -36,7 +36,7 @@ export async function Header() {
             <Link href="/decks">Discover Decks</Link>
           </li>
           <li>
-            <Button asChild variant="primary">
+            <Button asChild variant="accent">
               <Link href="/deckbuilder">Create a deck</Link>
             </Button>
           </li>

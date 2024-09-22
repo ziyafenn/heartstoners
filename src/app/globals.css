@@ -139,7 +139,7 @@
     }
   }
 
-  .primaryButton {
+  .accentButton {
     display: inline-block;
     outline: 0;
     border: 0;
@@ -166,7 +166,7 @@
     }
   }
 
-  .secondaryButton {
+  .primaryButton {
     display: inline-block;
     outline: 0;
     border: 0;

@@ -25,9 +25,8 @@ const inter = FontSans({
 });
 
 const title = "Heartstone Decks for Current Meta - Crafted by Community!";
-
 const description =
-  "Find Heartstone decks for every Perils in Paradise meta. Discover top creative decks tailored for your collection, made by community of deck-crafters.";
+  "Find Heartstone decks for every Perils in Paradise meta. Discover top creative decks you can create from your collection. Made by community of deck-crafters.";
 
 export const metadata: Metadata = {
   title,

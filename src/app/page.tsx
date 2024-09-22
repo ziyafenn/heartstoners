@@ -57,11 +57,11 @@ export default async function Home() {
           <div className="absolute flex size-full items-center justify-between gap-10 bg-gradient-to-r from-neutral-900/80 via-transparent to-neutral-900 p-10">
             <div className="flex min-w-[520px] flex-col gap-4">
               <h3 className="font-hs text-2xl">
-                Craft your winning deck with our Reno-certified deckbuilder for
-                Hearthstone! Conquer all challengers with Reno and his minions!
+                Discover Heartstone decks you can create from your collection.
+                Made by community of deck-crafters.
               </h3>
               <div className="flex gap-4">
-                <Button variant="secondary" asChild>
+                <Button asChild>
                   <Link href="/decks">Discover decks</Link>
                 </Button>
               </div>
@@ -104,7 +104,7 @@ export default async function Home() {
               Join our discord!
             </span>
           </div>
-          <Button variant="secondary" asChild>
+          <Button asChild>
             <Link href="https://discord.gg/4zqnSMStha" target="_blank">
               Join
             </Link>
