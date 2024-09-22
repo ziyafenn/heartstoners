@@ -4,8 +4,37 @@ import { DeckCards } from "./_components/DeckCards";
 import { DeckDescription } from "./_components/DeckDescription";
 import { DeckHeader } from "./_components/DeckHeader";
 import { DeckStats } from "./_components/DeckStats";
+import type { Metadata, ResolvingMetadata } from "next";
+import { findData } from "@/lib/utils";
+import { CARD_CLASSES } from "@/lib/cardClasses";
 
-export default async function Deck({ params }: { params: { deckId: number } }) {
+type Props = { params: { deckId: number } };
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const { deckId } = params;
+  const userDeck = await getUserDeck(deckId);
+  const { deck } = userDeck;
+  const { meta_sub_archetypes, name, deck_class, profiles } = deck!;
+
+  const className = findData(CARD_CLASSES, "slug", deck_class).name;
+  const title = `${name} Deck | HeartStoners.gg`;
+  const description = `Heartstone Deck for ${meta_sub_archetypes?.name || className} by ${profiles!.display_name}`;
+
+  return {
+    title,
+    description,
+    twitter: {
+      title,
+      description,
+      creator: profiles!.x_username,
+    },
+  };
+}
+
+export default async function Deck({ params }: Props) {
   const { deckId } = params;
   const userDeck = await getUserDeck(deckId);
   const { deck, didUserLike, availableDust } = userDeck;

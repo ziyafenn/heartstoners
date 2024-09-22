@@ -7,6 +7,11 @@ import {
 } from "@/service/supabase.service";
 import type { Tables } from "@/types/supabase.type";
 import { DeckSearch } from "./_components/DeckSearch";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Find Heartstone decks for every Perils in Paradise Meta!",
+};
 
 export default async function Decks() {
   const getAuthUser = getUser();

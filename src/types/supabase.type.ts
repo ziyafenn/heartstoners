@@ -199,6 +199,8 @@ export type Database = {
           hsreplay_id: string
           id: string
           website: string
+          x_username: string
+          youtube_link: string
         }
         Insert: {
           avatar_url?: string | null
@@ -207,6 +209,8 @@ export type Database = {
           hsreplay_id?: string
           id: string
           website?: string
+          x_username?: string
+          youtube_link?: string
         }
         Update: {
           avatar_url?: string | null
@@ -215,6 +219,8 @@ export type Database = {
           hsreplay_id?: string
           id?: string
           website?: string
+          x_username?: string
+          youtube_link?: string
         }
         Relationships: [
           {
