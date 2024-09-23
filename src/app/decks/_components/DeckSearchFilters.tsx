@@ -127,7 +127,7 @@ export function Filters({
           </ToggleGroup>
         </SidebarItemContainer>
         <SidebarItemContainer name="My collection">
-          <div className="flex items-center justify-between pr-4">
+          <div className="flex items-center justify-between">
             <Toggle
               className="pr-0"
               onPressedChange={(value) =>
@@ -141,7 +141,7 @@ export function Filters({
             </Toggle>
             {!hasHsAccount && (
               <Tooltip>
-                <TooltipTrigger>
+                <TooltipTrigger className="mr-4">
                   <CircleHelp className="size-4" />
                 </TooltipTrigger>
                 <TooltipContent>
