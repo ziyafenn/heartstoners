@@ -1,6 +1,5 @@
 "use server";
 
-import { promises as fs } from "node:fs";
 import type { Card, CardSeachParams, CardsPage, Deck } from "@/types/hs.type";
 import { hs } from "blizzard.js";
 import type { CardMetaDataType } from "blizzard.js/dist/resources/hs";
@@ -102,46 +101,10 @@ export async function getDeckByCode(deckCode: string) {
 }
 
 export async function getZilliaxSideboardCards() {
-  // const hsClient = await createHsClient();
+  const file = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/zilliax.json`, {
+    cache: "force-cache",
+  });
 
-  // const params: Partial<CardSeachParams> = {
-  //   collectible: 0,
-  //   page: 1,
-  //   pageSize: 20,
-  //   gameMode: "constructed",
-  //   set: "standard",
-  //   locale: "en_US",
-  // };
-
-  // const cosmeticCardSearch = hsClient.cardSearch({
-  //   ...params,
-  //   textFilter: "zilliax",
-  // });
-
-  // const functionalCardSearch = hsClient.cardSearch({
-  //   ...params,
-  //   textFilter: "module",
-  // });
-
-  // const res = await Promise.all([cosmeticCardSearch, functionalCardSearch]);
-  // const [{ data: cosmeticCardRes }, { data: functionalCardRes }]: {
-  //   data: CardsPage;
-  // }[] = res;
-
-  // const cosmeticCards = cosmeticCardRes.cards.filter(
-  //   (card) => card.isZilliaxCosmeticModule,
-  // );
-  // const functionalCards = functionalCardRes.cards.filter(
-  //   (card) => card.isZilliaxFunctionalModule,
-  // );
-
-  // return { cosmeticCards, functionalCards };
-
-  const file = await fs.readFile(
-    `${process.cwd()}/public/zilliax.json`,
-    "utf8",
-  );
-
-  const data: { functions: Card[]; modules: Card[] } = JSON.parse(file);
+  const data: { functions: Card[]; modules: Card[] } = await file.json();
   return data;
 }
