@@ -2,6 +2,8 @@ import { AssetIcon } from "@/components/AssetIcon";
 import { DeckPopularity } from "@/components/DeckPopularity";
 import { UserAvatar } from "@/components/UserAvatar";
 import { Badge } from "@/components/ui/badge";
+import { CARD_CLASSES } from "@/lib/cardClasses";
+import { findData } from "@/lib/utils";
 import type { UserDeck } from "@/types/deck.type";
 import Image from "next/image";
 import Link from "next/link";
@@ -39,7 +41,10 @@ export function DeckUICard({ data: deck }: { data: Props }) {
               <ul className="flex items-center gap-2">
                 <Badge>{archetype}</Badge>
                 {meta_sub_archetypes && (
-                  <Badge>{meta_sub_archetypes.name}</Badge>
+                  <Badge>
+                    {meta_sub_archetypes.name ||
+                      findData(CARD_CLASSES, "slug", deck_class).name}
+                  </Badge>
                 )}
               </ul>
             </div>

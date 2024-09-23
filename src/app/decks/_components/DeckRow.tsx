@@ -4,6 +4,8 @@ import { DustCost } from "@/components/DustCost";
 import { UserAvatar } from "@/components/UserAvatar";
 import { Badge } from "@/components/ui/badge";
 import { TableCell, TableRow } from "@/components/ui/table";
+import { CARD_CLASSES } from "@/lib/cardClasses";
+import { findData } from "@/lib/utils";
 import type { CraftableDeck, UserDeck } from "@/types/deck.type";
 import { useRouter } from "next/navigation";
 
@@ -41,7 +43,10 @@ export function DeckRow({ deck, availableDust, craftableDeck }: Props) {
         <ul className="flex gap-1">
           <Badge>{deck.archetype}</Badge>
           {deck.meta_sub_archetypes && (
-            <Badge>{deck.meta_sub_archetypes.name}</Badge>
+            <Badge>
+              {deck.meta_sub_archetypes.name ||
+                findData(CARD_CLASSES, "slug", deck.deck_class).name}
+            </Badge>
           )}
         </ul>
       </TableCell>
