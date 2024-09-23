@@ -14,6 +14,7 @@ type Props = {
   craftableDecks: CraftableDeck[];
   availableDust: number;
   subArchetypes: Tables<"meta_sub_archetypes">[];
+  cardImageUrls: string[][][];
 };
 
 export function DeckSearch({
@@ -22,6 +23,7 @@ export function DeckSearch({
   craftableDecks,
   subArchetypes,
   hasHsAccount,
+  cardImageUrls,
 }: Props) {
   const [state, action] = useActionState(filterDecks, {
     userDecks: decks,
@@ -47,12 +49,13 @@ export function DeckSearch({
         <Table>
           <DeckSearchTableHeader />
           <TableBody>
-            {state.userDecks.map((deck) => (
+            {state.userDecks.map((deck, index) => (
               <DeckRow
                 deck={deck}
                 availableDust={availableDust}
                 craftableDeck={getCraftableDeck(deck.id)}
                 key={deck.id}
+                cardImageUrls={cardImageUrls[index]}
               />
             ))}
           </TableBody>

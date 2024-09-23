@@ -12,6 +12,9 @@ const nextConfig = {
       },
       {
         hostname: "cdn.discordapp.com"
+      },
+      {
+        hostname: "art.hearthstonejson.com"
       }
     ],
   },
