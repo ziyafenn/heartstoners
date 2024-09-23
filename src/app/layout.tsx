@@ -61,7 +61,7 @@ export default async function RootLayout({
           inter.variable,
           hs.variable,
           // biome-ignore lint/nursery/useSortedClasses: <explanation>
-          "dark min-h-svh flex flex-col font-sans bg-gradient-to-r from-[hsl(246,55%,10%)] via-[hsl(243,40%,19%)] to-[hsl(240,27%, 19%)]",
+          "dark min-h-svh flex flex-col font-sans bg-[#150416] bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(28,17,92,0.7),rgba(255,255,255,0))]",
         )}
       >
         <Header />

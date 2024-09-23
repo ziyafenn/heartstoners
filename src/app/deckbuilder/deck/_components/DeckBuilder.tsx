@@ -33,10 +33,7 @@ import { CardSearchResult } from "./CardSearchResult";
 import { CurrentDeck } from "./CurrentDeck";
 import { DeckBuilderFilter } from "./DeckBuilderFilter";
 import DeckBuilderForm from "./DeckBuilderForm";
-
-function Loading() {
-  return <div className="z-50 size-full bg-red-500">Loading</div>;
-}
+import { LoadingScreen } from "@/components/LoadingScreen";
 
 export function DeckBuilder({
   initialCards,
@@ -192,7 +189,7 @@ export function DeckBuilder({
         />
         <main className="grid select-none grid-cols-[1fr,320px] gap-8">
           {isLoading ? (
-            <Loading />
+            <LoadingScreen />
           ) : (
             <CardSearchResult
               cards={cardsDisplayedOnSearchPage}

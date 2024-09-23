@@ -23,9 +23,9 @@ export function DeckUICard({ data: deck }: { data: Props }) {
     meta_sub_archetypes,
   } = deck;
   return (
-    <li className="relative select-none overflow-hidden rounded-xl border border-border hover:translate-y-[-4px] hover:border-orange-900 hover:shadow-xl">
+    <li className="relative select-none overflow-hidden rounded-xl border border-border hover:translate-y-[-4px] hover:border-[#4C0019] hover:shadow-xl">
       <Link href={`/decks/${id}`}>
-        <div className="absolute z-10 size-full bg-indigo-950 mix-blend-multiply " />
+        <div className="absolute z-10 size-full bg-[#2c1b3f] mix-blend-multiply" />
         <div className="absolute z-20 flex size-full items-center justify-between p-4 bg-blend-overlay">
           <div className="flex gap-4 ">
             <div className="flex flex-col gap-2">
@@ -39,9 +39,9 @@ export function DeckUICard({ data: deck }: { data: Props }) {
             <div className="flex flex-col justify-between">
               <h3 className="font-hs text-xl outline-2">{name}</h3>
               <ul className="flex items-center gap-2">
-                <Badge>{archetype}</Badge>
+                <Badge variant="secondary">{archetype}</Badge>
                 {meta_sub_archetypes && (
-                  <Badge>
+                  <Badge variant="secondary">
                     {meta_sub_archetypes.name ||
                       findData(CARD_CLASSES, "slug", deck_class).name}
                   </Badge>

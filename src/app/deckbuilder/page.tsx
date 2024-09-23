@@ -36,8 +36,8 @@ export default function DeckBuilder() {
                   query: { deckClass: cardClass.slug, format: "standard" },
                 }}
               >
-                <div className="relative rounded-sm border-8 border-orange-400 border-double">
-                  <div className="absolute bottom-8 flex h-8 w-full items-center gap-4 border border-y-amber-800 bg-black/80 px-4">
+                <div className="relative overflow-clip rounded-sm border-8 border-[#3a3149] border-double">
+                  <div className="absolute bottom-8 z-50 flex h-8 w-full items-center gap-4 border border-y-amber-800 bg-black/80 px-4">
                     <AssetIcon
                       className="size-10 drop-shadow-[1px_0_0_orange]"
                       type="hero"
@@ -52,7 +52,7 @@ export default function DeckBuilder() {
                     src={`/heroes/${cardClass.slug}.jpg`}
                     width={1440}
                     height={1440}
-                    className="aspect-[4/3] w-64 object-cover"
+                    className="aspect-[4/3] w-64 object-cover object-top transition-transform duration-300 hover:scale-110"
                     alt={cardClass.name}
                   />
                 </div>

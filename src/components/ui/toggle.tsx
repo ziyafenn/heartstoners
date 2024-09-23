@@ -12,7 +12,7 @@ const toggleVariants = cva(
     variants: {
       variant: {
         default:
-          "w-full bg-transparent hover:bg-black/50 data-[state=on]:bg-black/80 data-[state=on]:text-green-400",
+          "w-full bg-transparent hover:bg-[#130e1c] data-[state=on]:bg-[#1b1429] data-[state=on]:text-green-400",
         asset: "assetToggle justify-center text-center",
         outline:
           "border border-input bg-transparent hover:bg-accent hover:text-accent-foreground",

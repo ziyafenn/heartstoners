@@ -56,8 +56,9 @@ export default async function Home() {
         <div className="relative h-48 rounded-md bg-hero bg-left bg-no-repeat shadow-2xl">
           <div className="absolute flex size-full items-center justify-between gap-10 bg-gradient-to-r from-neutral-900/80 via-neutral-900/40 to-neutral-900 p-10">
             <div className="flex min-w-[520px] flex-col gap-4">
-              <h3 className="font-hs text-2xl">
+              <h3 className="text-balance font-hs text-2xl">
                 Discover Heartstone decks you can create from your collection.
+                <br />
                 Made by community of deck-crafters.
               </h3>
               <div className="flex gap-4">
@@ -77,7 +78,7 @@ export default async function Home() {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <h2 className="font-hs text-2xl outline-2">
+          <h2 className="font-medium text-2xl outline-2">
             Most popular decks of the week
           </h2>
           <ul className="grid grid-cols-auto-fill-deckcard gap-4">
@@ -87,7 +88,7 @@ export default async function Home() {
           </ul>
         </div>
         <div className="flex flex-col gap-4">
-          <h2 className="font-hs text-2xl outline-2">
+          <h2 className="font-medium text-2xl outline-2">
             Recent submissions from our users
           </h2>
           <ul className="grid grid-cols-auto-fill-deckcard gap-4">

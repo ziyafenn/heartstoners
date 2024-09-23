@@ -22,7 +22,7 @@ export async function Header() {
           />
         </Link>
         <ul className="flex items-center gap-8 font-medium">
-          <li className="hover:text-indigo-400">
+          <li className="hover:text-hs-500">
             {userProfile ? (
               <ProfileMenu userProfile={userProfile} />
             ) : (
@@ -32,7 +32,7 @@ export async function Header() {
               </Link>
             )}
           </li>
-          <li className="hover:text-indigo-400">
+          <li className="hover:text-hs-500">
             <Link href="/decks">Discover Decks</Link>
           </li>
           <li>
