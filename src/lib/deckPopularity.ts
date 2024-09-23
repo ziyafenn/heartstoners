@@ -3,9 +3,9 @@ import type { Tables } from "@/types/supabase.type";
 // Define the average metrics
 // TODO: get average metrics from database
 const averageMetrics = {
-  likes: 1,
-  copies: 1,
-  views: 1,
+  likes: 5,
+  copies: 10,
+  views: 30,
 };
 
 // Define weights for each metric
@@ -23,7 +23,7 @@ type DeckInteraction = Pick<
 function calculatePopularityScore(
   deck: DeckInteraction,
   averages = averageMetrics,
-  metricWeights = weights,
+  metricWeights = weights
 ) {
   const { likes, copies, views } = deck;
   const likeScore = (likes / averages.likes) * metricWeights.likes;

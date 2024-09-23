@@ -24,6 +24,9 @@
       "complexity": {
         "noForEach": "off"
       },
+      "suspicious": {
+        "noConsole": "warn"
+      },
       "correctness": {
         "noUnusedImports": {
           "fix": "none",

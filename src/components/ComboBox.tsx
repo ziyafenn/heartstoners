@@ -69,7 +69,6 @@ export function Combobox({ data, selectItem }: Props) {
         inputRef.current &&
         !inputRef.current.contains(event.target as Node)
       ) {
-        console.log("Mouse was clicked outside of the div");
         setIsOpen(false);
       }
     }
