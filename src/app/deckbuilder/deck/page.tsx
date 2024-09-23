@@ -4,6 +4,7 @@ import {
   searchHsCards,
 } from "@/service/hs.service";
 import type {
+  Card,
   CardType,
   Deck,
   Keyword,
@@ -13,6 +14,7 @@ import type {
 } from "@/types/hs.type";
 import type { CardClass } from "blizzard.js/dist/resources/hs";
 import { DeckBuilder } from "./_components/DeckBuilder";
+import { promises as fs } from "node:fs";
 
 export default async function ClassDeckBuilder({
   // params,
@@ -56,6 +58,14 @@ export default async function ClassDeckBuilder({
     cardType,
   ]);
 
+  const file = await fs.readFile(
+    `${process.cwd()}/public/zilliax.json`,
+    "utf8",
+  );
+
+  const zilliaxSideboardCards: { functions: Card[]; modules: Card[] } =
+    JSON.parse(file);
+
   return (
     <DeckBuilder
       initialCards={hsData[0]}
@@ -66,6 +76,7 @@ export default async function ClassDeckBuilder({
       deck={currentDeck}
       deckClass={currentDeckClass}
       format={currentDeckFormat}
+      zilliaxSideboardCards={zilliaxSideboardCards}
     />
   );
 }

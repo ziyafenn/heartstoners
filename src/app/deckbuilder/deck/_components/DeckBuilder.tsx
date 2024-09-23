@@ -16,6 +16,7 @@ import { ZILLIAX_ID } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/service/supabase.auth.client";
 import type {
+  Card,
   CardClass,
   CardType,
   CardsPage,
@@ -47,6 +48,7 @@ export function DeckBuilder({
   deck,
   deckClass,
   format = "standard",
+  zilliaxSideboardCards,
 }: {
   initialCards: CardsPage;
   minionTypes: MinionTypes[];
@@ -56,6 +58,7 @@ export function DeckBuilder({
   deck: Deck | null;
   deckClass: CardClass["slug"];
   format: SetGroups["slug"];
+  zilliaxSideboardCards: { functions: Card[]; modules: Card[] };
 }) {
   const supabase = createClient();
 
@@ -82,6 +85,7 @@ export function DeckBuilder({
     initState,
     inView,
     deck,
+    zilliaxSideboardCards,
   });
   const seachParams = useSearchParams();
   const deckCode = seachParams.get("deckCode");
