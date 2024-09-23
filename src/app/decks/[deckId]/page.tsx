@@ -30,6 +30,8 @@ export async function generateMetadata(
       title,
       description,
       creator: profiles!.x_username,
+      card: "summary",
+      images: "https://heartstoners.gg/img/x-post.png",
     },
   };
 }

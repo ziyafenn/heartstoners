@@ -32,7 +32,7 @@ export const CardCrop = forwardRef<HTMLLIElement, CardCropProps>(
     return (
       <Tooltip
         delayDuration={100}
-        onOpenChange={(value) => isView && setIsTooltipOpen(value)}
+        onOpenChange={(value) => setIsTooltipOpen(value)}
         open={isTooltipOpen}
       >
         <TooltipTrigger asChild>
@@ -105,7 +105,10 @@ export const CardCrop = forwardRef<HTMLLIElement, CardCropProps>(
             </>
           </li>
         </TooltipTrigger>
-        <TooltipContent side="left">
+        <TooltipContent
+          side="left"
+          className="border-0 border-none bg-transparent"
+        >
           <Image
             className="w-[320px]"
             draggable={false}

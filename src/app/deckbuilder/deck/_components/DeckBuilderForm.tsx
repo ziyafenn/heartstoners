@@ -339,7 +339,7 @@ export default function DeckBuilderForm({
                         <InfoIcon className="size-4" />
                       </TooltipTrigger>
                       <TooltipContent>
-                        Sub-archetype is determined based on current metas and
+                        Sub-archetype is determined based on current meta and
                         cards in your deck
                       </TooltipContent>
                     </Tooltip>

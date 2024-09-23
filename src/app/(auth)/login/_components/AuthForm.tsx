@@ -20,7 +20,7 @@ export function AuthForm({ redirectDeckCode, onClose }: Props) {
           <SignIn redirectDeckCode={redirectDeckCode} onClose={onClose} />
         </TabsContent>
         <TabsContent value="signup">
-          <SignUp redirectDeckCode={redirectDeckCode} onClose={onClose} />
+          <SignUp />
         </TabsContent>
       </Tabs>
       <DiscordSignIn redirectDeckCode={redirectDeckCode} />

@@ -7,6 +7,7 @@ import { signInSchema } from "@/types/schema";
 import { type FormEvent, useState } from "react";
 import type { z } from "zod";
 import { FormItem } from "./FormItem";
+import { LoaderPinwheel } from "lucide-react";
 
 type Form = z.infer<typeof signInSchema>;
 
@@ -14,6 +15,7 @@ export function SignIn({
   redirectDeckCode,
   onClose,
 }: { redirectDeckCode?: string; onClose?: () => void }) {
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<
     Partial<Record<keyof Form, string[]>>
@@ -27,6 +29,8 @@ export function SignIn({
     const supabase = createClient();
     const form = e.currentTarget;
     const formData = new FormData(form);
+
+    setIsLoading(true);
 
     const dataObj = {
       email: formData.get("email"),
@@ -58,6 +62,7 @@ export function SignIn({
       return;
     }
     await postAuth({ shouldRedirect: !redirectDeckCode });
+    setIsLoading(false);
     if (onClose) onClose();
   }
 
@@ -75,7 +80,16 @@ export function SignIn({
           error={fieldErrors.password?.[0]}
         />
       </div>
-      <Button type="submit">Sign In with Email</Button>
+      <Button type="submit">
+        {isLoading ? (
+          <span className="flex items-center gap-1">
+            <LoaderPinwheel className="size-4 animate-spin text-gray-500" />
+            Singing up...
+          </span>
+        ) : (
+          "Sign in with Email"
+        )}
+      </Button>
     </form>
   );
 }

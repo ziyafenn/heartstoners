@@ -1,5 +1,4 @@
 "use client";
-import { postAuth } from "@/actions/auth.action";
 import { Button } from "@/components/ui/button";
 import { checkProfanity } from "@/service/profanity.service";
 import { createClient } from "@/service/supabase.auth.client";
@@ -7,13 +6,13 @@ import { signUpSchema } from "@/types/schema";
 import { type FormEvent, useState } from "react";
 import type { z } from "zod";
 import { FormItem } from "./FormItem";
+import { LoaderPinwheel } from "lucide-react";
 
 type Form = z.infer<typeof signUpSchema>;
 
-export function SignUp({
-  redirectDeckCode,
-  onClose,
-}: { redirectDeckCode?: string; onClose?: () => void }) {
+export function SignUp() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSucces] = useState(false);
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<
     Partial<Record<keyof Form, string[]>>
@@ -29,8 +28,10 @@ export function SignUp({
     const form = e.currentTarget;
     const formData = new FormData(form);
 
+    setIsLoading(true);
+
     const dataObj = {
-      email: formData.get("email"),
+      email: formData.get("email")?.toString().trim(),
       username: formData.get("username"),
       password: formData.get("password"),
     };
@@ -70,13 +71,22 @@ export function SignUp({
       setError(error.message);
       return;
     }
-    await postAuth({ shouldRedirect: !redirectDeckCode });
-    if (onClose) onClose();
+
+    // await postAuth({ shouldRedirect: !redirectDeckCode });
+    setIsLoading(false);
+    setIsSucces(true);
+    form.reset();
   }
 
   return (
     <form className="flex flex-col gap-8" onSubmit={signupUser}>
       {error && <span className="pt-2 text-center text-red-500">{error}</span>}
+      {isSuccess && (
+        <span className="pt-2 text-center text-green-400">
+          Link to confirm your email was sent to your email address
+        </span>
+      )}
+
       <div className="flex flex-col gap-2">
         <FormItem field="email" label="Email" error={fieldErrors.email?.[0]} />
         <FormItem
@@ -94,8 +104,15 @@ export function SignUp({
           maxLength={20}
         />
       </div>
-      <Button type="submit" className="w-full">
-        Create your account
+      <Button type="submit" className="w-full" disabled={isLoading}>
+        {isLoading ? (
+          <span className="flex items-center gap-1">
+            <LoaderPinwheel className="size-4 animate-spin text-gray-500" />
+            Singing up...
+          </span>
+        ) : (
+          "Create your account"
+        )}
       </Button>
     </form>
   );
