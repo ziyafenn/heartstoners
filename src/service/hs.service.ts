@@ -138,8 +138,8 @@ export async function getZilliaxSideboardCards() {
   // return { cosmeticCards, functionalCards };
 
   const file = await fs.readFile(
-    `${process.cwd()}/public/zilliax.json`,
-    "utf8",
+    `${process.cwd()}/src/app/zilliax.json`,
+    "utf8"
   );
 
   const data: { functions: Card[]; modules: Card[] } = JSON.parse(file);
