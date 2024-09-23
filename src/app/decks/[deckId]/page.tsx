@@ -48,7 +48,7 @@ export default async function Deck({ params }: Props) {
     deckCode,
   } = await getDeckByCardList({
     cardIds: card_ids,
-    sideboardCards: sideboard_cards ?? undefined,
+    sideboardCards: sideboard_cards.length ? sideboard_cards : undefined,
   });
 
   return (
