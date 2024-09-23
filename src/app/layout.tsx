@@ -10,7 +10,6 @@ import Link from "next/link";
 import discordLogo from "public/img/discord.svg";
 import xLogo from "public/img/x.svg";
 import { Header } from "./_components/Header";
-import { GoogleTagManager } from "@next/third-parties/google";
 
 const hs = FonsHs({
   subsets: ["latin"],
@@ -57,7 +56,6 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <GoogleTagManager gtmId="G-EKD421JR4Q" />
       <body
         className={cn(
           inter.variable,

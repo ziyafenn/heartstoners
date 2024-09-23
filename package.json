@@ -10,7 +10,6 @@
     "format": "biome format"
   },
   "dependencies": {
-    "@next/third-parties": "^14.2.13",
     "@nivo/bar": "^0.87.0",
     "@radix-ui/react-alert-dialog": "^1.1.1",
     "@radix-ui/react-avatar": "^1.1.0",
