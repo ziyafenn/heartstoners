@@ -59,7 +59,7 @@ export default async function ClassDeckBuilder({
   ]);
 
   const file = await fs.readFile(
-    `${process.cwd()}/src/app/zilliax.json`,
+    `${process.cwd()}/src/app/deckbuilder/deck/files/zilliax.json`,
     "utf8",
   );
 
