@@ -5,6 +5,10 @@ const nextConfig = {
   eslint:{
     ignoreDuringBuilds: true,
   },
+  outputFileTracingIncludes: {
+    '/src/app/deckbuilder/deck': ['./public/zilliax.json'],
+
+  },
   images: {
     remotePatterns: [
       {
