@@ -16,6 +16,7 @@ import type {
   CardsPage,
 } from "@/types/hs.type";
 import type { Tables } from "@/types/supabase.type";
+import { decode } from "deckstrings";
 import { RedirectType, redirect } from "next/navigation";
 
 type Params = CardsPage & { params: CardSeachParams; loading?: boolean };
@@ -116,13 +117,25 @@ export async function createDeck(
   redirect(`/decks/${data.id}`, RedirectType.replace); //redirect type does nothing
 }
 
-export async function decodeDeck(formData: FormData) {
+type DecodeDeckState = { error?: string };
+
+export async function decodeDeck(
+  state: DecodeDeckState,
+  formData: FormData
+): Promise<DecodeDeckState> {
   const deckCode = formData.get("deckCode") as string;
 
-  if (!deckCode) return;
+  try {
+    decode(deckCode);
 
-  const params = new URLSearchParams({ deckCode });
-  redirect(`/deckbuilder/deck?${params}`);
+    const params = new URLSearchParams({ deckCode });
+    redirect(`/deckbuilder/deck?${params}`);
+  } catch (error) {
+    return {
+      error:
+        "It appears there is an issue with the deck code. If this problem continues, please contact us on Discord.",
+    };
+  }
 }
 
 export async function getSubArchetype(

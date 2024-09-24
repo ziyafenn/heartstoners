@@ -1,10 +1,8 @@
-import { decodeDeck } from "@/actions/deckBuider.action";
 import { AssetIcon } from "@/components/AssetIcon";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { CARD_CLASSES } from "@/lib/cardClasses";
 import Image from "next/image";
 import Link from "next/link";
+import { DeckImportForm } from "./deck/_components/DeckImportForm";
 
 export default function DeckBuilder() {
   return (
@@ -13,17 +11,7 @@ export default function DeckBuilder() {
         <h2 className="font-medium text-2xl">
           Pick your class or import deck from code
         </h2>
-        <form action={decodeDeck} className="flex items-center gap-4">
-          <Input
-            name="deckCode"
-            type="text"
-            required
-            placeholder="Paste your code"
-          />
-          <Button type="submit" size="sm">
-            Import Deck
-          </Button>
-        </form>
+        <DeckImportForm />
       </div>
       <ul className="grid grid-cols-4 gap-8">
         {CARD_CLASSES.map((cardClass) => {
