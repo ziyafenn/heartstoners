@@ -34,6 +34,7 @@ import { CurrentDeck } from "./CurrentDeck";
 import { DeckBuilderFilter } from "./DeckBuilderFilter";
 import DeckBuilderForm from "./DeckBuilderForm";
 import { LoadingScreen } from "@/components/LoadingScreen";
+import { OpenFormButton } from "./OpenFormButton";
 
 export function DeckBuilder({
   initialCards,
@@ -235,15 +236,10 @@ export function DeckBuilder({
                 {`Close ${activeSideboardCard.name} sideboard`}
               </Button>
             ) : (
-              <Button
-                type="button"
-                disabled={selectedCards.length < 30}
-                className="h-12 rounded-none"
+              <OpenFormButton
                 onClick={onFormOpen}
-                variant="accent"
-              >
-                {`Create Deck (${selectedCards.length}/30)`}
-              </Button>
+                selectedCards={selectedCards}
+              />
             )}
           </CurrentDeck>
         </main>
