@@ -1,8 +1,6 @@
 "use server";
 
-import { CARD_CLASSES } from "@/lib/cardClasses";
-// import { checkProfanity } from "@/service/profanity.service";
-import { encodeDeck, findData } from "@/lib/utils";
+import { encodeDeck } from "@/lib/utils";
 import { searchHsCards } from "@/service/hs.service";
 import { checkProfanity } from "@/service/profanity.service";
 import {
@@ -17,15 +15,14 @@ import type {
   CardSeachParams,
   CardsPage,
 } from "@/types/hs.type";
-import type { Enums, Tables } from "@/types/supabase.type";
-import { decode } from "deckstrings";
+import type { Tables } from "@/types/supabase.type";
 import { RedirectType, redirect } from "next/navigation";
 
 type Params = CardsPage & { params: CardSeachParams; loading?: boolean };
 
 export async function loadPageWithFilters(
   currentState: Params,
-  formData: FormData,
+  formData: FormData
 ): Promise<Params> {
   const deckSearchParams = {
     ...currentState.params,
@@ -66,7 +63,7 @@ type CreateDeck = {
 
 export async function createDeck(
   state: CreateDeck,
-  formData: FormData,
+  formData: FormData
 ): Promise<CreateDeck> {
   let userInput = {} as DeckUserInputParams;
   const gameVersion = await getCurrentGameVersion();
@@ -124,33 +121,30 @@ export async function decodeDeck(formData: FormData) {
 
   if (!deckCode) return;
 
-  const deck = decode(deckCode.toString());
-  const slug = findData(CARD_CLASSES, "cardId", deck.heroes[0]).slug;
-  const format: Enums<"deck_format"> = deck.format === 1 ? "wild" : "standard";
-
   const params = new URLSearchParams({ deckCode });
   redirect(`/deckbuilder/deck?${params}`);
 }
 
 export async function getSubArchetype(
   deckClass: CardClass["slug"],
-  selectedCards: Card[],
+  selectedCards: Card[]
 ) {
   const metas = await getMetasByClass(deckClass);
 
   const bestMatch = metas!.reduce(
     (best, meta) => {
       const metaMatches = meta.core_cards.filter((coreCard) =>
-        selectedCards.map((selectedCard) => selectedCard.id).includes(coreCard),
+        selectedCards.map((selectedCard) => selectedCard.id).includes(coreCard)
       ).length;
+
       return metaMatches > best.matchedCardCount
         ? { matchedCardCount: metaMatches, meta }
         : best;
     },
-    { matchedCardCount: 0, meta: {} as Tables<"meta_sub_archetypes"> },
+    { matchedCardCount: 0, meta: {} as Tables<"meta_sub_archetypes"> }
   );
 
-  if (bestMatch.matchedCardCount > 2) return bestMatch.meta;
+  if (bestMatch.matchedCardCount >= 5) return bestMatch.meta;
 
   return null;
 }
