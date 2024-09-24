@@ -10,6 +10,7 @@ import Link from "next/link";
 import discordLogo from "public/img/discord.svg";
 import xLogo from "public/img/x.svg";
 import { Header } from "./_components/Header";
+import { Analytics } from "@vercel/analytics/react";
 
 const hs = FonsHs({
   subsets: ["latin"],
@@ -89,6 +90,7 @@ export default async function RootLayout({
           </div>
         </footer>
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
