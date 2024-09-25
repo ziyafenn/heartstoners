@@ -6,7 +6,7 @@ import { DeckImportForm } from "./deck/_components/DeckImportForm";
 
 export default function DeckBuilder() {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center justify-center">
       <div className="flex w-full max-w-7xl flex-col gap-8 p-8">
         <div className="flex items-center justify-between">
           <h2 className="font-medium text-2xl">
