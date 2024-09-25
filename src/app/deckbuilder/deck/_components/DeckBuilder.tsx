@@ -27,7 +27,7 @@ import type {
 } from "@/types/hs.type";
 import type { Tables } from "@/types/supabase.type";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { CardSearchResult } from "./CardSearchResult";
 import { CurrentDeck } from "./CurrentDeck";
@@ -88,6 +88,7 @@ export function DeckBuilder({
   const [subArchetype, setSubArchetype] =
     useState<Tables<"meta_sub_archetypes"> | null>(null);
   const [isAuthDialogOpen, setIsAuthDialogOpen] = useState(false);
+  const filterFormRef = useRef<HTMLFormElement>(null);
 
   const currentSideboard = sideboardCards.find(
     (sideboard) => sideboard.sideboardCard.id === activeSideboardCard?.id,
@@ -187,6 +188,7 @@ export function DeckBuilder({
           cardTypes={cardTypes}
           touristCard={touristCard}
           deckClass={deckClass}
+          formRef={filterFormRef}
         />
         <main className="grid select-none grid-cols-[1fr,320px] gap-8">
           {isLoading ? (
@@ -218,6 +220,8 @@ export function DeckBuilder({
             </CardSearchResult>
           )}
           <CurrentDeck
+            filteFormRef={filterFormRef}
+            updateFilters={updateFilters}
             deckClass={deckClass}
             sideboardCards={sideboardCards}
             toggleSideboard={actions.toggleSideboard}

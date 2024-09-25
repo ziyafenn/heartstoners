@@ -64,7 +64,7 @@ export function toCapital(value: string) {
 export function findData<T, K extends keyof T>(
   array: T[],
   key: K,
-  value: T[K] | undefined | null,
+  value: T[K] | undefined | null
 ) {
   const item = array.find((item) => item[key] === value);
   if (!item) {
@@ -133,11 +133,11 @@ export function encodeDeck({
 
 export function updateDeckCodeQuery(
   deck: Pick<Deck, "cards" | "sideboardCards"> &
-    Pick<CardSeachParams, "set" | "multiClass">,
+    Pick<CardSeachParams, "set" | "multiClass">
 ) {
   const { card_ids, sideboard_cards } = getDeckData(
     deck.cards,
-    deck.sideboardCards,
+    deck.sideboardCards
   );
   const deckCode = encodeDeck({
     card_ids,
@@ -152,7 +152,7 @@ export function updateDeckCodeQuery(
 
 export function getDeckData(
   selectedCards: Card[],
-  sideboardCards: SideboardCards[] = [],
+  sideboardCards: SideboardCards[] = []
 ) {
   let dust_cost_sum = 0;
   const dust_cost_per_card: number[] = [];
@@ -197,4 +197,15 @@ export function getDeckData(
     cardRarities,
     sideboard_cards,
   };
+}
+
+export function showSelectedCard(cardsToShow: Card[] | undefined) {
+  if (!cardsToShow) return [];
+  const seen = new Set();
+  const uniqueCards = cardsToShow?.filter((el) => {
+    const duplicate = seen.has(el.id);
+    seen.add(el.id);
+    return !duplicate;
+  });
+  return uniqueCards;
 }

@@ -23,7 +23,7 @@ import type {
 } from "@/types/hs.type";
 import type { CardSearchOptions } from "blizzard.js/dist/resources/hs";
 import { X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { type RefObject, useEffect, useRef, useState } from "react";
 
 type Props = {
   action: (payload: FormData) => void;
@@ -33,6 +33,7 @@ type Props = {
   cardTypes: CardType[];
   touristCard: Card | null;
   deckClass: CardClass["slug"];
+  formRef: RefObject<HTMLFormElement>;
 };
 
 export function DeckBuilderFilter({
@@ -43,8 +44,8 @@ export function DeckBuilderFilter({
   cardTypes,
   touristCard,
   deckClass,
+  formRef,
 }: Props) {
-  const formRef = useRef<HTMLFormElement>(null);
   const filterRef = useRef<HTMLDivElement>(null);
 
   const manaCost = [...Array(10).keys(), "10+"];

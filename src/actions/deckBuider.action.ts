@@ -34,6 +34,7 @@ export async function loadPageWithFilters(
     keyword: formData.get("keyword"),
     type: formData.get("type"),
     manaCost: formData.get("manaCost") as unknown,
+    set: formData.get("set"),
   } as CardSeachParams;
   const isFilter: boolean = formData.has("filter");
   const page = isFilter ? 1 : currentState.page + 1;

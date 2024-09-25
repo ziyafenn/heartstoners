@@ -6,7 +6,7 @@ export function OpenFormButton({
   onClick,
 }: { selectedCards: Card[]; onClick: () => void }) {
   return (
-    <div className="flex items-center gap-4 p-2 ">
+    <div className="flex items-center gap-4 p-2 pt-0 ">
       <Button
         type="button"
         disabled={selectedCards.length < 30}

@@ -1,5 +1,6 @@
 import { CardCrop } from "@/components/CardCrop";
 import { DeckManaChart } from "@/components/DeckManaChart";
+import { showSelectedCard } from "@/lib/utils";
 import type { Card, Deck, SideboardCards } from "@/types/hs.type";
 import Image from "next/image";
 
@@ -8,17 +9,6 @@ type Props = {
   cards: Card[];
   sideboardCards: SideboardCards[] | undefined;
 };
-
-function showSelectedCard(cardsToShow: Card[] | undefined) {
-  if (!cardsToShow) return [];
-  const seen = new Set();
-  const uniqueCards = cardsToShow?.filter((el) => {
-    const duplicate = seen.has(el.id);
-    seen.add(el.id);
-    return !duplicate;
-  });
-  return uniqueCards.sort((a, b) => a.manaCost - b.manaCost);
-}
 
 // function showRunes() {
 //   const runes: Rune[] = [];

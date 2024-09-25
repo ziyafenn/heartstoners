@@ -194,7 +194,7 @@
   }
 }
 
-@layer utilities {
+@layer base {
   .font-outline-2 {
     text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000,
       2px 2px 0 #000;

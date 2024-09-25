@@ -6,7 +6,6 @@ import type {
   Deck,
   Rune,
   RuneCost,
-  SetGroups,
   SideboardCards,
 } from "@/types/hs.type";
 import {
@@ -35,13 +34,13 @@ export function useDeckBuilder({
 }) {
   const [cardsPage, onSearch] = useActionState(loadPageWithFilters, initState);
   const [selectedCards, setSelectedCards] = useState<Card[]>(
-    () => deck?.cards ?? [],
+    () => deck?.cards ?? []
   );
   const [sideboardCards, setSideboardCards] = useState<SideboardCards[]>(
-    () => deck?.sideboardCards ?? [],
+    () => deck?.sideboardCards ?? []
   );
   const [activeSideboardCard, setActiveSideboardCard] = useState<Card | null>(
-    null,
+    null
   );
   const [zilliaxCards, setZilliaxCards] = useState<Card[]>([]);
   const [deathKnightRuneSlots, setDeathKnightRuneSlots] = useState<RuneCost>({
@@ -97,7 +96,7 @@ export function useDeckBuilder({
       updatedCardList.forEach(({ runeCost }) => {
         if (runeCost)
           Object.entries(runeCost).forEach(([key, value]) =>
-            updateRuneCount([key as Rune, value]),
+            updateRuneCount([key as Rune, value])
           );
       });
       setDeathKnightRuneSlots(runeSlots);
@@ -124,10 +123,10 @@ export function useDeckBuilder({
   function removeCard(card: Card) {
     const { id, runeCost, bannedFromSideboard } = card;
     const isSideboardCard = sideboardCards.some(
-      (sideboard) => sideboard.sideboardCard.id === id,
+      (sideboard) => sideboard.sideboardCard.id === id
     );
     const currentCardCount = selectedCards.filter(
-      (card) => card.id === id,
+      (card) => card.id === id
     ).length;
     let currentSelectedCards: Card[] = [...selectedCards];
 
@@ -135,7 +134,7 @@ export function useDeckBuilder({
       currentSelectedCards = selectedCards.filter((card) => card.id !== id);
     } else {
       const indexToRemove = currentSelectedCards.findLastIndex(
-        (card) => card.id === id,
+        (card) => card.id === id
       );
       currentSelectedCards.splice(indexToRemove, 1);
     }
@@ -144,7 +143,7 @@ export function useDeckBuilder({
     if (card.touristClassId) setTouristCard(null);
     if (bannedFromSideboard && isSideboardCard)
       setSideboardCards((state) =>
-        state.filter((sideboard) => sideboard.sideboardCard.id !== id),
+        state.filter((sideboard) => sideboard.sideboardCard.id !== id)
       );
 
     setSelectedCards(currentSelectedCards);
@@ -161,7 +160,7 @@ export function useDeckBuilder({
     if (!activeSideboardCard) return null;
     const currentSideboardCards = [...sideboardCards];
     const activeSideboard = currentSideboardCards.find(
-      (sideboard) => sideboard.sideboardCard.id === activeSideboardCard.id,
+      (sideboard) => sideboard.sideboardCard.id === activeSideboardCard.id
     );
 
     if (activeSideboard) {
@@ -190,17 +189,17 @@ export function useDeckBuilder({
     if (!activeSideboardCard) return;
     let currentSideboardCards = [...sideboardCards];
     const currentSideboard = currentSideboardCards.find(
-      (sideboard) => sideboard.sideboardCard.id === activeSideboardCard.id,
+      (sideboard) => sideboard.sideboardCard.id === activeSideboardCard.id
     );
     if (!currentSideboard) return;
     const updatedSideboardCards = currentSideboard.cardsInSideboard.filter(
-      (card) => card.id !== id,
+      (card) => card.id !== id
     );
     if (updatedSideboardCards.length) {
       currentSideboard.cardsInSideboard = updatedSideboardCards;
     } else {
       currentSideboardCards = currentSideboardCards.filter(
-        (sideboard) => sideboard.sideboardCard.id !== activeSideboardCard.id,
+        (sideboard) => sideboard.sideboardCard.id !== activeSideboardCard.id
       );
     }
     setSideboardCards(currentSideboardCards);
