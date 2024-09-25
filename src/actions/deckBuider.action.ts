@@ -127,15 +127,14 @@ export async function decodeDeck(
 
   try {
     decode(deckCode);
-
-    const params = new URLSearchParams({ deckCode });
-    redirect(`/deckbuilder/deck?${params}`);
   } catch (error) {
     return {
       error:
         "It appears there is an issue with the deck code. If this problem continues, please contact us on Discord.",
     };
   }
+  const params = new URLSearchParams({ deckCode });
+  redirect(`/deckbuilder/deck?${params}`);
 }
 
 export async function getSubArchetype(
